@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhh.dc.baika.mapper.app.JdCardInfoMapper">
+  <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.app.JdCardInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="fetch_password_date" jdbcType="TIMESTAMP" property="fetchPasswordDate" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="per_id" jdbcType="INTEGER" property="perId" />
+    <result column="borr_id" jdbcType="INTEGER" property="borrId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="review_user" jdbcType="VARCHAR" property="reviewUser" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, start_date, end_date, card_number, password, fetch_password_date, product_id, 
+    per_id, borr_id, create_date, update_date,create_user,review_user,version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_jd_card_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from b_jd_card_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jhh.dc.baika.entity.app.JdCardInfo">
+    insert into b_jd_card_info (id, start_date, end_date, 
+      card_number, password, fetch_password_date, 
+      product_id, per_id, borr_id, 
+      create_date, update_date)
+    values (#{id,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP},
+      #{cardNumber,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{fetchPasswordDate,jdbcType=TIMESTAMP}, 
+      #{productId,jdbcType=INTEGER}, #{perId,jdbcType=INTEGER}, #{borrId,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jhh.dc.baika.entity.app.JdCardInfo">
+    insert into b_jd_card_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="cardNumber != null">
+        card_number,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="fetchPasswordDate != null">
+        fetch_password_date,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="perId != null">
+        per_id,
+      </if>
+      <if test="borrId != null">
+        borr_id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardNumber != null">
+        #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="fetchPasswordDate != null">
+        #{fetchPasswordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="perId != null">
+        #{perId,jdbcType=INTEGER},
+      </if>
+      <if test="borrId != null">
+        #{borrId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jhh.dc.baika.entity.app.JdCardInfo">
+    update b_jd_card_info
+    <set>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardNumber != null">
+        card_number = #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="fetchPasswordDate != null">
+        fetch_password_date = #{fetchPasswordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="perId != null">
+        per_id = #{perId,jdbcType=INTEGER},
+      </if>
+      <if test="borrId != null">
+        borr_id = #{borrId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewUser != null">
+        review_user = #{reviewUser,jdbcType=TIMESTAMP},
+      </if>
+        version = version+1
+    </set>
+    where id = #{id,jdbcType=INTEGER} AND version = #{version}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jhh.dc.baika.entity.app.JdCardInfo">
+    update b_jd_card_info
+    set start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      card_number = #{cardNumber,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      fetch_password_date = #{fetchPasswordDate,jdbcType=TIMESTAMP},
+      product_id = #{productId,jdbcType=INTEGER},
+      per_id = #{perId,jdbcType=INTEGER},
+      borr_id = #{borrId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCardInfoByPhone" parameterType="string" resultType="com.jhh.dc.baika.entity.app_vo.JdCardInfoVO">
+    select
+    j.id id,
+    p.product_name productName,
+    p.product_description productDesc,
+    p.product_icon productIcon,
+    DATE_FORMAT(j.end_date,"%Y年%m月%d日") endDate,
+    p.amount amount,
+    j.borr_id borrId
+    from
+    b_jd_card_info j
+    left join c_product p on j.product_id = p.id
+    left join b_person pe on pe.id = j.per_id
+    where pe.phone = #{phone}
+  </select>
+  <select id="selectCardDetailByCardId"  resultType="com.jhh.dc.baika.entity.app_vo.JdCardDetailVO">
+    select
+    j.id id,
+    p.product_name productName,
+    p.product_description productDesc,
+    p.product_icon productIcon,
+    DATE_FORMAT(j.end_date,"%Y年%m月%d日") endDate,
+    p.amount amount,
+    j.borr_id borrId,
+    b.borr_status BorrStatus,
+    b.prod_type prodType,
+    b.borr_num borrNum,
+    b.prod_id prodId,
+    b.per_id perId
+    from b_jd_card_info j
+    left join b_borrow_list b on j.borr_id = b.id
+    left join c_product p on j.product_id = p.id
+    where b.borr_num = #{borrNum} AND b.per_id = #{perId}
+  </select>
+  <update id="updateFetchTimeById" parameterType="integer">
+    update b_jd_card_info t
+    set t.fetch_password_date = now()
+    where t.id = #{jdCardId}
+  </update>
+  
+  <select id="getUnusedCard" resultMap="BaseResultMap">
+     SELECT 
+     <include refid="Base_Column_List"></include>
+    FROM b_jd_card_info
+    WHERE per_id is NULL AND NOW()&lt;(SELECT end_date) limit 0,1
+  </select>
+  <select id="getCardKeyInfoByCardId" parameterType="integer" resultType="com.jhh.dc.baika.entity.app_vo.JdCardKeyInfo">
+    select
+    j.card_number cardNum,
+    j.password password,
+    DATE_FORMAT(j.start_date,"%Y/%m/%d") startDate,
+    DATE_FORMAT(j.end_date,"%Y/%m/%d") endDate
+    from b_jd_card_info j
+    where j.id = #{id}
+  </select>
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.SystemUserMapper">
+
+    <resultMap id="AllColumnMap" type="com.jhh.dc.baika.entity.loan.SystemUser">
+        <result column="id" property="id"/>
+        <result column="guid" property="guid"/>
+        <result column="user_sysno" property="userSysno"/>
+        <result column="password" property="password"/>
+        <result column="user_name" property="userName"/>
+        <result column="level" property="level"/>
+        <result column="product_sysno" property="productSysno"/>
+        <result column="bedue_level" property="bedueLevel"/>
+        <result column="user_group_id" property="userGroupId"/>
+        <result column="status" property="status"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_date" property="updateDate"/>
+        <result column="level_type" property="levelType"/>
+        <result column="is_manage" property="isManage"/>
+        <result column="phone" property="phone"/>
+        <result column="channel_percent" property="channelPercent"/>
+
+    </resultMap>
+
+    <select id="selectMaxId" resultType="java.lang.Integer">
+        SELECT max(id) from c_system_user
+    </select>
+
+    <select id="selectDsUsers" parameterType="java.util.Map" resultMap="AllColumnMap">
+        SELECT * FROM c_system_user WHERE 1=1
+        <if test="type == 2">
+            and status='A'
+        </if>
+        <choose>
+            <when test="levelType == 1 or levelType == 2 or levelType == 10" >
+
+            </when>
+            <otherwise>
+                and (user_group_id = #{companyId} or user_group_id=100)
+            </otherwise>
+        </choose>
+        <if test="userName != null">
+            and user_name = #{userName}
+        </if>
+        <if test="userSysno != null">
+            and user_sysno = #{userSysno}
+        </if>
+    </select>
+
+    <select id="getChannelSource" parameterType="String" resultType="String">
+        select code_code from c_code_value where meaning =
+          (select user_name from c_system_user where user_sysno = #{userId})
+    </select>
+
+    <select id="selectUserBySysNo" parameterType="String" resultMap="AllColumnMap">
+     select  * from c_system_user where user_sysno = #{sysNo}
+    </select>
+
+    <select id="getSysNoByName" parameterType="String" resultType="java.lang.String">
+        select  user_sysno from c_system_user where user_name = #{userName}
+    </select>
+    <select id="getNameBySysNo" parameterType="String" resultType="java.lang.String">
+        select  user_name from c_system_user where  user_sysno = #{userName}
+    </select>
+
+    <select id="queryChannelCollectors" resultMap="AllColumnMap">
+        select  * from c_system_user where level_type=4 and is_manage=5
+    </select>
+
+</mapper>
+

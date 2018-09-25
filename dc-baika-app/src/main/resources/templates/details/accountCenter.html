@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0,maximum-scale=1.0">
+  <!-- 允许全屏模式浏览 -->
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/my.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <title>我的个人中心</title>
+</head>
+
+<body>
+  <div class="title">
+    <p>
+      <a  class="iconfont icon-back_light myCenter"></a>我的</p>
+  </div>
+  <div class="main">
+    <!-- 头部部分 -->
+    <div class="main-top">
+      <div class="top-left">
+        <p class="rest">可用余额(元)</p>
+        <p class="money" th:text="${details.balance == null? null : #numbers.formatDecimal(details.balance,1,2)}"></p>
+      </div>
+      <div class="top-right">
+        <button id="btn">提现</button>
+      </div>
+    </div>
+    <!-- 头部部分结束 -->
+    <!-- 内容部分开始 -->
+    <div class="main-content">
+      <ul class="clearfix">
+          <li th:onclick="'javascript:window.location.href=\''+@{/form/getMyBorrowList(perId=${details.perId},phone=${details.phone})}+'\' '">
+          <img th:src="@{/images/baikaImage/acc_icon_wdjk.png}" alt="">
+          <a>我的借款</a>
+          <span class="iconfont icon-arrow-right"></span>
+        </li>
+        <li th:onclick="'javascript:window.location.href=\''+@{'/form/bankManagement/'+${details.perId}+'/'+${details.phone}}+'\' '">
+          <img th:src="@{/images/baikaImage/acc_icon_yhkgl.png}" alt="">
+          <a>银行卡管理</a>
+          <span class="iconfont icon-arrow-right"></span>
+        </li>
+        <li th:onclick="'javascript:window.location.href=\''+@{'/form/changePayPwd/'+${details.phone}}+'\' '">
+          <img th:src="@{/images/baikaImage/acc_icon_mima.png}" alt="">
+          <a href="#">修改支付密码</a>
+          <span class="iconfont icon-arrow-right"></span>
+        </li>
+        <li th:onclick="'javascript:window.location.href=\''+@{'/form/resetPwd/'+${details.phone}}+'\' '">
+          <img th:src="@{/images/baikaImage/acc_icon_mima.png}" alt="">
+          <a href="#">重置支付密码</a>
+          <span class="iconfont icon-arrow-right"></span>
+        </li>
+        <li th:onclick="'javascript:window.location.href=\''+@{'/form/feedback/'+${details.perId}}+'\' '">
+          <img th:src="@{/images/baikaImage/acc_icon_yjfk.png}" alt="">
+          <a href="#"> 意见反馈</a>
+          <span class="iconfont icon-arrow-right"></span>
+        </li>
+        <li id="servicePhone">
+          <img th:src="@{/images/baikaImage/acc_icon_kf.png}" alt="">
+          <a href="#">联系客服</a>
+          <span class="iconfont icon-arrow-right"></span>
+        </li>
+      </ul>
+    </div>
+    <!-- 内容部分结束 -->
+  </div>
+  <div th:replace="common/promptBox::promptBox"></div>
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+  <script th:src="@{/js/app.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script th:inline="javascript">
+      var perId = [[${details.perId}]];
+      var borrId = [[${details.borrId}]];
+      var balance = [[${details.balance}]];
+      $(function () {
+        //提现
+         $("#btn").on('click',function () {
+           $('.tipModal').removeClass('hide');
+           if (borrId == '' || borrId == null){
+             $('.tipModal p').text('余额不足,不允许提现');
+             return;
+           } else if (balance == null || balance*1 == 0){
+             $('.tipModal p').text('余额不足,不允许提现');
+             return;
+           }else {
+             $('.tipModal').addClass('hide');
+             window.location.href = projectName +'/form/jumpWithdrawal/'+perId+'?borrId='+borrId;
+           }
+         }) ;
+        //联系客服
+        $('#servicePhone').on('click',function () {
+          var phone = [[${details.servicePhone}]];
+          callServicePhone(phone);
+        })
+      });
+  </script>
+</body>
+
+</html>

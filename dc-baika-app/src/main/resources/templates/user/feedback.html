@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no,maximum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/app.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+  <title>意见反馈</title>
+
+<!--<body>
+  <div class="title">
+    <p>
+      <a href="javascript:history.go(-1);"></a>意见反馈</p>
+  </div>
+  <form th:action="@{/}">
+    <input type="hidden" name="perId" th:value="${perId}" />
+    <input type="hidden" name="prodTypeCode"  />
+
+    <div class="area">
+      <textarea name="content" id="" cols="45" rows="7" placeholder="感谢您提出的宝贵意见，我们将尽快为您解决"></textarea>
+    </div>
+    <button type="button">提 交</button>
+  </form>
+  <p class="toast" style="display: none"></p>
+</body>-->
+  <style>
+    .area{
+      position: relative;
+      padding: 1rem 1.5rem;
+      margin: .5rem;
+      height: 10rem;
+      border-radius: .5rem;
+    }
+    .area i {
+      position: absolute;
+      bottom: 1rem;
+      right:1rem;
+      color: #333;
+      font-style: normal;
+      font-size: .7rem;
+    }
+    textarea{
+      position: absolute;
+      top:0;
+      left:0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      padding: 1rem 1rem 0;
+      background: #E6E6E6;
+      font-size: .75rem;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      color: #999;
+    }
+
+    textarea::-webkit-input-placeholder {
+      color: #999;
+    }
+
+    form p {
+      color: #666;
+      margin-top: 1.375rem /* 55/40 */;
+      text-align: center;
+      font-size: .75rem /* 30/40 */;
+    }
+    .toast {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+      padding: .5rem;
+      background-color: rgba(0, 0, 0, .5);
+      border-radius: 5px;
+      color: #fff;
+    }
+  </style>
+
+<body>
+<div class="title">
+  <p>
+    <a href="javascript:history.go(-1);"  class="iconfont icon-back_light"></a>意见反馈</p>
+</div>
+<form th:action="@{/}">
+  <input type="hidden" name="perId" th:value="${perId}" />
+  <div class="area">
+    <textarea name="content" id="textarea" cols="45" rows="7" placeholder="请写下您的意见或建议！"></textarea>
+    <i><span id="textNum">0</span>/<span>200</span></i>
+  </div>
+  <p>如需帮助，请致电客服电话：021-60550377</p>
+  <button type="button" id="btn" class="btn">提 交</button>
+</form>
+<p class="toast" style="display: none"></p>
+<div class="successModal hide">
+  <div class="modalBox">
+    <div class="top">提 示</div>
+    <div class="content">
+      <p>您已经提交成功！</p>
+    </div>
+    <div class="foot">
+      <a href="javascript:;" class="trueBtn">确 定</a>
+    </div>
+  </div>
+</div>
+</body>
+<script th:src="@{/js/ajaxhook.min.js}"></script>
+<script th:src="@{/js/user/feedback.js}"></script>
+
+</html>

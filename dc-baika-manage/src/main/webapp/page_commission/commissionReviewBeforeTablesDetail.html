@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>佣金审核详情</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link href="/loan-manage/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/loan-manage/css/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/loan-manage/devextreme/css/dx.common.css"/>
+    <link rel="stylesheet" href="/loan-manage/devextreme/css/dx.light.css"/>
+    <link rel="stylesheet" href="/loan-manage/css/style.css"/>
+    <script src="/loan-manage/js/controllers/GeneralPageController.js" type="text/javascript"></script>
+    <script src="/loan-manage/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="/loan-manage/devextreme/js/globalize.min.js"></script>
+    <script src="/loan-manage/devextreme/js/dx.webappjs.js"></script>
+    <script src="/loan-manage/devextreme/js/jszip.min.js"></script>
+    <script src="/loan-manage/assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/loan-manage/js/jquery.cookie.js"></script>
+    <!--<script src="/loan-manage/js/tableUtils.js"></script>-->
+    <script src="/loan-manage/js/scripts/bootstrap-table.min.js"></script>
+    <script src="/loan-manage/js/scripts/bootstrap-table-zh.js"></script>
+    <!-- for devextreme -->
+    <script src="/loan-manage/js_commission/commissionReviewBeforeTablesDetail.js" type="text/javascript"></script>
+</head>
+<body>
+<div style="padding-bottom:100px;">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title" style="margin-top:0px;">查询条件</h3>
+        </div>
+        <div class="box-body" style="display: block;border-top:1px solid #eee;border-bottom:1px solid #eee;">
+            <div class="row" style="margin:10px 0 0 0;">
+                <div class="col-md-12 wblMd">
+                    <div class="col-md-1">
+                        <button class="btn btn-default" id="exportBtn">导出</button>
+                    </div>
+                    <table id="commissionReviewDetail"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    initCommissition();
+</script>
+
+</html>

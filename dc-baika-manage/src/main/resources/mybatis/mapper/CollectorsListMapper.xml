@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.CollectorsListMapper">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.jhh.dc.baika.entity.loan.CollectorsList">
+        <result column="id" property="id"/>
+        <result column="guid" property="guid"/>
+        <result column="contract_sysno" property="contractSysno"/>
+        <result column="contract_id" property="contractId"/>
+        <result column="contract_type" property="contractType"/>
+        <result column="bedue_user_sysno" property="bedueUserSysno"/>
+        <result column="bedue_name" property="bedueName"/>
+        <result column="acqu_mode" property="acquMode"/>
+        <result column="obtain_time" property="obtainTime"/>
+        <result column="operator" property="operator"/>
+        <result column="bedue_level" property="bedueLevel"/>
+        <result column="user_group_id" property="userGroupId"/>
+        <result column="status" property="status"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <resultMap id="CollectorsInfoMap" type="com.jhh.dc.baika.entity.loan.CollectorsVo">
+        <result column="contract_id" property="contractId"/>
+        <result column="bedue_user_sysno" property="bedueUserSysno"/>
+        <result column="bedue_name" property="bedueName"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <resultMap id="CollectorsCompanyVoMap" type="com.jhh.dc.baika.entity.manager.CollectorsCompanyVo">
+        <result column="id" property="id"/>
+        <result column="contract_sysno" property="contractSysno"/>
+        <result column="bedue_user_sysno" property="bedueUserSysno"/>
+        <result column="company_id" property="companyId"/>
+    </resultMap>
+
+    <!-- 根据合同ID查询单子是否有人催收及催收人归属公司 -->
+    <select id="selectCollectorsCompanyVo" parameterType="map" resultMap="CollectorsCompanyVoMap">
+        SELECT collectors.id,collectors.contract_sysno,borrow.company_id,collectors.bedue_user_sysno from b_collectors_list collectors
+        LEFT JOIN b_loan_company_borrow borrow on borrow.borr_id = collectors.contract_sysno
+        WHERE collectors.status = 'A' and collectors.contract_sysno=#{contractSysno} and collectors.is_delete = 2
+    </select>
+
+    <select id="selectCollectorsInfo" parameterType="java.util.Map" resultMap="CollectorsInfoMap">
+        SELECT contract_id,bedue_user_sysno,bedue_name,update_date from b_collectors_list WHERE contract_id=#{contractId} and is_delete =2
+    </select>
+
+    <select id="selectSystemCollectorsLists" parameterType="java.util.Map" resultMap="AllColumnMap">
+        SELECT
+        id,contract_sysno,contract_id,contract_type,bedue_user_sysno,bedue_name,acqu_mode,obtain_time,operator,bedue_level
+        FROM b_collectors_list WHERE create_date &gt; #{today} and bedue_user_sysno='9999' and status='A' and is_delete = 2
+    </select>
+
+    <select id="getWorkReport" parameterType="java.util.Map" resultType="com.jhh.dc.baika.entity.loan.ExportWorkReport">
+        /*CollectorsListMapper.getWorkReport*/
+        SELECT
+        cl.bedue_name bedueName,dcl.dcl_type dclType,dcl.level_type levelType,
+        COUNT(cl.STATUS = "A" OR NULL) AS unDone,
+        COUNT(cl.STATUS = "B" OR NULL) AS done,
+        COUNT(cl.STATUS = "A" OR NULL) + COUNT(cl.STATUS = "B" OR NULL) sumDone
+        FROM b_collectors_list cl LEFT JOIN b_borrow_list bl ON bl.id = cl.contract_sysno
+        LEFT JOIN c_system_user dcl ON dcl.user_sysno = cl.bedue_user_sysno
+        WHERE cl.is_delete = 2
+        <if test="bedueName != null and bedueName != ''">
+            and cl.bedue_name like "%${bedueName}%"
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            <![CDATA[ and IFNULL(cl.update_date,cl.create_date) >= #{beginDate} ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[ and IFNULL(cl.update_date,cl.create_date) < #{endDate} ]]>
+        </if>
+        <if test="levelType != null">
+            AND dcl.level_type = #{levelType}
+        </if>
+        GROUP BY cl.bedue_user_sysno
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'bedueName'">ORDER BY cl.contract_sysno</when>
+                <when test="selector eq 'levelTypeStr'">ORDER BY levelType</when>
+                <when test="selector eq 'sumDone'">ORDER BY sumDone</when>
+                <when test="selector eq 'unDone'">ORDER BY unDone</when>
+                <when test="selector eq 'done'">ORDER BY done</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectUndoneContractNos" resultType="java.lang.Integer">
+        select contract_sysno from ds_collectors_list collectors
+    </select>
+
+    <insert id="batchInsertCollectorsList" parameterType="java.util.List">
+        INSERT INTO b_collectors_list (id, contract_sysno,
+        contract_id,bedue_user_sysno,bedue_name,create_date,status,acqu_mode,update_date)
+        VALUES
+        <foreach collection="list" item="i" index="index" separator=",">
+            (
+            #{i.id},
+            #{i.contractSysno},
+            #{i.contractId},
+            #{i.bedueUserSysno},
+            #{i.bedueName},
+            #{i.createDate},
+            #{i.status},
+            #{i.acquMode},
+            #{i.updateDate}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE contract_sysno = VALUES(contract_sysno)
+    </insert>
+    <update id="batchUpdateCollectorsList" parameterType="java.util.List">
+        UPDATE b_collectors_list
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="bedue_user_sysno = case" suffix=" end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.bedueUserSysno != null">
+                        WHEN (contract_sysno=#{i.contractSysno,jdbcType=INTEGER}) then
+                        #{i.bedueUserSysno,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="bedue_name = case" suffix=" end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.bedueName != null">
+                        WHEN (contract_sysno=#{i.contractSysno,jdbcType=INTEGER}) then #{i.bedueName,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="acqu_mode = case" suffix=" end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.acquMode != null">
+                        WHEN (contract_sysno=#{i.contractSysno,jdbcType=INTEGER}) then #{i.acquMode,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_date = case" suffix=" end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateDate != null">
+                        WHEN (contract_sysno=#{i.contractSysno,jdbcType=INTEGER}) then
+                        #{i.updateDate,jdbcType=TIMESTAMP}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        WHERE contract_sysno in
+        <foreach collection="list" item="i" index="index" open="(" separator="," close=")">
+            #{i.contractSysno,jdbcType=INTEGER}
+        </foreach>
+        and is_delete = 2
+    </update>
+</mapper>
+

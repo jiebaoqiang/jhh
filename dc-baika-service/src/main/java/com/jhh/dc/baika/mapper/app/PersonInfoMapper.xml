@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.app.PersonInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.app.PersonInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="per_id" property="perId" jdbcType="INTEGER" />
+    <result column="debt_info" property="debtInfo" jdbcType="VARCHAR" />
+    <result column="live_info" property="liveInfo" jdbcType="VARCHAR" />
+    <result column="trans_info" property="transInfo" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="company_info" property="companyInfo" jdbcType="VARCHAR" />
+    <result column="family_link1" property="familyLink1" jdbcType="VARCHAR" />
+    <result column="relationship1" property="relationship1" jdbcType="VARCHAR" />
+    <result column="phone1" property="phone1" jdbcType="VARCHAR" />
+    <result column="card_num1" property="cardNum1" jdbcType="VARCHAR" />
+    <result column="family_link2" property="familyLink2" jdbcType="VARCHAR" />
+    <result column="relationship2" property="relationship2" jdbcType="VARCHAR" />
+    <result column="phone2" property="phone2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, per_id, debt_info, live_info, trans_info, department, job, company_info, family_link1, 
+    relationship1, phone1, card_num1, family_link2, relationship2, phone2
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_person_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_person_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jhh.dc.baika.entity.app.PersonInfo" >
+    insert into b_person_info (id, per_id, debt_info, 
+      live_info, trans_info, department, 
+      job, company_info, family_link1, 
+      relationship1, phone1, card_num1, 
+      family_link2, relationship2, phone2
+      )
+    values (#{id,jdbcType=INTEGER}, #{perId,jdbcType=INTEGER}, #{debtInfo,jdbcType=VARCHAR}, 
+      #{liveInfo,jdbcType=VARCHAR}, #{transInfo,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{job,jdbcType=VARCHAR}, #{companyInfo,jdbcType=VARCHAR}, #{familyLink1,jdbcType=VARCHAR}, 
+      #{relationship1,jdbcType=VARCHAR}, #{phone1,jdbcType=VARCHAR}, #{cardNum1,jdbcType=VARCHAR}, 
+      #{familyLink2,jdbcType=VARCHAR}, #{relationship2,jdbcType=VARCHAR}, #{phone2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jhh.dc.baika.entity.app.PersonInfo" >
+    insert into b_person_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="perId != null" >
+        per_id,
+      </if>
+      <if test="debtInfo != null" >
+        debt_info,
+      </if>
+      <if test="liveInfo != null" >
+        live_info,
+      </if>
+      <if test="transInfo != null" >
+        trans_info,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="job != null" >
+        job,
+      </if>
+      <if test="companyInfo != null" >
+        company_info,
+      </if>
+      <if test="familyLink1 != null" >
+        family_link1,
+      </if>
+      <if test="relationship1 != null" >
+        relationship1,
+      </if>
+      <if test="phone1 != null" >
+        phone1,
+      </if>
+      <if test="cardNum1 != null" >
+        card_num1,
+      </if>
+      <if test="familyLink2 != null" >
+        family_link2,
+      </if>
+      <if test="relationship2 != null" >
+        relationship2,
+      </if>
+      <if test="phone2 != null" >
+        phone2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="perId != null" >
+        #{perId,jdbcType=INTEGER},
+      </if>
+      <if test="debtInfo != null" >
+        #{debtInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="liveInfo != null" >
+        #{liveInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="transInfo != null" >
+        #{transInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="companyInfo != null" >
+        #{companyInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="familyLink1 != null" >
+        #{familyLink1,jdbcType=VARCHAR},
+      </if>
+      <if test="relationship1 != null" >
+        #{relationship1,jdbcType=VARCHAR},
+      </if>
+      <if test="phone1 != null" >
+        #{phone1,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNum1 != null" >
+        #{cardNum1,jdbcType=VARCHAR},
+      </if>
+      <if test="familyLink2 != null" >
+        #{familyLink2,jdbcType=VARCHAR},
+      </if>
+      <if test="relationship2 != null" >
+        #{relationship2,jdbcType=VARCHAR},
+      </if>
+      <if test="phone2 != null" >
+        #{phone2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jhh.dc.baika.entity.app.PersonInfo" >
+    update b_person_info
+    <set >
+      <if test="perId != null" >
+        per_id = #{perId,jdbcType=INTEGER},
+      </if>
+      <if test="debtInfo != null" >
+        debt_info = #{debtInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="liveInfo != null" >
+        live_info = #{liveInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="transInfo != null" >
+        trans_info = #{transInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="companyInfo != null" >
+        company_info = #{companyInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="familyLink1 != null" >
+        family_link1 = #{familyLink1,jdbcType=VARCHAR},
+      </if>
+      <if test="relationship1 != null" >
+        relationship1 = #{relationship1,jdbcType=VARCHAR},
+      </if>
+      <if test="phone1 != null" >
+        phone1 = #{phone1,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNum1 != null" >
+        card_num1 = #{cardNum1,jdbcType=VARCHAR},
+      </if>
+      <if test="familyLink2 != null" >
+        family_link2 = #{familyLink2,jdbcType=VARCHAR},
+      </if>
+      <if test="relationship2 != null" >
+        relationship2 = #{relationship2,jdbcType=VARCHAR},
+      </if>
+      <if test="phone2 != null" >
+        phone2 = #{phone2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jhh.dc.baika.entity.app.PersonInfo" >
+    update b_person_info
+    set per_id = #{perId,jdbcType=INTEGER},
+      debt_info = #{debtInfo,jdbcType=VARCHAR},
+      live_info = #{liveInfo,jdbcType=VARCHAR},
+      trans_info = #{transInfo,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      company_info = #{companyInfo,jdbcType=VARCHAR},
+      family_link1 = #{familyLink1,jdbcType=VARCHAR},
+      relationship1 = #{relationship1,jdbcType=VARCHAR},
+      phone1 = #{phone1,jdbcType=VARCHAR},
+      card_num1 = #{cardNum1,jdbcType=VARCHAR},
+      family_link2 = #{familyLink2,jdbcType=VARCHAR},
+      relationship2 = #{relationship2,jdbcType=VARCHAR},
+      phone2 = #{phone2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPersonId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from b_person_info
+    where per_id = #{perId,jdbcType=INTEGER}
+  </select>
+</mapper>

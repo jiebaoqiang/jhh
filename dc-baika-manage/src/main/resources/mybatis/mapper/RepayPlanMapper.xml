@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.RepayPlanMapper">
+    <select id="selectExportLoansRemarkVo" parameterType="java.util.Map" resultType="com.jhh.dc.baika.manage.entity.LoansRemarkVo">
+        SELECT
+        r.contract_id as contractNum,
+        dsb1.user_name as auditer,
+        borrow.overdue_days AS bedueDays,
+        borrow.current_collection_time as lastCallDateString,
+        pr.phone AS customerMobile,
+        pr.card_num AS customerIdValue,
+        pr.name AS customerName,
+        p.product_name AS productName,
+        p.amount as amount,
+        amount_sum AS bedueAmount,
+        borrow.amount_surplus as restAmount,
+        borrow.planrepay_date as endDateString,
+        cv.meaning as stateString,
+        borrow.pay_amount as loanAmount,
+        dsb2.user_name as callName,
+        r.create_date as lastCall,
+        r.remark as remark
+        from  b_collectors_remark r
+        <if test="levelType  == 2">
+            INNER JOIN b_loan_company_borrow company on company.borr_id = borrow.id and company.company_id=#{companyId}
+        </if>
+        LEFT JOIN b_borrow_list borrow ON r.contract_sysno = borrow.id
+        LEFT JOIN c_product p ON borrow.prod_id = p.id
+        LEFT JOIN b_person pr ON pr.id = borrow.per_id
+        LEFT JOIN c_system_user dsb1 ON dsb1.user_sysno = borrow.collection_user
+        LEFT JOIN c_system_user dsb2 ON dsb2.user_sysno = r.create_user
+        left join c_code_value cv on cv.code_code = borrow.borr_status and cv.code_type = 'borr_status'
+        WHERE borrow.borr_status IN ('BS004','BS005','BS006','BS010','BS014')
+        <if test="contractKey != null">
+            and borrow.id = #{contractKey}
+        </if>
+        <if test="contractIDEq != null">
+            and borrow.borr_num = #{contractIDEq}
+        </if>
+        <if test="bedueDaysEq != null">
+            and borrow.overdue_days = #{bedueDaysEq}
+        </if>
+        <if test="bedueDaysStart != null">
+            and borrow.overdue_days &gt; #{bedueDaysStart}
+        </if>
+        <if test="bedueDaysStartswith != null">
+            and borrow.overdue_days &gt;= #{bedueDaysStartswith}
+        </if>
+        <if test="bedueDaysEndswith != null">
+            and borrow.overdue_days &lt;= #{bedueDaysEndswith}
+        </if>
+        <if test="customerNameEq != null">
+            and pr.name = #{customerNameEq}
+        </if>
+        <if test="customerIdValueEq != null">
+            and pr.card_num = #{customerIdValueEq}
+        </if>
+        <if test="customerMobileEq != null">
+            and pr.phone = #{customerMobileEq}
+        </if>
+        <if test="bankNameEq != null">
+            and pr.bank_name = #{bankNameEq}
+        </if>
+        <if test="bankNumEq != null">
+            and pr.bank_card = #{bankNumEq}
+        </if>
+        <if test="productNameEq != null">
+            and p.product_name = #{productNameEq}
+        </if>
+        <if test="productIdEq != null">
+            and p.id = #{productIdEq}
+        </if>
+        <if test="auditerEq != null">
+            and borrow.collection_user = #{auditerEq}
+        </if>
+        <if test="endDateStringStart != null">
+            AND to_days(borrow.planrepay_date) &gt; to_days(#{endDateStringStart})
+        </if>
+        <if test="endDateStringStartswith != null">
+            AND to_days(borrow.planrepay_date) &gt;= to_days(#{endDateStringStartswith})
+        </if>
+        <if test="endDateStringEnd != null">
+            AND to_days(borrow.planrepay_date) &lt; to_days(#{endDateStringEnd})
+        </if>
+        <if test="endDateStringEndswith != null">
+            AND to_days(borrow.planrepay_date) &lt;= to_days(#{endDateStringEndswith})
+        </if>
+        <if test="settleDateStringStart != null">
+            AND to_days(borrow.act_repay_date) &gt; to_days(#{settleDateStringStart})
+        </if>
+        <if test="settleDateStringStartswith != null">
+            AND to_days(borrow.act_repay_date) &gt;= to_days(#{settleDateStringStartswith})
+        </if>
+        <if test="settleDateStringEnd != null">
+            AND to_days(borrow.act_repay_date) &lt; to_days(#{settleDateStringEnd})
+        </if>
+        <if test="settleDateStringEndswith != null">
+            AND to_days(borrow.act_repay_date) &lt;= to_days(#{settleDateStringEndswith})
+        </if>
+        <if test="lastCallDateStringStart != null">
+            AND to_days(borrow.current_collection_time) &gt; to_days(#{lastCallDateStringStart})
+        </if>
+        <if test="lastCallDateStringStartswith != null">
+            AND to_days(borrow.current_collection_time) &gt;= to_days(#{lastCallDateStringStartswith})
+        </if>
+        <if test="lastCallDateStringEnd != null">
+            AND to_days(borrow.current_collection_time) &lt; to_days(#{lastCallDateStringEnd})
+        </if>
+        <if test="lastCallDateStringEndswith != null">
+            AND to_days(borrow.current_collection_time) &lt;= to_days(#{lastCallDateStringEndswith})
+        </if>
+        <if test="orderStringStart != null">
+            AND to_days(borrow.current_repay_time) &gt; to_days(#{orderStringStart})
+        </if>
+        <if test="orderStringStartswith != null">
+            AND to_days(borrow.current_repay_time) &gt;= to_days(#{orderStringStartswith})
+        </if>
+        <if test="orderStringEnd != null">
+            AND to_days(borrow.current_repay_time) &lt; to_days(#{orderStringEnd})
+        </if>
+        <if test="orderStringEndswith != null">
+            AND to_days(borrow.current_repay_time) &lt;= to_days(#{orderStringEndswith})
+        </if>
+        <if test="stateStringEq != null">
+            and borrow.borr_status = #{stateStringEq}
+        </if>
+        <if test="borrStatusEq != null">
+            and borrow.borr_status = #{borrStatusEq}
+        </if>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'bedueDays'">ORDER BY borrow.overdue_days</when>
+                <when test="selector eq 'surplusAccountAmount'">ORDER BY pr.balance</when>
+                <when test="selector eq 'surplusTotalAmount'">ORDER BY borrow.amount_surplus</when>
+                <when test="selector eq 'endDateString'">ORDER BY borrow.planrepay_date</when>
+                <when test="selector eq 'settleDateString'">ORDER BY borrow.act_repay_date</when>
+                <when test="selector eq 'lastCallDateString'">ORDER BY borrow.current_collection_time</when>
+                <when test="selector eq 'orderString'">ORDER BY borrow.current_repay_time</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+        <if test="selector == null and desc == null">
+            ORDER BY borrow.planrepay_date desc
+        </if>
+    </select>
+
+    <select id="selectExportDataForOutWorkers" parameterType="java.util.Map" resultType="com.jhh.dc.baika.manage.entity.LoansRemarkOutVo">
+        SELECT
+        pr.phone AS customerMobile,
+        pr.card_num AS customerIdValue,
+        pr.name AS customerName,
+        cv.meaning as stateString,
+        r.remark as remark
+        r.create_date as createTime
+        from b_collectors_remark r
+        <if test="levelType  == 2">
+            INNER JOIN b_loan_company_borrow company on company.borr_id = borrow.id and company.company_id=#{companyId}
+        </if>
+        LEFT JOIN b_borrow_list borrow ON r.contract_sysno = borrow.id
+        LEFT JOIN c_product p ON borrow.prod_id = p.id
+        LEFT JOIN b_person pr ON pr.id = borrow.per_id
+        left join c_code_value cv on cv.code_code = borrow.borr_status and cv.code_type = 'borr_status'
+        WHERE borrow.borr_status IN ('BS004','BS005','BS006','BS010','BS014')
+        <if test="contractKey != null">
+            and borrow.id = #{contractKey}
+        </if>
+        <if test="contractIDEq != null">
+            and borrow.borr_num = #{contractIDEq}
+        </if>
+        <if test="bedueDaysEq != null">
+            and borrow.overdue_days = #{bedueDaysEq}
+        </if>
+        <if test="bedueDaysStart != null">
+            and borrow.overdue_days &gt; #{bedueDaysStart}
+        </if>
+        <if test="bedueDaysStartswith != null">
+            and borrow.overdue_days &gt;= #{bedueDaysStartswith}
+        </if>
+        <if test="bedueDaysEndswith != null">
+            and borrow.overdue_days &lt;= #{bedueDaysEndswith}
+        </if>
+        <if test="customerNameEq != null">
+            and pr.name = #{customerNameEq}
+        </if>
+        <if test="customerIdValueEq != null">
+            and pr.card_num = #{customerIdValueEq}
+        </if>
+        <if test="customerMobileEq != null">
+            and pr.phone = #{customerMobileEq}
+        </if>
+        <if test="bankNameEq != null">
+            and pr.bank_name = #{bankNameEq}
+        </if>
+        <if test="bankNumEq != null">
+            and pr.bank_card = #{bankNumEq}
+        </if>
+        <if test="productNameEq != null">
+            and p.product_name = #{productNameEq}
+        </if>
+        <if test="productIdEq != null">
+            and p.id = #{productIdEq}
+        </if>
+        <if test="auditerEq != null">
+            and borrow.collection_user = #{auditerEq}
+        </if>
+        <if test="endDateStringStart != null">
+            AND to_days(borrow.planrepay_date) &gt; to_days(#{endDateStringStart})
+        </if>
+        <if test="endDateStringStartswith != null">
+            AND to_days(borrow.planrepay_date) &gt;= to_days(#{endDateStringStartswith})
+        </if>
+        <if test="endDateStringEnd != null">
+            AND to_days(borrow.planrepay_date) &lt; to_days(#{endDateStringEnd})
+        </if>
+        <if test="endDateStringEndswith != null">
+            AND to_days(borrow.planrepay_date) &lt;= to_days(#{endDateStringEndswith})
+        </if>
+        <if test="settleDateStringStart != null">
+            AND to_days(borrow.act_repay_date) &gt; to_days(#{settleDateStringStart})
+        </if>
+        <if test="settleDateStringStartswith != null">
+            AND to_days(borrow.act_repay_date) &gt;= to_days(#{settleDateStringStartswith})
+        </if>
+        <if test="settleDateStringEnd != null">
+            AND to_days(borrow.act_repay_date) &lt; to_days(#{settleDateStringEnd})
+        </if>
+        <if test="settleDateStringEndswith != null">
+            AND to_days(borrow.act_repay_date) &lt;= to_days(#{settleDateStringEndswith})
+        </if>
+        <if test="lastCallDateStringStart != null">
+            AND to_days(borrow.current_collection_time) &gt; to_days(#{lastCallDateStringStart})
+        </if>
+        <if test="lastCallDateStringStartswith != null">
+            AND to_days(borrow.current_collection_time) &gt;= to_days(#{lastCallDateStringStartswith})
+        </if>
+        <if test="lastCallDateStringEnd != null">
+            AND to_days(borrow.current_collection_time) &lt; to_days(#{lastCallDateStringEnd})
+        </if>
+        <if test="lastCallDateStringEndswith != null">
+            AND to_days(borrow.current_collection_time) &lt;= to_days(#{lastCallDateStringEndswith})
+        </if>
+        <if test="orderStringStart != null">
+            AND to_days(borrow.current_repay_time) &gt; to_days(#{orderStringStart})
+        </if>
+        <if test="orderStringStartswith != null">
+            AND to_days(borrow.current_repay_time) &gt;= to_days(#{orderStringStartswith})
+        </if>
+        <if test="orderStringEnd != null">
+            AND to_days(borrow.current_repay_time) &lt; to_days(#{orderStringEnd})
+        </if>
+        <if test="orderStringEndswith != null">
+            AND to_days(borrow.current_repay_time) &lt;= to_days(#{orderStringEndswith})
+        </if>
+        <if test="stateStringEq != null">
+            and borrow.borr_status = #{stateStringEq}
+        </if>
+        <if test="borrStatusEq != null">
+            and borrow.borr_status = #{borrStatusEq}
+        </if>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'bedueDays'">ORDER BY borrow.overdue_days</when>
+                <when test="selector eq 'surplusAccountAmount'">ORDER BY pr.balance</when>
+                <when test="selector eq 'surplusTotalAmount'">ORDER BY borrow.amount_surplus</when>
+                <when test="selector eq 'endDateString'">ORDER BY borrow.planrepay_date</when>
+                <when test="selector eq 'settleDateString'">ORDER BY borrow.act_repay_date</when>
+                <when test="selector eq 'lastCallDateString'">ORDER BY borrow.current_collection_time</when>
+                <when test="selector eq 'orderString'">ORDER BY borrow.current_repay_time</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+        <if test="selector == null and desc == null">
+            ORDER BY borrow.planrepay_date desc
+        </if>
+    </select>
+</mapper>

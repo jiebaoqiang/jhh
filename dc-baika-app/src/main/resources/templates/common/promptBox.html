@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!-- 弹框 -->
+<div class="tipModal hide"  th:fragment="promptBox">
+    <div class="modalBox">
+        <div class="top">
+            <img th:src="@{/images/face.png}" alt="">
+        </div>
+        <div class="content">
+            <p></p>
+        </div>
+        <div class="foot">
+            <a href="javascript:;" class="true">
+                <img th:src="@{/images/btn_close.png}" alt="">
+            </a>
+        </div>
+    </div>
+</div>

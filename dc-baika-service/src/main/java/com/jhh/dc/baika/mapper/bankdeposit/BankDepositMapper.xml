@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.bankdeposit.BankDepositMapper">
+    <resultMap id="person" type="com.jhh.dc.baika.entity.app.Person" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="findAllPPerson" resultMap="person" parameterType="java.lang.Integer">
+        select id,phone from b_person where
+        <if test="code == 1">
+            is_open_account = 'p'
+        </if>
+        <if test="code == 2">
+            is_repay_auth = 'p'
+        </if>
+        <if test="code == 3">
+            is_loan_auth = 'p'
+        </if>
+    </select>
+
+    <update id="updateAccountState" parameterType="java.lang.String">
+        UPDATE b_person
+        set
+        is_open_account = #{isOpen} ,
+        acct_no = #{acctNo},
+        cust_no = #{custNo}
+        where phone = #{phone}
+    </update>
+
+    <update id="updateAuthRepayState" parameterType="java.lang.String">
+        UPDATE b_person
+        set
+        is_repay_auth = #{isAuth}
+        where cust_no = #{custNo}
+    </update>
+
+    <update id="updateAuthLoanState" parameterType="java.lang.String">
+        UPDATE b_person
+        set
+        is_loan_auth = #{isAuth}
+        where cust_no = #{custNo}
+    </update>
+</mapper>
+

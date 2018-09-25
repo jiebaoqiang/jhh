@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/enjoyShop/common.css}">
+  <title>销售合同</title>
+  <script>
+    var oHtml = document.documentElement;
+    getSize();
+
+    function getSize() {
+      // 获取屏幕的宽度
+      var ascreen = oHtml.clientWidth;
+      if (ascreen >= 750) {
+        oHtml.style.fontSize = '20px';
+      } else {
+        oHtml.style.fontSize = ascreen / 20 + "px";
+      }
+    }
+  </script>
+</head>
+<style th:if="${contract.prodType}=='pay_money'">
+  .container {
+    padding: 1rem;
+    background-color: #fff;
+    font-size: .65rem;
+  }
+
+  .line,
+  .shortLine {
+    display: inline-block;
+    width: 6rem;
+    height: 1rem;
+    border-bottom: 1px solid #000;
+  }
+
+  .shortLine {
+    width: 4rem;
+  }
+
+  h2 {
+    font-size: .65rem;
+    margin-top: 1rem;
+    font-weight: 700;
+  }
+
+  .mt5 {
+    margin-top: 2rem;
+  }
+  .mt2{
+    margin-top: 1rem;
+  }
+  .title {
+    background: #6870DF;
+  }
+</style>
+
+<body>
+  <div class="title">
+    <p>
+      <a href="javascript:history.go(-1);"></a><span th:text="${contract.title}"/>
+    </p>
+  </div>
+  <img th:src="${contract.contractUrl}" style="width: 100%; height: auto;max-width: 100%; display: block;">
+</body>
+
+</html>

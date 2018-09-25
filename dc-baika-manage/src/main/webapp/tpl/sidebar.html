@@ -1,0 +1,104 @@
+<div class="page-sidebar navbar-collapse collapse">
+    <ul class="page-sidebar-menu" data-keep-expanded="false"
+        data-auto-scroll="true" data-slide-speed="200"
+        ng-class="{'page-sidebar-menu-closed': settings.layout.pageSidebarClosed}">
+        <li class="sidebar-search-wrapper">
+            <form class="sidebar-search sidebar-search-bordered" action="extra_search.html" method="POST"
+                  style="display: none">
+                <a href="javascript:void(0);" class="remove"> <i class="icon-close"></i>
+                </a>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="搜索...">
+                    <span class="input-group-btn">
+                        <a href="javascript:void(0);" class="btn submit"><i class="icon-magnifier"></i></a>
+					</span>
+                </div>
+            </form>
+        </li>
+        <li id="ym-h" class="start first-li">
+            <a href="#/dashboard.html" class="radius-left home-page"> <i class="glyphicon glyphicon-home"></i> <span class="title">首页 <i class="glyphicon glyphicon-triangle-right right-icon"></i></span></a>
+        </li>
+        <li id="ym-z" style="display: none" class="first-li"><a href="javascript:void(0);" class="radius-left tip">
+            <i class="glyphicon glyphicon-th"></i> <span class="title">审核管理 <i class="glyphicon glyphicon-triangle-bottom right-icon"></i></span>
+        </a>
+            <ul class="sub-menu radius-bottom-left">
+                <!--<li id="ym-zma" style="display: none"><a href="#/checkbymanualone.html">-->
+                    <!--人工审核 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>-->
+                <!--<li id="ym-zmr" style="display: none"><a href="#/checkbymanual_result.html">-->
+                    <!--人工审核结果 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>-->
+                <li id="ym-zd" style="display: none"><a href="#/checkbypass.html">审核通过 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+                <li id="ym-za" style="display: none"><a href="#/checkbyone.html">审核放款 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+                <li id="ym-zb" style="display: none"><a href="#/checkbymanager.html">审核管理 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+                <li id="ym-zc" style="display: none"><a href="#/managerbymanager.html">  审核员管理 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+            </ul>
+        </li>
+        <li id="ym-u" style="display: none" class="first-li"><a href="javascript:void(0);" class="radius-left tip">
+            <i class="glyphicon glyphicon-user"></i> <span class="title">用户管理 <i class="glyphicon glyphicon-triangle-bottom right-icon"></i></span>
+
+        </a>
+            <ul class="sub-menu radius-bottom-left">
+                <li id="ym-ua" style="display: none"><a href="#/perlist.html">用户列表 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+            </ul>
+        </li>
+        <li id="ym-y" style="display: none" class="first-li"><a href="javascript:" class="radius-left tip">
+            <i class="glyphicon glyphicon-asterisk"></i> <span class="title">平台管理  <i class="glyphicon glyphicon-triangle-bottom right-icon"></i></span></a>
+            <ul class="sub-menu radius-bottom-left">
+                <li id="ym-ya" style="display: none"><a href="#/feedback.html">意见反馈 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+                <!--<li id="ym-yb" style="display: none"><a href="#/question.html">问题管理 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>-->
+                <!--<li id="ym-yc" style="display: none"><a href="#/message_temp.html">消息模板 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>-->
+                <li id="ym-yd" style="display: none"><a href="#/sms_temp.html">短信模板 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+            </ul>
+        </li>
+
+        <!-- 贷后管理的结构开始	 -->
+        <li id="ym-d" style="display: none" class="first-li"><a href="javascript:" class="radius-left tip">
+            <i class="glyphicon glyphicon-align-justify"></i> <span class="title">贷后管理 <i class="glyphicon glyphicon-triangle-bottom right-icon"></i></span>
+        </a>
+            <ul class="sub-menu radius-bottom-left" >
+                <li id="ym-da" style="display: none"><a href="#/repayment.html">还款流水 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+                <li id="ym-db" style="display: none"><a href="#/repaymentPlan.html">还款计划 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>
+                <!--<li style="display: none"><a href="#/paymentInfo.html">扣款信息 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a></li>-->
+                <li id="ym-dc" style="display: none"><a href="#/loanManagement.html">贷后管理(逾期) <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a>
+                </li>
+                <li id="ym-di" style="display: none"><a href="#/loanManagementNoOverdue.html">贷后管理(未逾期) <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a>
+                </li>
+                <!--<li id="ym-dh" style="display: none"><a href="#/batchReduce.html">批量扣款专用 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a>-->
+                <!--</li>-->
+               <!-- <li id="ym-dg" style="display: none"><a href="#/beatchConllectionList.html">批量扣款流水 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a>
+                </li>-->
+                <li id="ym-dd" style="display: none"><a href="#/collectionList.html">催收队列 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a>
+                <li id="ym-df" style="display: none"><a href="#/repaymentReportForms.html">催收工作报表 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a>
+                </li>
+            </ul>
+        </li>
+        <!-- 贷后管理的结构结束	 -->
+
+        <li id="ym-g" style="display: none" class="first-li"><a href="javascript:" class="radius-left tip">
+            <i class="glyphicon glyphicon-cog"></i> <span class="title">系统设置 <i class="glyphicon glyphicon-triangle-bottom right-icon"></i></span>
+        </a>
+            <ul class="sub-menu radius-bottom-left">
+                <li id="ym-ga" style="display: none"><a href="#/lookup_type_manage.html">数据字典 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i>
+                </a></li>
+                <li id="ym-gb" style="display: none;"><a href="#/userTables.html">系统用户 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a>
+                </li>
+                <li id="ym-gc" style="display: none;"><a href="#/companyTables.html">公司列表 <i class="glyphicon glyphicon-menu-right sm-right-icon"></i></a>
+                </li>
+            </ul>
+        </li>
+        <li style="display: none"><a href="/loan-manage/index.html" target="_blank"> <i
+                class="glyphicon glyphicon-send"></i> <span class="title">打开新标签</span> </a></li>
+    </ul>
+</div>
+<script>
+
+    var li = $('.tip');
+    li.click(function () {
+        if($(this).hasClass('radius-left')){
+            $(this).removeClass('radius-left').addClass('radius-top-left');
+        }else{
+            $(this).removeClass('radius-top-left').addClass('radius-left');
+        }
+        $(this).parents('.first-li').siblings('.first-li').find('.tip').removeClass('radius-top-left').addClass('radius-left');
+    });
+    getTree();
+</script>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>提现页面跳转</title>
+</head>
+<body>
+
+<form th:action="${withdraw.url}" method="post">
+    <input name="merchantNo" type="hidden" th:value="${withdraw.merchantNo}" />
+    <input name="merOrderNo" type="hidden" th:value="${withdraw.merOrderNo}" />
+    <input name="jsonEnc" type="hidden" th:value="${withdraw.jsonEnc}" />
+    <input name="keyEnc" type="hidden" th:value="${withdraw.keyEnc}" />
+    <input name="sign" type="hidden" th:value="${withdraw.sign}" />
+</form>
+<script th:src="@{/js/jquery-1.11.2.min.js}" ></script>
+<script>
+    $("form").submit();
+</script>
+</body>
+</html>

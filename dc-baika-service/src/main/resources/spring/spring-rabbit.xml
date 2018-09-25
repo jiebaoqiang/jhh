@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+       http://www.springframework.org/schema/rabbit/spring-rabbit-1.5.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <description>RabbitMQ Provider</description>
+
+    <bean id="rabbitClientConnectionFactory" class="com.rabbitmq.client.ConnectionFactory">
+        <property name="host" value="${rabbitmq.host}"/>
+        <property name="port" value="${rabbitmq.port}" />
+        <property name="username" value="${rabbitmq.username}" />
+        <property name="password" value="${rabbitmq.password}" />
+        <property name="connectionTimeout" value="10000" />
+
+    </bean>
+
+    <!-- 连接服务配置 -->
+    <rabbit:connection-factory id="rabbitConnectionFactory"   connection-factory="rabbitClientConnectionFactory"/>
+
+    <!-- rabbit:admin -->
+    <rabbit:admin connection-factory="rabbitConnectionFactory" />
+
+    <rabbit:queue name="baikaDataQueue" durable="true"   auto-delete="false" exclusive="false" id="baikaDataQueue" />
+    <rabbit:queue name="u2jinfuDataQueue" durable="true"   auto-delete="false" exclusive="false" id="u2jinfuDataQueue" />
+
+
+    <!--交换器绑定队列 -->
+    <rabbit:direct-exchange name="u2licai" >
+        <rabbit:bindings>
+            <rabbit:binding key="baikaDataQueue" queue="baikaDataQueue"/>
+            <rabbit:binding key="u2jinfuDataQueue" queue="u2jinfuDataQueue"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!--   spring template声明 -->
+    <rabbit:template  id="rabbitTemplate"  connection-factory="rabbitConnectionFactory" channel-transacted="true" />
+    <rabbit:listener-container connection-factory="rabbitConnectionFactory"  acknowledge="manual">
+        <rabbit:listener ref="amqpMsgListener" queues="u2jinfuDataQueue" />
+    </rabbit:listener-container>
+    <bean id="amqpMsgListener" class="com.jhh.dc.baika.service.bankdeposit.YoutuPushDataListener"/>
+
+</beans>

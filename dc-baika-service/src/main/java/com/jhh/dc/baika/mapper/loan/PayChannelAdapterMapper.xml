@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.loan.PayChannelAdapterMapper" >
+  <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.loan.PayChannelAdapter" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="payCenterChannel" property="pay_center_channel" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,pay_center_channel,type,channel,name,enable
+  </sql>
+
+  <select id="getChannelBypayCenterAndType" resultType="java.lang.String">
+    SELECT channel from c_pay_channel_adapter
+    WHERE pay_center_channel = #{payCenterChannel} AND type = #{type} AND enable = 0
+  </select>
+</mapper>

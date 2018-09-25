@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0,maximum-scale=1.0">
+  <!-- 允许全屏模式浏览 -->
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/user.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <title>个人信息填写</title>
+</head>
+<style>
+  .icon-arrow-right {
+    color: rgba(51, 51, 51, 1);
+  }
+</style>
+<body>
+  <div class="title">
+    <p>
+      <a href="javascript:history.go(-1);" class="iconfont icon-back_light"></a>个人信息填写</p>
+  </div>
+  <form id="userForm" action="">
+    <input type="hidden" th:value="${perId}" id="perId" name="perId">
+    <div class="main">
+    <ul class="clearfix">
+      <li>
+        <span>个人负债情况</span>
+        <input type="text" placeholder="请选择" readonly  class="debtInfo" id="debtInfo" name="debtInfo">
+        <a href="#" class="iconfont icon-arrow-right"></a>
+      </li>
+      <li>
+        <span>居住情况</span>
+        <input type="text" placeholder="请选择" readonly class="liveInfo" id="liveInfo" name="liveInfo">
+        <a href="#" class="iconfont icon-arrow-right"></a>
+      </li>
+      <li>
+        <span>车辆情况</span>
+        <input type="text" placeholder="请选择" readonly class="transInfo" id="transInfo" name="transInfo">
+        <a href="#" class="iconfont icon-arrow-right"></a>
+      </li>
+      <li>
+        <span>所在部门</span>
+        <input type="text" placeholder="请输入部门名称" name="department">
+      </li>
+      <li>
+        <span>担任职务</span>
+        <input type="text" placeholder="请输入职务名称" name="job">
+      </li>
+      <li>
+        <span>单位性质</span>
+        <input type="text" placeholder="请选择" class="companyInfo" id="companyInfo" name="companyInfo">
+        <a href="#" class="iconfont icon-arrow-right"></a>
+      </li>
+    </ul>
+    <ul class="clearfix">
+      <li>
+        <span>家庭联系人1</span>
+        <input type="text" placeholder="请输入家庭联系人姓名" name="familyLink1">
+      </li>
+      <li>
+        <span>关系</span>
+        <input type="text" placeholder="请选择" class="relationship1" id="relationship1" name="relationship1">
+        <a href="#" class="iconfont icon-arrow-right"></a>
+      </li>
+      <li>
+        <span>联系电话</span>
+        <input type="text" placeholder="请输入联系电话" name="phone1">
+      </li>
+      <li>
+        <span>身份证号码</span>
+        <input type="text" placeholder="请输入身份证号码" name="cardNum1">
+      </li>
+    </ul>
+    <ul class="clearfix">
+      <li>
+        <span>家庭联系人2</span>
+        <input type="text" placeholder="请输入家庭联系人姓名" name="familyLink2">
+      </li>
+      <li>
+        <span>关系</span>
+        <input type="text" placeholder="请选择" class="relationship2" id="relationship2" name="relationship2">
+        <a href="#" class="iconfont icon-arrow-right"></a>
+      </li>
+      <li>
+        <span>联系电话</span>
+        <input type="text" placeholder="请输入联系电话" name="phone2">
+      </li>
+    </ul>
+    </div>
+  </form>
+  <div class="foot">
+    <button class="btn" style="margin:1.6rem auto;" id="submitBtn">提 交</button>
+  </div>
+  <div class="modal" style="display: none">
+    <div class="list" style="display: none">
+      <ul id="option">
+        <li>取消</li>
+      </ul>
+    </div>
+  </div>
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+  <script th:src="@{/js/user/userInformationWrite.js}"></script>
+</body>
+</html>

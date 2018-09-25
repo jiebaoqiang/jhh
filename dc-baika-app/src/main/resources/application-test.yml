@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: dc-baika
+  redis:
+    cluster:
+      nodes: 192.168.1.130:6001,192.168.1.131:6002,192.168.1.132:6003,192.168.1.130:6004,192.168.1.131:6005,192.168.1.132:6006
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+    timeout: 0
+    password: abc123#
+    commandTimeout: 5000
+    maxAttempts: 30
+     #------ #redis end ---------
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+    #------ #thymeleaf end ---------
+  #dubbo
+  dubbo:
+    application:
+      name: dc-baika-app
+    #registries[0]:
+      #adress: zookeeper://127.0.0.1:2181
+    #registries[1]:
+      #adress: zookeeper://192.168.1.117:2181
+    registry:
+      address: 192.168.1.130:2181,192.168.1.131:2181,192.168.1.132:2181
+      protocol: zookeeper
+    protocol:
+      name: dubbo
+    scan: com.jhh.dc.baika.app.web
+    retries: 0
+    qos:
+      port: 22223
+    consumer:
+      timeout: 120000
+      check: false
+      retries: 0
+       #------ #dubbo end ---------
+  resources:
+    cache-period: 0
+server:
+  port: 8082
+  context-path: /dc-baika
+
+swagger:
+  enable: false
+#md5 key
+merchantKey: 123456
+#格式为分钟
+token:
+  expire:
+    time: 30
+logging:
+  config: classpath:logging-config.xml
+ip:
+  limit: 50
+
+
+  callback:
+    baseurl: http://192.168.1.119:20011

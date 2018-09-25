@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0,maximum-scale=1.0">
+  <!-- 允许全屏模式浏览 -->
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/enjoyShop/common.css}">
+  <link rel="stylesheet" th:href="@{/css/enjoyShop/G-set.css}">
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+    <script th:src="@{/js/app.js}"></script>
+  <title th:text="${returnUrl == null?'设置密码' : '重置密码'}">设置密码</title>
+</head>
+
+<body>
+  <div class="title">
+    <p th:if="${returnUrl != null}" >
+      <a href="javascript:history.go(-1);"></a>重置密码</p>
+      <p th:if="${returnUrl == null}" >
+          <a class="goBackApp"></a>设置密码</p>
+  </div>
+  <div class="setPwd">
+    <form action="">
+        <input type="hidden" name="phone" th:value="${person.phone}" />
+      <div>
+        <input type="password" name="paypwd" class="pwd" placeholder="请设置6位数字新密码"/>
+        <i>请设置6位数字新密码</i>
+      </div>
+       <div>
+          <input type="password" class="newPwd" name="confirmPaypwd" placeholder="请确认交易密码" />
+          <i>请确认交易密码</i>
+       </div>
+        <p>※ 此密码用于发放购物卡后提取卡号卡密</p>
+        <button type="button" class="btn">提 交</button>
+    </form>
+  </div>
+
+  <p class="toast" style="display: none"></p>
+</body>
+
+<script  th:inline="javascript">
+    var returnUrl = [[${returnUrl}]];
+    var prodId = [[${#httpServletRequest.getAttribute('info') == null? null :#httpServletRequest.getAttribute('info').prodId}]];
+</script>
+<script th:src="@{/js/user/setPayPwd.js}"></script>
+</html>

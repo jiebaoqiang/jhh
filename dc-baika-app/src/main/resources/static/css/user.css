@@ -1,0 +1,53 @@
+.main {
+  width: 100%;
+  margin-top: .5rem
+    /* 20/40 */
+  ;
+}
+
+.main ul {
+  margin-bottom: .5rem
+    /* 20/40 */
+  ;
+  background-color: #ffffff;
+  padding: 0 1rem
+    /* 40/40 */
+  ;
+  box-sizing: border-box;
+}
+
+.main li {
+  height: 2.75rem
+    /* 110/40 */
+  ;
+  font-size: .75rem
+    /* 30/40 */
+  ;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(51, 51, 51, 1);
+  line-height: 2.5rem
+    /* 100/40 */
+  ;
+}
+
+.main li span {
+  width: 6rem
+    /* 240/40 */
+  ;
+  display: inline-block;
+  font-family:PingFangSC-Medium;
+}
+
+.main li input {
+  border: none;
+  width: 7.5rem
+    /* 300/40 */
+  ;
+  font-family:PingFangSC-Medium;
+}
+
+.main li a {
+  display: inline-block;
+  float: right;
+}

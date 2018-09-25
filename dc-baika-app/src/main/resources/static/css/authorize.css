@@ -1,0 +1,24 @@
+.content-card {
+  text-align: center;
+  height: 9.45rem
+    /* 378/40 */
+  ;
+  background-color: #fff;
+  margin-top: .5rem
+    /* 20/40 */
+  ;
+  border-top: 1px solid #fff;
+}
+
+.content-card p {
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(102, 102, 102, 1);
+}
+
+.content-card h3 {
+  margin: 1.125rem
+    /* 45/40 */
+    0;
+    
+}

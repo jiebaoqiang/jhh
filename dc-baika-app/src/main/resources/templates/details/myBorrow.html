@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0,maximum-scale=1.0">
+  <!-- 允许全屏模式浏览 -->
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <link rel="stylesheet" th:href="@{/css/myBorrow.css}">
+  <title>我的借款</title>
+  <style>
+    .noneData {
+      text-align: center;
+      margin-top: 4.25rem;
+    }
+    .noneData p{
+      color: #97ADC3;
+      margin-top: 1.65rem;
+      font-size: .65rem;
+    }
+    .noneData img {
+      width: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="title">
+    <p>
+      <a href="javascript:history.go(-1);" class="iconfont icon-back_light"></a>我的借款</p>
+  </div>
+  <div class="main">
+    <div class="noneData" th:if="${#lists.isEmpty(mylist)}">
+      <img th:src="@{/images/baikaImage/zanwushuju.png}" alt="">
+      <p>暂无数据</p>
+    </div>
+    <div class="borrow-card" th:each="borrow:${mylist}">
+      <div class="card-top">
+        <span th:text="${'借款编号：'+borrow.borrNum}"></span>
+        <a th:href="@{'/form/jumpDetails/'+${phone}+'/'+${borrow.borrNum}}">查看详情</a>
+      </div>
+      <div class="card-content">
+        <ul class="clearfix">
+          <li>
+            <span class="left">借款金额</span>
+            <span class="right" th:text="${#numbers.formatDecimal(borrow.amountSurplus,1,2)}"></span>
+          </li>
+          <li>
+            <span class="left">借款期限</span>
+            <span class="right">一个月</span>
+          </li>
+          <li>
+            <span class="left">申请时间</span>
+            <span class="right" th:text="${#dates.format(borrow.askborrDate, 'yyyy-MM-dd')}"></span>
+          </li>
+          <li>
+            <span class="left">借款状态</span>
+            <span class="right" style="color:
+            #46BF6B" th:text="${borrow.borrStatusName}"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script>
+
+  </script>
+</body>
+
+</html>

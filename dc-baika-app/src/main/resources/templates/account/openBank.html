@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+
+  <title>开通银行存管</title>
+</head>
+
+<style>
+   .openBank {
+    text-align: center;
+    margin-top: 2.05rem;
+  }
+  .openBank p:first-child {
+    margin-top: 1.625rem;
+  }
+  .bottom{
+    margin-top: 1rem;
+    font-size: .65rem;
+    color: #999;
+  }
+  .openBank p{
+    color: #666;
+    font-size: .7rem;
+  }
+  .openBank img {
+    width: 50%;
+  }
+</style>
+
+<body>
+  <div class="title">
+    <p>
+      <a href="javascript:history.go(-1);" class="iconfont icon-back_light"></a>开通银行存管</p>
+  </div>
+  <div class="openBank">
+    <img src=".." th:src="@{/images/baikaImage/yinhangcunguan.png}" alt="">
+    <div>
+      <p>为响应监管要求，用户账户资金由银行存管</p>
+      <p>并全程监控，请您开通银行存管账户!</p>
+    </div>
+    <button type="button" id="openBtn" class="btn">去开户</button>
+    <p class="bottom">悠兔白卡账户资金由内蒙古鄂托克前旗农商银行存管</p>
+  </div>
+  <div hidden="hidden">
+    <form id="form" action="" method="post">
+      <input id="merchantNo" type="text" name="merchantNo">
+      <input id="merOrderNo" type="text" name="merOrderNo">
+      <input id="jsonEnc" type="text" name="jsonEnc">
+      <input id="keyEnc" type="text" name="keyEnc">
+      <input id="sign" type="text" name="sign">
+    </form>
+  </div>
+</body>
+
+<!-- 弹框 -->
+<div th:replace="common/promptBox::promptBox"></div>
+<script th:inline="javascript">
+    var perId = [[${perId}]];
+    var phone = [[${phone}]];
+</script>
+<script th:src="@{/js/account/openBank.js}"></script>
+</html>

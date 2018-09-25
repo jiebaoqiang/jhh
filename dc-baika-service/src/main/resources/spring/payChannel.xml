@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--银生宝渠道-->
+  <!--  <bean id="ysb" class="com.jhh.dc.baika.service.channel.ChannelYsbServiceImpl">
+    </bean>
+    &lt;!&ndash;海尔渠道&ndash;&gt;
+    <bean id="haier"  class="com.jhh.dc.baika.service.channel.ChannelHaierServiceImpl">
+    </bean>
+
+    &lt;!&ndash;支付中心渠道&ndash;&gt;
+   &lt;!&ndash; <bean id="payCenter"  claChannelPayCenterServiceImplImpl">
+    </bean>&ndash;&gt;
+
+    &lt;!&ndash;银生宝代付代扣渠道&ndash;&gt;
+    <bean id="tradeysb"  class="com.jhh.dc.baika.service.channel.TradeYsbServiceImpl">
+    </bean>
+    &lt;!&ndash;海尔代付代扣渠道&ndash;&gt;
+    <bean id="tradehaier"  class="com.jhh.dc.baika.service.channel.TradeHaierServiceImpl">
+    </bean>
+
+    &lt;!&ndash;支付中心代付代扣渠道&ndash;&gt;
+    <bean id="tradePayCenter"  claTradePayCenterServiceImplImpl">
+    </bean>-->
+</beans>

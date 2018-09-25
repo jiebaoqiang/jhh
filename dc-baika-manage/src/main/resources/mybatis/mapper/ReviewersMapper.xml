@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.ReviewersMapper">
+
+    <update id="updateReviewersIsDelete" parameterType="string">
+        update c_reviewers set is_delete = 1,status='n' where employ_num = #{employNum}
+    </update>
+
+    <select id="selectReviewsByEmployNum" parameterType="String" resultType="map">
+        select employee_name from c_reviewers where employ_num = #{employeeNum} and is_delete = 0
+    </select>
+
+    <select id="selectReviewsEmployeeNum" parameterType="String" resultType="map">
+        select employ_num from c_reviewers where is_delete = 0
+    </select>
+
+</mapper>

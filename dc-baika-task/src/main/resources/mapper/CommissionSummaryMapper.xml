@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.dao.CommissionSummaryMapper">
+    <update id="updateCommissionSummary">
+        <![CDATA[
+            UPDATE
+              commission_summary cs
+            SET
+              cs.commission_total = (
+                (SELECT IFNULL(SUM(IFNULL(o.commission_amount, 0)), 0) AS amount FROM commission_order o WHERE o.inviter_level_1 = cs.per_id) +
+                (SELECT IFNULL(SUM(IFNULL(o.commission_amount, 0)), 0) AS amount FROM commission_order o WHERE o.inviter_level_2 = cs.per_id)
+              ),
+              cs.commission_balance = (
+                (SELECT IFNULL(SUM(IFNULL(o.commission_amount, 0)), 0) AS amount FROM commission_order o WHERE o.withdraw_status = '0' AND o.inviter_level_1 = cs.per_id AND o.creation_date < DATE_FORMAT(NOW(), '%Y-%m-%d')) +
+                (SELECT IFNULL(SUM(IFNULL(o.commission_amount, 0)), 0) AS amount FROM commission_order o WHERE o.withdraw_status = '0' AND o.inviter_level_2 = cs.per_id AND o.creation_date < DATE_FORMAT(NOW(), '%Y-%m-%d'))
+            )
+        ]]>
+    </update>
+</mapper>
+

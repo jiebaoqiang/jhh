@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.manager.RepaymentPlanMapper">
+    <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.manager.RepaymentPlan">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="contract_id" property="contractId" jdbcType="INTEGER"/>
+        <result column="contract_type" property="contractType" jdbcType="VARCHAR"/>
+        <result column="term" property="term" jdbcType="INTEGER"/>
+        <result column="repay_date" property="repayDate" jdbcType="TIMESTAMP"/>
+        <result column="overdue_days" property="overdueDays" jdbcType="INTEGER"/>
+        <result column="rental_amount" property="rentalAmount" jdbcType="DECIMAL"/>
+        <result column="penalty" property="penalty" jdbcType="DECIMAL"/>
+        <result column="penalty_rate" property="penaltyRate" jdbcType="DECIMAL"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="surplus_rental_amount" property="surplusRentalAmount" jdbcType="DECIMAL"/>
+        <result column="surplus_penalty" property="surplusPenalty" jdbcType="DECIMAL"/>
+        <result column="extension" property="extension" jdbcType="INTEGER"/>
+        <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP"/>
+        <result column="creation_user" property="creationUser" jdbcType="INTEGER"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="INTEGER"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+        <result column="rundate" property="rundate" jdbcType="VARCHAR"/>
+        <result column="is_run" property="isRun" jdbcType="INTEGER"/>
+        <result column="is_last" property="isLast" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id, contract_id, contract_type, term, repay_date, overdue_days, rental_amount, penalty,
+		penalty_rate, status, surplus_rental_amount, surplus_penalty, extension, creation_date,
+		creation_user, update_date, update_user, version, rundate, is_run, is_last
+	</sql>
+
+    <select id="selectOnePlanByContractId" parameterType="java.lang.Integer"
+            resultType="com.jhh.dc.baika.entity.manager.RepaymentPlan">
+		SELECT id, guid, serial_no AS serialNo, contract_id AS
+		contractId,
+		contract_type AS contractType, term, repay_date AS repayDate, month_quota AS
+		monthQuota,
+		month_money AS monthMoney, month_interest AS monthInterest, penalty,
+		penalty_interest AS penaltyInterest,
+		is_settle AS isSettle, surplus_quota AS surplusQuota, surplus_money AS
+		surplusMoney, surplus_interest AS surplusInterest,
+		surplus_penalty AS surplusPenalty, surplus_penalty_Interes AS surplusPenaltyInteres,
+		extension,
+		creation_date AS creationDate, creation_user AS creationUser, update_date AS
+		updateDate, update_user AS updateUser,version AS version,
+		sync FROM b_repayment_plan
+		where contract_id = #{contractId}
+	</select>
+    <update id="updateByBrroNum" parameterType="com.jhh.dc.baika.entity.manager_vo.RepaymentPlanVo">
+        update b_repayment_plan
+        <set>
+            <if test="guid != null">
+                guid = #{guid,jdbcType=VARCHAR},
+            </if>
+            <if test="serialNo != null">
+                serial_no = #{serialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="contractType != null">
+                contract_type = #{contractType,jdbcType=VARCHAR},
+            </if>
+            <if test="term != null">
+                term = #{term,jdbcType=INTEGER},
+            </if>
+            <if test="repayDate != null">
+                repay_date = #{repayDate,jdbcType=VARCHAR},
+            </if>
+            <if test="monthQuota != null">
+                month_quota = #{monthQuota,jdbcType=DECIMAL},
+            </if>
+            <if test="monthMoney != null">
+                month_money = #{monthMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="monthInterest != null">
+                month_interest = #{monthInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="penalty != null">
+                penalty = #{penalty,jdbcType=DECIMAL},
+            </if>
+            <if test="penaltyInterest != null">
+                penalty_interest = #{penaltyInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="isSettle != null">
+                is_settle = #{isSettle,jdbcType=INTEGER},
+            </if>
+            <if test="surplusQuota != null">
+                surplus_quota = #{surplusQuota,jdbcType=DECIMAL},
+            </if>
+            <if test="surplusMoney != null">
+                surplus_money = #{surplusMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="surplusInterest != null">
+                surplus_interest = #{surplusInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="surplusPenalty != null">
+                surplus_penalty = #{surplusPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="surplusPenaltyInteres != null">
+                surplus_penalty_Interes =
+                #{surplusPenaltyInteres,jdbcType=DECIMAL},
+            </if>
+            <if test="extension != null">
+                extension = #{extension,jdbcType=INTEGER},
+            </if>
+            <if test="creationDate != null">
+                creation_date = #{creationDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creationUser != null">
+                creation_user = #{creationUser,jdbcType=INTEGER},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=INTEGER},
+            </if>
+            <if test="sync != null">
+                sync = #{sync,jdbcType=CHAR},
+            </if>
+            version = version + 1
+        </set>
+        where contract_id =(SELECT id FROM b_borrow_list WHERE
+        b_borrow_list.borr_num = #{borrNum,jdbcType=VARCHAR})
+        AND version = #{version}
+    </update>
+
+    <select id="selectAlsoRepay" resultType="java.lang.Double"
+            parameterType="java.lang.String">
+		SELECT
+			(surplus_money+
+			surplus_interest+
+			surplus_penalty+
+			surplus_penalty_Interes)
+			AS total
+		FROM b_repayment_plan
+		WHERE contract_id =#{borrId}
+	</select>
+
+    <select id="selectCanPay" resultType="java.lang.Double" parameterType="java.lang.String">
+		select IFNULL(p.amount_surplus,0)
+		from b_borrow_list p
+		where p.id = #{borrId}
+	</select>
+
+    <select id="getRepaymentTermPlan" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT
+          rp.id AS id,
+          rp.term AS term,
+          rp.repay_date AS repayDate,
+          IF(rp.is_last = 0, rp.rental_amount + rp.penalty, rp.rental_amount + rp.penalty + l.ransom_amount - IF(l.no_deposit_refund = 0, l.deposit_amount, 0)) AS totalAmount,
+          rp.rental_amount AS rentalAmount,
+          rp.penalty AS penalty,
+          IF(rp.is_last = 0, rp.surplus_rental_amount + rp.surplus_penalty, rp.surplus_rental_amount + rp.surplus_penalty + l.surplus_ransom_amount - IF(l.borr_status IN ('BS006', 'BS010', 'BS014'), 0, IF(l.no_deposit_refund = 0, l.deposit_amount, 0))) AS surplusTotalAmount,
+          rp.surplus_rental_amount AS surplusRentalAmount,
+          rp.surplus_penalty AS surplusPenalty,
+          rp.overdue_days AS overdueDays,
+          rp.status,
+          co.user_name AS collectionUser,
+          IF(rp.is_last = 0, 0, IF(l.no_deposit_refund = 0, 0 - l.deposit_amount, 0)) AS depositAmount,
+          IF(rp.is_last = 0, 0, l.ransom_amount) AS ransomAmount,
+          IF(rp.is_last = 0, 0, l.surplus_ransom_amount) AS surplusRansomAmount
+        FROM
+          b_repayment_plan rp LEFT JOIN b_borrow_list l ON rp.contract_id = l.id LEFT JOIN c_system_user co ON rp.collection_user = co.user_sysno
+        WHERE rp.contract_id = #{borrowId}
+
+        UNION
+
+        SELECT
+          '' AS id,
+          '' AS term,
+          '总和=' repayDate,
+          SUM(IF(rp.is_last = 0, rp.rental_amount + rp.penalty, rp.rental_amount + rp.penalty + l.ransom_amount - IF(l.no_deposit_refund = 0, l.deposit_amount, 0))) AS totalAmount,
+          SUM(rp.rental_amount) AS rentalAmount,
+          SUM(rp.penalty) AS penalty,
+          SUM(IF(rp.is_last = 0, rp.surplus_rental_amount + rp.surplus_penalty, rp.surplus_rental_amount + rp.surplus_penalty + l.surplus_ransom_amount - IF(l.borr_status IN ('BS006', 'BS010', 'BS014'), 0, IF(l.no_deposit_refund = 0, l.deposit_amount, 0)))) AS surplusTotalAmount,
+          SUM(rp.surplus_rental_amount) AS surplusRentalAmount,
+          SUM(rp.surplus_penalty) AS surplusPenalty,
+          '' AS overdueDays,
+          '' AS STATUS,
+          '' AS collectionUser,
+          SUM(IF(rp.is_last = 0, 0, IF(l.no_deposit_refund = 0, 0 - l.deposit_amount, 0))) AS depositAmount,
+          SUM(IF(rp.is_last = 0, 0, l.ransom_amount)) AS ransomAmount,
+          SUM(IF(rp.is_last = 0, 0, l.surplus_ransom_amount)) AS surplusRansomAmount
+        FROM
+          b_repayment_plan rp LEFT JOIN b_borrow_list l ON rp.contract_id = l.id LEFT JOIN c_system_user co ON rp.collection_user = co.user_sysno
+        WHERE rp.contract_id = #{borrowId}
+	</select>
+
+    <select id="getOverdueRepaymentPlan" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+          <include refid="Base_Column_List"/>
+        FROM
+          b_repayment_plan p
+        WHERE p.status = '1'
+        <![CDATA[AND EXISTS (SELECT 1 FROM b_borrow_list l WHERE l.overdue_days < 8 AND l.id = p.contract_id)]]>
+         AND p.contract_id = #{borrowId}
+	</select>
+
+    <select id="selectByBorrId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from b_repayment_plan
+        where contract_id = #{borrId}
+    </select>
+
+    <select id="selectNotPayPlanByBorrId" resultType="double" parameterType="java.lang.Integer">
+		select sum(rental_amount)
+		from b_repayment_plan
+		where contract_id = #{0}
+		and overdue_days = 0
+		and status = 0
+	</select>
+
+    <update id="updateCollectionUser" parameterType="map">
+		update b_repayment_plan set collection_user = #{collectionUser} where id in
+        <foreach collection="repaymentIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+	</update>
+</mapper>

@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.dao.BorrowListMapper">
+    <resultMap id="BaseResultMap" type="BorrowList">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="per_id" property="perId" jdbcType="INTEGER"/>
+        <result column="prod_id" property="prodId" jdbcType="INTEGER"/>
+        <result column="borr_type" property="borrType" jdbcType="VARCHAR"/>
+        <result column="askborr_date" property="askborrDate" jdbcType="TIMESTAMP"/>
+        <result column="borr_num" property="borrNum" jdbcType="VARCHAR"/>
+        <result column="makeborr_date" property="makeborrDate" jdbcType="TIMESTAMP"/>
+        <result column="pay_date" property="payDate" jdbcType="TIMESTAMP"/>
+        <result column="planrepay_date" property="planrepayDate" jdbcType="TIMESTAMP"/>
+        <result column="act_repay_date" property="actRepayDate" jdbcType="TIMESTAMP"/>
+        <result column="borr_status" property="borrStatus" jdbcType="VARCHAR"/>
+        <result column="overdue_days" property="overdueDays" jdbcType="INTEGER"/>
+        <result column="penalty" property="penalty" jdbcType="DECIMAL"/>
+        <result column="surplus_penalty" property="surplusPenalty" jdbcType="DECIMAL"/>
+        <result column="plan_rental" property="planRental" jdbcType="DECIMAL"/>
+        <result column="plan_repay" property="planRepay" jdbcType="DECIMAL"/>
+        <result column="act_plan_amount" property="actPlanAmount" jdbcType="DECIMAL"/>
+        <result column="act_repay_amount" property="actRepayAmount" jdbcType="DECIMAL"/>
+        <result column="act_reduce_amount" property="actReduceAmount" jdbcType="DECIMAL"/>
+        <result column="amount_surplus" property="surplusAmount" jdbcType="DECIMAL"/>
+        <result column="ispay" property="ispay" jdbcType="INTEGER"/>
+        <result column="term_num" property="termNum" jdbcType="INTEGER"/>
+        <result column="borr_amount" property="borrAmount" jdbcType="DECIMAL"/>
+        <result column="no_deposit_refund" property="noDepositRefund" jdbcType="INTEGER"/>
+        <result column="deposit_amount" property="depositAmount" jdbcType="DECIMAL"/>
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL"/>
+        <result column="ransom_amount" property="ransomAmount" jdbcType="DECIMAL"/>
+        <result column="surplus_ransom_amount" property="surplusRansomAmount" jdbcType="DECIMAL"/>
+        <result column="surplus_rental_amount" property="surplusRentalAmount" jdbcType="DECIMAL"/>
+        <result column="penalty_rate" property="penaltyRate" jdbcType="DECIMAL"/>
+        <result column="per_coupon_id" property="perCouponId" jdbcType="INTEGER"/>
+        <result column="current_repay_time" property="currentRepayTime" jdbcType="TIMESTAMP"/>
+        <result column="collection_user" property="collectionUser" jdbcType="VARCHAR"/>
+        <result column="current_collection_time" property="currentCollectionTime" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="INTEGER"/>
+        <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP"/>
+        <result column="creation_user" property="creationUser" jdbcType="INTEGER"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+        <result column="baikelu_status" property="baikeluStatus" jdbcType="INTEGER"/>
+        <result column="borr_up_status" property="borrUpStatus" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="contact_num" property="contactNum" jdbcType="INTEGER"/>
+        <result column="is_manual" property="isManual" jdbcType="INTEGER"/>
+        <result column="flag" property="flag" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id, per_id, prod_id, borr_type, askborr_date, borr_num, makeborr_date, pay_date,
+		planrepay_date, act_repay_date, borr_status, overdue_days, penalty, surplus_penalty,
+		plan_rental, plan_repay, act_plan_amount, act_repay_amount, act_reduce_amount, amount_surplus, ispay,
+		term_num, borr_amount, no_deposit_refund, deposit_amount, pay_amount, ransom_amount,
+		surplus_ransom_amount, surplus_rental_amount, penalty_rate, per_coupon_id, current_repay_time,
+		collection_user, current_collection_time, update_date, update_user, creation_date,
+		creation_user, version, baikelu_status, borr_up_status, description, contact_num,
+		is_manual, flag
+	</sql>
+
+    <select id="getMingtianhuankuanId" resultType="com.jhh.dc.baika.model.BorrPerInfo">
+		SELECT b.id,
+		b.per_id AS perId,
+		b.amount_surplus surplusAmount,
+		per.name,
+		per.phone,
+		b.pay_date AS payDate,
+		p.repay_date AS repayDate
+		FROM b_borrow_list b
+		RIGHT JOIN b_repayment_plan p ON p.contract_id = b.id
+		LEFT JOIN b_person per ON per.id = b.per_id
+		WHERE p.status = 0 AND
+		repay_date BETWEEN #{param1} AND #{param2}
+	</select>
+    <select id="selectByBorrId" resultType="com.jhh.dc.baika.model.BorrPerInfo"
+            parameterType="java.lang.Integer">
+		SELECT bl.`id` AS
+		borrId,pm.`name`,pt.`monthly_rate`,rp.surplus_quota,
+		rp.`surplus_penalty`,rp.`surplus_penalty_Interes`,
+		pt.`maximum_amount`,pt.`term_value`,pm.`phone` FROM
+		`b_borrow_list` bl
+		LEFT JOIN
+		`c_product` p ON bl.`prod_id` = p.`id`
+		LEFT JOIN
+		`product_term` pt
+		ON pt.`product_id` = p.`id`
+		LEFT JOIN
+		`personInfoMode` pm ON pm.`perId`
+		= bl.`per_id` LEFT JOIN
+		`b_repayment_plan` rp ON rp.`contract_id` = bl.`id`
+		WHERE bl.`id` =
+		#{borrId}
+	</select>
+
+    <select id="getRobotData" resultType="com.jhh.dc.baika.model.RobotData">
+		SELECT b.borr_num AS borrNum,
+		p.phone AS phone ,
+		DATE_FORMAT(b.pay_date,'%Y-%m-%d') AS payDate,
+		r.month_money as money,
+		DATE_FORMAT(b.planrepay_date,'%Y-%m-%d') AS planRepayDate,
+		0 AS interest,
+		(surplus_money+
+		surplus_interest+
+		surplus_penalty+
+		surplus_penalty_Interes) AS total
+		FROM b_borrow_list b,b_repayment_plan r,person p
+		WHERE b.per_id = p.id AND r.contract_id = b.id and
+		b.borr_status = 'BS004' AND DATEDIFF(NOW(),b.planrepay_date)=0
+	</select>
+
+    <select id="sendMoneyManagement" resultType="com.jhh.dc.baika.model.MoneyManagement" parameterType="map">
+			SELECT DISTINCT
+			o.id,
+			bl.borr_num borrNum,
+			bl.pay_date payDate,
+			p.name ,
+			p.card_num cardNum,
+			bl.borr_amount borrAmount,
+			bl.pay_amount payAmount,
+			bl.pay_amount monthMoney,
+			bl.deposit_amount depositAmount,
+			(bl.plan_rental / bl.term_num) rentalAmount,
+			bl.ransom_amount ransomAmount,
+			(prod.term * prod.term_day) deadline,
+			bl.makeborr_date makeborrDate,
+			bl.pay_date dealDay,
+			bl.pay_date datedDate,
+			bl.planrepay_date planrepayDate,
+			bk.bank_name bankName,
+			p.name accountName,
+			bk.bank_num bankNum,
+			p.phone,
+			prod.product_name productName,
+			(bl.ransom_amount + bl.plan_rental - bl.deposit_amount - bl.pay_amount) recoverableAmount,
+			'' couponAmount,
+			(CASE WHEN o.type=15 THEN o.sid
+			ELSE o.serial_no END) serialNo,
+			re.employ_num employNum,
+			(SELECT user_name FROM c_system_user WHERE user_sysno = re.employ_num) employee_name,
+			(SELECT meaning FROM c_code_value WHERE code_type = 'register_source' AND code_code = p.source) channel,
+			<![CDATA[
+            	IF(ISNULL(o.channel), o.type, concat(o.type, '/', o.channel)) as typeWithChannel
+        	]]>
+			FROM b_loan_order o
+			LEFT JOIN b_borrow_list bl ON o.contract_id = bl.id
+			LEFT JOIN b_person p ON p.id = bl.per_id
+			LEFT JOIN c_product prod ON prod.id = bl.prod_id
+			LEFT JOIN b_bank bk ON bk.id = o.bank_id
+			LEFT JOIN b_review re ON re.borr_id = bl.id AND review_type = 1
+			WHERE o.type in ('1','11','15','99')  AND o.rl_state = 's'
+			AND  bl.pay_date BETWEEN #{beginDate} AND  #{endDate}
+			ORDER BY bl.pay_date
+	</select>
+
+    <select id="getCollectorsByOverdue" resultType="CollectorsList"
+            parameterType="java.util.List">
+		SELECT
+		bl.id contractSysno,
+		bl.borr_num contractId,
+		'9999' bedueUserSysno,
+		'特殊' bedueName,
+		SYSDATE() createDate,
+		'A' status,
+		'A' acquMode,
+		SYSDATE() updateDate
+		FROM b_borrow_list bl LEFT JOIN b_collectors_list cl ON bl.id = cl.contract_sysno and cl.is_delete !=1
+		WHERE cl.id IS NULL AND bl.borr_status = 'BS005'
+	</select>
+
+
+    <update id="rejectAudit">
+		UPDATE b_borrow_list bl, b_review r SET bl.borr_status = 'BS008' ,r.employ_num = '8888',r.reason = '系统拒绝'
+		WHERE r.borr_id = bl.id AND r.review_type = 1 AND borr_status = 'BS001'
+	</update>
+
+    <select id="getOverdueData" resultType="com.jhh.dc.baika.model.BorrPerInfo"
+            parameterType="java.lang.Integer">
+		SELECT b.id,
+		b.per_id AS perId,
+		b.amount_surplus surplusAmount,
+		per.name,
+		per.phone,
+		b.pay_date AS payDate,
+		p.repay_date AS repayDate
+		FROM b_borrow_list b
+		RIGHT JOIN b_repayment_plan p ON p.contract_id = b.id
+		LEFT JOIN b_person per ON per.id = b.per_id
+		<![CDATA[
+		WHERE  p.repay_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY) AND p.repay_date < DATE_ADD(CURDATE(), INTERVAL -6 DAY) AND p.status = 1
+    	]]>
+    </select>
+
+    <select id="getBatchWithhold" resultType="com.jhh.dc.baika.api.entity.capital.AgentDeductRequest">
+		SELECT
+		bl.id,
+		bl.id borrNum,
+		bl.amount_surplus optAmount,
+		bk.bank_id bankId,
+		bk.bank_num bankNum,
+		'晚上自动批量代扣' description,
+		'8888' createUser,
+		(SELECT bedue_user_sysno FROM b_collectors_list cl WHERE cl.contract_sysno = bl.id and cl.is_delete = 2) collectionUser,
+		'1' TYPE,
+		'1' triggerStyle,
+		per.name ,
+		per.card_num idCardNo,
+		per.phone
+		FROM b_borrow_list bl, b_repayment_plan rp,person per,bank bk
+		WHERE rp.contract_id = bl.id AND per.id = bl.per_id AND per.id = bk.per_id AND bk.status = 1
+		AND TO_DAYS(rp.repay_date) = TO_DAYS(now()) AND bl.overdue_days = 0 AND bl.amount_surplus > 0
+	</select>
+
+    <select id="getPromptData" resultType="com.jhh.dc.baika.model.PromptData">
+		select t7.borr_num borrNum,t1.phone phone,
+		t2.rent money,'1' planRepayDate,
+		t7.surplus_penalty penalty,
+		<![CDATA[
+         case when CONVERT(if(t7.overdue_days < 8,
+             if(TO_DAYS(NOW())-TO_DAYS(t7.planrepay_date) > 0, -- 第4期逾期
+                  t7.amount_surplus, -- 第4期逾期，则全部结清
+                  if(TO_DAYS(t7.planrepay_date)-TO_DAYS(NOW()) < 7, -- 已到第4期，但第4期尚未逾期
+                          t7.amount_surplus-(t7.plan_rental/t7.term_num)-t7.surplus_ransom_amount+(1-t7.no_deposit_refund)*t7.deposit_amount, -- 已到第4期，但第4期尚未逾期 减去剩余赎回手机费用加上押金
+                          t7.amount_surplus-(t7.plan_rental/t7.term_num)) ) -- 未到第4期 按照原有逻辑 只减去当期租金
+              , t7.amount_surplus),DECIMAL(10,2)) < 0 then 0
+         else CONVERT(if(t7.overdue_days < 8,
+             if(TO_DAYS(NOW())-TO_DAYS(t7.planrepay_date) > 0, -- 第4期逾期
+                  t7.amount_surplus, -- 第4期逾期，则全部结清
+                  if(TO_DAYS(t7.planrepay_date)-TO_DAYS(NOW()) < 7, -- 已到第4期，但第4期尚未逾期
+                          t7.amount_surplus-(t7.plan_rental/t7.term_num)-t7.surplus_ransom_amount+(1-t7.no_deposit_refund)*t7.deposit_amount, -- 已到第4期，但第4期尚未逾期 减去剩余赎回手机费用加上押金
+                          t7.amount_surplus-(t7.plan_rental/t7.term_num)) ) -- 未到第4期 按照原有逻辑 只减去当期租金
+            , t7.amount_surplus),DECIMAL(10,2)) end
+           ]]> AS total
+		from b_borrow_list t7
+    	left join b_person t1 on t7.per_id = t1.id
+		left join c_product t2 on t7.prod_id = t2.id
+		where t7.borr_status = 'BS005' and t7.overdue_days = 1
+	</select>
+
+    <select id="getFinanceData" resultType="com.jhh.dc.baika.model.FinanceData" parameterType="String">
+        SELECT
+			o.borr_num borrNum,
+			o.serial_no serialNo,
+			#{beginDate} repaymentDate,
+			o.act_amount money,
+			o.sid sidNo,
+			o.type typeNo,
+			<![CDATA[
+            	IF(ISNULL(o.channel), o.type, concat(o.type, '/', o.channel)) as typeWithChannel
+        	]]>
+			FROM b_loan_order o
+			WHERE
+			o.type not in ('1','3','11','15')
+			AND o.rl_state = 's'
+			AND  DATE_FORMAT(o.creation_date,'%Y-%m-%d') = #{beginDate}
+	</select>
+
+
+    <select id="getOverdueThree" resultType="String">
+		select id from b_borrow_list where overdue_days = 3 and borr_status = 'BS005' AND prod_id IN (1,2)
+	</select>
+
+	<select id="getOverdueTwo" resultType="String">
+		select id from b_borrow_list where overdue_days = 2 and borr_status = 'BS005' AND prod_id IN (3,4)
+	</select>
+
+    <update id="updateOverdueThreeCollectors" parameterType="list">
+        update b_collectors_list set bedue_user_sysno = 'A1131', bedue_name = '杨艳' ,
+        acqu_mode = 'A' where contract_sysno in
+        <foreach item="item" collection="list" separator="," open="(" close=")" index="index">
+            #{item}
+        </foreach>
+		AND is_delete = 2
+    </update>
+
+    <update id="updateOverdueThreeBorrow" parameterType="list">
+        update b_borrow_list set collection_user = 'A1131' where id in
+        <foreach item="item" collection="list" separator="," open="(" close=")" index="index">
+            #{item}
+        </foreach>
+    </update>
+
+	<select id="getCollectorsOverdueThree" resultType="com.jhh.dc.baika.model.CollRecordData">
+		select b.id contractId,c.bedue_user_sysno bedueUser,'8888' createUser,NOW() sysTime
+		from b_borrow_list b left join b_collectors_list c on b.id = c.contract_sysno
+		where b.overdue_days = 3 and b.borr_status = 'BS005' and c.is_delete = 2 and b.prod_id in (1,2)
+	</select>
+
+	<select id="getCollectorsOverdueTow" resultType="com.jhh.dc.baika.model.CollRecordData">
+		select b.id contractId,c.bedue_user_sysno bedueUser,'8888' createUser,NOW() sysTime
+		from b_borrow_list b left join b_collectors_list c on b.id = c.contract_sysno
+		where b.overdue_days = 2 and b.borr_status = 'BS005' and c.is_delete = 2 and b.prod_id in (3,4)
+	</select>
+    <insert id="insertCollectorsRecode" parameterType="list">
+        insert into b_collectors_record (id, contract_id,bedue_user,create_time,create_user)
+        values
+        <foreach item="item" collection="list" separator="," index="index">
+            (#{item.id},#{item.contractId},#{item.bedueUser},#{item.sysTime},#{item.createUser})
+        </foreach>
+    </insert>
+
+	<select id="selectUnBaikelu" resultMap="BaseResultMap">
+		SELECT bl.* FROM b_borrow_list bl LEFT JOIN b_order_robot yor ON bl.id = yor.borr_id
+		WHERE bl.`borr_status` = 'BS003' AND yor.id IS  NULL
+	</select>
+
+	<select id="queryBorrListByPerIdAndStauts" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT id id,
+		per_id perId,
+		prod_id prodId,
+		borr_type borrType,
+		askborr_date askborrDate,
+		borr_num borrNum,
+		makeborr_date makeborrDate,
+		pay_date payDate,
+		planrepay_date planrepayDate,
+		act_repay_date actRepayDate,
+		borr_status borrStatus,
+		overdue_days overdueDays,
+		penalty penalty,
+		act_plan_amount actPlanAmount,
+		act_repay_amount actRepayAmount,
+		act_reduce_amount actReduceAmount,
+		amount_surplus surplusAmount,
+		ispay ispay,
+		term_num termNum,
+		borr_amount borrAmount,
+		no_deposit_refund noDepositRefund,
+		deposit_amount depositAmount,
+		pay_amount payAmount,
+		ransom_amount ransomAmount,
+		surplus_ransom_amount surplusRansomAmount,
+		surplus_rental_amount surplusRentalAmount,
+		penalty_rate penaltyRate,
+		per_coupon_id perCouponId,
+		current_repay_time currentRepayTime,
+		collection_user collectionUser,
+		current_collection_time currentCollectionTime,
+		update_date updateDate,
+		update_user updateUser,
+		creation_date creationDate,
+		creation_user creationUser,
+		version version,
+		baikelu_status baikeluStatus,
+		borr_up_status borrUpStatus,
+		description description,
+		contact_num contactNum,
+		is_manual isManual,
+		flag flag
+		FROM b_borrow_list WHERE  borr_status IN ('BS006','BS010','BS013') AND per_id = #{perId}
+	</select>
+
+	<select id="selectOverDays" resultType="BorrowVO">
+		SELECT
+			bl.id AS borrId,
+			bl.per_id AS perId,
+			bl.overdue_days AS overdueDays,
+			p.name AS personName,
+			p.card_num AS cardNum,
+			p.phone
+		FROM
+			b_borrow_list bl
+			LEFT JOIN b_person p ON bl.per_id = p.id
+		WHERE
+			bl.id IN ( SELECT max( t.id ) FROM b_borrow_list t GROUP BY t.per_id ) and bl.overdue_days >= 11
+	</select>
+
+</mapper>

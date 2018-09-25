@@ -1,0 +1,1179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.RepaymentMapper">
+
+    <select id="getRepaymentPlan" resultType="map" parameterType="map">
+        SELECT
+        t.id AS borrId,
+        t.borr_num AS borrNum,
+        t.overdue_days AS bedueDays,
+        t.per_id AS customerId,
+        t1.name AS userName,
+        t1.card_num AS idCard,
+        t1.phone AS customerMobile,
+        t2.product_description AS productDescription,
+        t2.amount AS amount,
+        t.interest_sum AS interestSum,
+        t.penalty_surplus AS penaltySurplus,
+        t.forfeit_surplus AS forfeitSurplus,
+        t.amount_sum AS amountSum,
+        t.amount_surplus AS amountSurplus,
+        t2.product_type_code AS productTypeCode,
+        t2.id AS productId,
+        DATE_FORMAT(t.planrepay_date,"%Y-%m-%d") AS repayDate,
+        t.borr_status AS borrStatus,
+        DATE_FORMAT(t.current_collection_time,"%Y-%m-%d %T") AS currentCollectionTime,
+        DATE_FORMAT(t.current_repay_time,"%Y-%m-%d %H:%m:%s") AS currentRepayTime,
+        t.pay_amount AS payAmount,
+        t.collection_user AS collectionUser
+        FROM
+        b_borrow_list t,
+        b_person t1,
+        c_product t2
+        <where>
+            t.per_id = t1.id
+            AND t.prod_id = t2.id
+            AND t.borr_status IN ('BS004', 'BS005')
+            <if test="bedueDaysEq != null">
+                and t.overdue_days = #{bedueDaysEq}
+            </if>
+            <if test="borrNumEq != null">
+                and t.borr_num = #{borrNumEq}
+            </if>
+            <if test="userNameEq != null">
+                and t1.name = #{userNameEq}
+            </if>
+            <if test="bedueDaysStart != null">
+                and t.overdue_days &gt; #{bedueDaysStart}
+            </if>
+            <if test="idCardEq != null">
+                and t1.card_num = #{idCardEq}
+            </if>
+            <if test="customerMobileEq != null">
+                and t1.phone = #{customerMobileEq}
+            </if>
+            <if test="productTypeCodeEq != null">
+                and t2.product_type_code = #{productTypeCodeEq}
+            </if>
+            <if test="productNameEq != null">
+                and t2.product_name = #{productNameEq}
+            </if>
+            <if test="productIdEq != null">
+                and t2.id = #{productIdEq}
+            </if>
+            <if test="(repayDateStart == null or repayDateStart == '') and (repayDateStartswith == null or repayDateStartswith == '') and (repayDateEnd == null or repayDateEnd == '') and (repayDateEndswith == null or repayDateEndswith == '')">
+                <![CDATA[ and t.planrepay_date >= CURDATE() and t.planrepay_date < DATE_ADD(CURDATE(),INTERVAL 1 MONTH) ]]>
+            </if>
+            <if test="repayDateStart != null">
+                <![CDATA[ and t.planrepay_date > DATE_FORMAT(#{repayDateStart},'%Y-%m-%d') ]]>
+            </if>
+            <if test="repayDateStartswith != null">
+                <![CDATA[ and t.planrepay_date >= DATE_FORMAT(#{repayDateStartswith},'%Y-%m-%d') ]]>
+            </if>
+            <if test="repayDateEnd != null">
+                <![CDATA[ and t.planrepay_date < DATE_FORMAT(#{repayDateEnd},'%Y-%m-%d') ]]>
+            </if>
+            <if test="repayDateEndswith != null">
+                <![CDATA[ and t.planrepay_date <= DATE_FORMAT(#{repayDateEndswith},'%Y-%m-%d') ]]>
+            </if>
+
+            <if test="currentCollectionTimeStart != null">
+                <![CDATA[ and t.current_collection_time > DATE_FORMAT(#{currentCollectionTimeStart},'%Y-%m-%d') ]]>
+            </if>
+            <if test="currentCollectionTimeStartswith != null">
+                <![CDATA[ and t.current_collection_time >= DATE_FORMAT(#{currentCollectionTimeStartswith},'%Y-%m-%d') ]]>
+            </if>
+            <if test="currentCollectionTimeEnd != null">
+                <![CDATA[ and t.current_collection_time < DATE_FORMAT(#{currentCollectionTimeEnd},'%Y-%m-%d') ]]>
+            </if>
+            <if test="currentCollectionTimeEndswith != null">
+                <![CDATA[ and t.current_collection_time <= DATE_FORMAT(#{currentCollectionTimeEndswith},'%Y-%m-%d') ]]>
+            </if>
+
+            <if test="currentRepayTimeStart != null">
+                <![CDATA[ and t.current_repay_time > DATE_FORMAT(#{currentRepayTimeStart},'%Y-%m-%d') ]]>
+            </if>
+            <if test="currentRepayTimeStartswith != null">
+                <![CDATA[ and t.current_repay_time >= DATE_FORMAT(#{currentRepayTimeStartswith},'%Y-%m-%d') ]]>
+            </if>
+            <if test="currentRepayTimeEnd != null">
+                <![CDATA[ and t.current_repay_time < DATE_FORMAT(#{currentRepayTimeEnd},'%Y-%m-%d') ]]>
+            </if>
+            <if test="currentRepayTimeEndswith != null">
+                <![CDATA[ and t.current_repay_time <= DATE_FORMAT(#{currentRepayTimeEndswith},'%Y-%m-%d') ]]>
+            </if>
+
+            <if test="borrStatusEq == 'BS004K' ">
+                and t.borr_status = 'BS004' and t2.product_type_code = '1'
+            </if>
+            <if test="borrStatusEq == 'BS004Q' ">
+                and t.borr_status = 'BS004' and t2.product_type_code = '2'
+            </if>
+            <if test="borrStatusEq == 'BS005K' ">
+                and t.borr_status = 'BS005' and t2.product_type_code = '1'
+            </if>
+            <if test="borrStatusEq == 'BS005Q' ">
+                and t.borr_status = 'BS005' and t2.product_type_code = '2'
+            </if>
+            <if test="collectionUserEq != null">
+                and t.collection_user = #{collectionUserEq}
+            </if>
+        </where>
+        <if test="selector == null and desc == null">
+            ORDER BY t.planrepay_date desc
+        </if>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'bedueDays'">order by t.overdue_days</when>
+                <when test="selector eq 'repayDate'">order by t.planrepay_date</when>
+                <when test="selector eq 'surplusTotalAmount'">order by t.amount_surplus</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+    </select>
+
+    <select id="getRepaymentOrderCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT
+        count(1)
+        FROM
+        b_loan_order t
+        <if test="levelType == 2">
+            INNER JOIN b_loan_company_order company ON company.order_id = t.id and company.company_id=#{companyId}
+        </if>
+        LEFT JOIN b_person t1 ON t.per_id = t1.id
+        LEFT JOIN c_code_value t3
+        ON t.type = t3.code_code AND t3.code_type = 'order_type'
+        LEFT JOIN b_bank t4 on t.bank_id = t4.id
+        WHERE t.type IN ('2', '4', '5', '6', '7', '8', '12', '13', '14', '16', '17', '18')
+        <if test="borrNum != null">
+            and t.borr_num = #{borrNum}
+        </if>
+        <if test="borrNumEq != null">
+            and t.borr_num = #{borrNumEq}
+        </if>
+        <if test="userName != null">
+            and t1.name = #{userName}
+        </if>
+        <if test="userNameEq != null">
+            and t1.name = #{userNameEq}
+        </if>
+        <if test="idCard != null">
+            and t1.card_num = #{idCard}
+        </if>
+        <if test="idCardEq != null">
+            and t1.card_num = #{idCardEq}
+        </if>
+        <if test="customerMobile != null">
+            and t1.phone = #{customerMobile}
+        </if>
+        <if test="customerMobileEq != null">
+            and t1.phone = #{customerMobileEq}
+        </if>
+        <if test="bankName != null">
+            and t1.bank_name = #{bankName}
+        </if>
+        <if test="bankNameEq != null">
+            and t1.bank_name = #{bankNameEq}
+        </if>
+        <if test="bankNum != null">
+            and t1.bank_card = #{bankNum}
+        </if>
+        <if test="bankNumEq != null">
+            and t1.bank_card = #{bankNumEq}
+        </if>
+        <if test="prodId != null">
+            and t.prod_id = #{prodId}
+        </if>
+        <if test="prodIdEq != null">
+            and t.prod_id = #{prodIdEq}
+        </if>
+        <if test="overdueDays != null">
+            and t.overdue_days = #{overdueDays}
+        </if>
+        <if test="overdueDaysEq != null">
+            and t.overdue_days = #{overdueDaysEq}
+        </if>
+        <if test="type != null">
+            and t.type = #{type}
+        </if>
+        <if test="channel != null and filterNull == null" >
+            and t.channel = #{channel}
+        </if>
+        <if test="channel == null and filterNull != null" >
+            and t.channel is NULL
+        </if>
+        <if test="typeEq != null">
+            and t.type = #{typeEq}
+        </if>
+        <if test="rlState != null">
+            and t.rl_state = #{rlState}
+        </if>
+        <if test="rlStateEq != null">
+            and t.rl_state = #{rlStateEq}
+        </if>
+        <if test="createUser != null">
+            and t.create_user = #{createUser}
+        </if>
+        <if test="createUserEq != null">
+            and t.create_user = #{createUserEq}
+        </if>
+        <if test="collectionUser != null">
+            and t.collection_user = #{collectionUser}
+        </if>
+        <if test="collectionUserEq != null">
+            and t.collection_user = #{collectionUserEq}
+        </if>
+        <if test="serialNo != null">
+            and t.serial_no = #{serialNo}
+        </if>
+        <if test="serialNoEq != null">
+            and t.serial_no = #{serialNoEq}
+        </if>
+        <if test="sidNoEq != null">
+            and (t.sid = #{sidNoEq} or t.serial_no = #{sidNoEq})
+        </if>
+        <if test="insDateStartswith == null || insDateStartswith == ''">
+            <if test="insDateEnd == null and insDateEndswith == null">
+                <![CDATA[ and t.creation_date >= DATE_SUB(CURDATE(),INTERVAL 1 MONTH) ]]>
+            </if>
+        </if>
+        <if test="insDateStart != null">
+            <![CDATA[ and t.creation_date > DATE_FORMAT(#{insDateStart},'%Y-%m-%d') ]]>
+        </if>
+        <if test="insDateStartswith != null">
+            <![CDATA[ and t.creation_date >= DATE_FORMAT(#{insDateStartswith},'%Y-%m-%d') ]]>
+        </if>
+        <if test="insDateEnd != null">
+            <![CDATA[ and t.creation_date < DATE_FORMAT(#{insDateEnd},'%Y-%m-%d') ]]>
+        </if>
+        <if test="insDateEndswith != null">
+            <![CDATA[ and t.creation_date <= DATE_FORMAT(#{insDateEndswith},'%Y-%m-%d') ]]>
+        </if>
+
+        <if test="updateDateStart != null">
+            <![CDATA[ and t.rl_state <>'p' and t.update_date > DATE_FORMAT(#{updateDateStart},'%Y-%m-%d') ]]>
+        </if>
+        <if test="updateDateStartswith != null">
+            <![CDATA[ and t.rl_state <>'p' and t.update_date >= DATE_FORMAT(#{updateDateStartswith},'%Y-%m-%d') ]]>
+        </if>
+        <if test="updateDateEnd != null">
+            <![CDATA[ and t.rl_state <>'p' and t.update_date < DATE_FORMAT(#{updateDateEnd},'%Y-%m-%d') ]]>
+        </if>
+        <if test="updateDateEndswith != null">
+            <![CDATA[ and t.rl_state <>'p' and t.update_date <= DATE_FORMAT(#{updateDateEndswith},'%Y-%m-%d') ]]>
+        </if>
+
+    </select>
+
+    <select id="getRepaymentOrder" resultType="map" parameterType="map">
+        SELECT
+        t.contract_id AS borrId,
+        t.prod_id AS prodId,
+        t.borr_num AS borrNum,
+        t1.name AS userName,
+        t1.card_num AS idCard,
+        t1.phone AS customerMobile,
+        t4.bank_name AS bankName,
+        t4.bank_num AS bankNum,
+        t.type AS type,
+        t3.meaning AS typeName,
+        t.rl_state AS rlState,
+        t.act_amount AS amount,
+        t.sid AS sidNo,
+        t.overdue_days AS overdueDays,
+        DATE_FORMAT(t.creation_date,'%Y-%m-%d %T') AS insDate,
+        if(t.rl_state='p' OR t.rl_state is NULL, NULL, DATE_FORMAT(t.update_date,'%Y-%m-%d %T')) AS updateDate,
+        t.create_user AS createUser,
+        (SELECT cl.user_name FROM c_system_user cl WHERE cl.user_sysno = t.create_user) AS createUserName,
+        t.collection_user AS collectionUser,
+        (SELECT cl.user_name FROM c_system_user cl WHERE cl.user_sysno = t.collection_user) AS collectionUserName,
+        <![CDATA[
+            IF(t.reason IS NULL, t.rl_remark, t.reason) AS remark,
+            t.serial_no AS serialNo,
+            t.per_id AS perId,
+            t.channel,
+            IF(ISNULL(t.channel), t.type, concat(t.type, '/', t.channel)) as typeWithChannel
+        ]]>
+        FROM
+        b_loan_order t
+        <if test="levelType == 2">
+            INNER JOIN b_loan_company_order company ON company.order_id = t.id and company.company_id=#{companyId}
+        </if>
+        LEFT JOIN b_person t1 ON t.per_id = t1.id
+        LEFT JOIN c_code_value t3
+        ON t.type = t3.code_code AND t3.code_type = 'order_type'
+        LEFT JOIN b_bank t4 on t.bank_id = t4.id
+        WHERE t.type IN ('2', '4', '5', '6', '7', '8', '12', '13', '14', '16', '17', '18')
+        <if test="borrNum != null">
+            and t.borr_num = #{borrNum}
+        </if>
+        <if test="borrNumEq != null">
+            and t.borr_num = #{borrNumEq}
+        </if>
+        <if test="userName != null">
+            and t1.name = #{userName}
+        </if>
+        <if test="userNameEq != null">
+            and t1.name = #{userNameEq}
+        </if>
+        <if test="idCard != null">
+            and t1.card_num = #{idCard}
+        </if>
+        <if test="idCardEq != null">
+            and t1.card_num = #{idCardEq}
+        </if>
+        <if test="customerMobile != null">
+            and t1.phone = #{customerMobile}
+        </if>
+        <if test="customerMobileEq != null">
+            and t1.phone = #{customerMobileEq}
+        </if>
+        <if test="bankName != null">
+            and t1.bank_name = #{bankName}
+        </if>
+        <if test="bankNameEq != null">
+            and t1.bank_name = #{bankNameEq}
+        </if>
+        <if test="bankNum != null">
+            and t1.bank_card = #{bankNum}
+        </if>
+        <if test="bankNumEq != null">
+            and t1.bank_card = #{bankNumEq}
+        </if>
+        <if test="prodId != null">
+            and t.prod_id = #{prodId}
+        </if>
+        <if test="prodIdEq != null">
+            and t.prod_id = #{prodIdEq}
+        </if>
+        <if test="overdueDays != null">
+            and t.overdue_days = #{overdueDays}
+        </if>
+        <if test="overdueDaysEq != null">
+            and t.overdue_days = #{overdueDaysEq}
+        </if>
+        <if test="type != null">
+            and t.type = #{type}
+        </if>
+        <if test="levelType == 2">
+            and	t.type in (4, 13, 17)
+        </if>
+        <if test="channel != null and filterNull == null" >
+            and t.channel = #{channel}
+        </if>
+        <if test="channel == null and filterNull != null" >
+            and t.channel is NULL
+        </if>
+        <if test="typeEq != null">
+            and t.type = #{typeEq}
+        </if>
+        <if test="rlState != null">
+            and t.rl_state = #{rlState}
+        </if>
+        <if test="rlStateEq != null">
+            and t.rl_state = #{rlStateEq}
+        </if>
+        <if test="createUser != null">
+            and t.create_user = #{createUser}
+        </if>
+        <if test="createUserEq != null">
+            and t.create_user = #{createUserEq}
+        </if>
+        <if test="collectionUser != null">
+            and t.collection_user = #{collectionUser}
+        </if>
+        <if test="collectionUserEq != null">
+            and t.collection_user = #{collectionUserEq}
+        </if>
+        <if test="serialNo != null">
+            and t.serial_no = #{serialNo}
+        </if>
+        <if test="serialNoEq != null">
+            and t.serial_no = #{serialNoEq}
+        </if>
+        <if test="sidNoEq != null">
+            and (t.sid = #{sidNoEq} or t.serial_no = #{sidNoEq})
+        </if>
+        <if test="insDateStartswith == null || insDateStartswith == ''">
+            <if test="insDateEnd == null and insDateEndswith == null">
+                <![CDATA[ and t.creation_date >= DATE_SUB(CURDATE(),INTERVAL 1 MONTH) ]]>
+            </if>
+        </if>
+        <if test="insDateStart != null">
+            <![CDATA[ and t.creation_date > DATE_FORMAT(#{insDateStart},'%Y-%m-%d') ]]>
+        </if>
+        <if test="insDateStartswith != null">
+            <![CDATA[ and t.creation_date >= DATE_FORMAT(#{insDateStartswith},'%Y-%m-%d') ]]>
+        </if>
+        <if test="insDateEnd != null">
+            <![CDATA[ and t.creation_date < DATE_FORMAT(#{insDateEnd},'%Y-%m-%d') ]]>
+        </if>
+        <if test="insDateEndswith != null">
+            <![CDATA[ and t.creation_date <= DATE_FORMAT(#{insDateEndswith},'%Y-%m-%d') ]]>
+        </if>
+
+        <if test="updateDateStart != null">
+            <![CDATA[ and t.rl_state <>'p' and t.update_date > DATE_FORMAT(#{updateDateStart},'%Y-%m-%d') ]]>
+        </if>
+        <if test="updateDateStartswith != null">
+            <![CDATA[ and t.rl_state <>'p' and t.update_date >= DATE_FORMAT(#{updateDateStartswith},'%Y-%m-%d') ]]>
+        </if>
+        <if test="updateDateEnd != null">
+            <![CDATA[ and t.rl_state <>'p' and t.update_date < DATE_FORMAT(#{updateDateEnd},'%Y-%m-%d') ]]>
+        </if>
+        <if test="updateDateEndswith != null">
+            <![CDATA[ and t.rl_state <>'p' and t.update_date <= DATE_FORMAT(#{updateDateEndswith},'%Y-%m-%d') ]]>
+        </if>
+
+        <if test="selector == null and desc == null">
+            ORDER BY t.creation_date desc
+        </if>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'insDate'">ORDER BY t.creation_date</when>
+                <when test="selector eq 'overdueDays'">ORDER BY t.overdue_days</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+    </select>
+
+    <select id="getLoanManagement" parameterType="map" resultType="com.jhh.dc.baika.entity.manager_vo.LoanManagementVo">
+        SELECT
+        t7.term_num as termCount,
+        t7.per_id customerId,
+        t7.id contractKey,
+        t7.borr_num contractID,
+        t7.amount_repay amountRepay,
+        t7.borr_amount AS amount,
+        t7.description AS description,
+        t7.borr_status AS borrStatus,
+        t7.overdue_days AS bedueDays,
+        t1.name AS customerName,
+        t1.card_num AS customerIdValue,
+        t1.phone AS customerMobile,
+        t1.bank_name AS bankName,
+        t1.bank_card AS bankNum,
+        t2.id AS productId,
+        t2.product_name AS productName,
+        t2.term_num AS productTerm,
+        t7.penalty_sum AS penalty,
+        t7.interest_sum AS interestSum,
+        t7.forfeit_sum AS forfeitSum,
+        t7.amount_sum AS totalAmount,
+        t7.penalty_surplus AS surplusPenalty,
+        t7.amount_surplus AS surplusTotalAmount,
+        t7.pay_amount AS loanAmount,
+        t7.pay_amount payAmount,
+        t7.act_reduce_amount AS reduceAmount,
+        DATE_FORMAT(t7.planrepay_date, "%Y-%m-%d") AS endDateString,
+        DATE_FORMAT(
+        t7.act_repay_date,
+        "%Y-%m-%d %T"
+        ) AS settleDateString,
+        t7.is_manual AS isManual,
+        t7.collection_user AS auditer,
+        DATE_FORMAT(t7.current_collection_time,"%Y-%m-%d %T") as lastCallDateString,
+        DATE_FORMAT(t7.current_repay_time,"%Y-%m-%d %T") as orderString,
+        t7.creation_user as createUser,
+        t7.collection_user as userName,
+        t7.interest_sum+t7.borr_amount   as shouldPayAmount,
+        t7.repay_retry_flag repayRetryFlag
+        FROM b_borrow_list t7
+        <if test="levelType  == 2">
+            INNER JOIN b_loan_company_borrow company on company.borr_id = t7.id and company.company_id=#{companyId}
+        </if>
+        LEFT JOIN b_person t1 on t7.per_id = t1.id
+        LEFT JOIN c_product t2 on t7.prod_id = t2.id
+        WHERE
+        t7.borr_status IN ('BS004','BS005','BS006','BS010','BS014')
+        <if test="contractKey != null">
+            and t7.id = #{contractKey}
+        </if>
+        <if test="contractIDEq != null">
+            and t7.borr_num = #{contractIDEq}
+        </if>
+        <if test="bedueDaysEq != null">
+            and t7.overdue_days = #{bedueDaysEq}
+        </if>
+        <if test="bedueDaysStart != null">
+            and t7.overdue_days &gt; #{bedueDaysStart}
+        </if>
+        <if test="bedueDaysStartswith != null">
+            and t7.overdue_days &gt;= #{bedueDaysStartswith}
+        </if>
+        <if test="bedueDaysEndswith != null">
+            and t7.overdue_days &lt;= #{bedueDaysEndswith}
+        </if>
+        <if test="customerNameEq != null">
+            and t1.name = #{customerNameEq}
+        </if>
+        <if test="customerIdValueEq != null">
+            and t1.card_num = #{customerIdValueEq}
+        </if>
+        <if test="customerMobileEq != null">
+            and t1.phone = #{customerMobileEq}
+        </if>
+        <if test="bankNameEq != null">
+            and t1.bank_name = #{bankNameEq}
+        </if>
+        <if test="bankNumEq != null">
+            and t1.bank_card = #{bankNumEq}
+        </if>
+        <if test="productNameEq != null">
+            and t2.product_name = #{productNameEq}
+        </if>
+        <if test="productIdEq != null">
+            and t2.id = #{productIdEq}
+        </if>
+        <if test="auditerEq != null">
+            and t7.collection_user = #{auditerEq}
+        </if>
+        <if test="repayRetryFlagEq != null">
+            and t7.repay_retry_flag = #{repayRetryFlagEq}
+        </if>
+        <if test="endDateStringStart != null">
+            AND to_days(t7.planrepay_date) &gt; to_days(#{endDateStringStart})
+        </if>
+        <if test="endDateStringStartswith != null">
+            AND to_days(t7.planrepay_date) &gt;= to_days(#{endDateStringStartswith})
+        </if>
+        <if test="endDateStringEnd != null">
+            AND to_days(t7.planrepay_date) &lt; to_days(#{endDateStringEnd})
+        </if>
+        <if test="endDateStringEndswith != null">
+            AND to_days(t7.planrepay_date) &lt;= to_days(#{endDateStringEndswith})
+        </if>
+        <if test="settleDateStringStart != null">
+            AND to_days(t7.act_repay_date) &gt; to_days(#{settleDateStringStart})
+        </if>
+        <if test="settleDateStringStartswith != null">
+            AND to_days(t7.act_repay_date) &gt;= to_days(#{settleDateStringStartswith})
+        </if>
+        <if test="settleDateStringEnd != null">
+            AND to_days(t7.act_repay_date) &lt; to_days(#{settleDateStringEnd})
+        </if>
+        <if test="settleDateStringEndswith != null">
+            AND to_days(t7.act_repay_date) &lt;= to_days(#{settleDateStringEndswith})
+        </if>
+        <if test="lastCallDateStringStart != null">
+            AND to_days(t7.current_collection_time) &gt; to_days(#{lastCallDateStringStart})
+        </if>
+        <if test="lastCallDateStringStartswith != null">
+            AND to_days(t7.current_collection_time) &gt;= to_days(#{lastCallDateStringStartswith})
+        </if>
+        <if test="lastCallDateStringEnd != null">
+            AND to_days(t7.current_collection_time) &lt; to_days(#{lastCallDateStringEnd})
+        </if>
+        <if test="lastCallDateStringEndswith != null">
+            AND to_days(t7.current_collection_time) &lt;= to_days(#{lastCallDateStringEndswith})
+        </if>
+        <if test="orderStringStart != null">
+            AND to_days(t7.current_repay_time) &gt; to_days(#{orderStringStart})
+        </if>
+        <if test="orderStringStartswith != null">
+            AND to_days(t7.current_repay_time) &gt;= to_days(#{orderStringStartswith})
+        </if>
+        <if test="orderStringEnd != null">
+            AND to_days(t7.current_repay_time) &lt; to_days(#{orderStringEnd})
+        </if>
+        <if test="orderStringEndswith != null">
+            AND to_days(t7.current_repay_time) &lt;= to_days(#{orderStringEndswith})
+        </if>
+        <if test="stateStringEq != null">
+            and t7.borr_status = #{stateStringEq}
+        </if>
+        <if test="borrStatusEq != null">
+            and t7.borr_status = #{borrStatusEq}
+        </if>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'bedueDays'">ORDER BY t7.overdue_days</when>
+                <when test="selector eq 'surplusAccountAmount'">ORDER BY t1.balance</when>
+                <when test="selector eq 'surplusTotalAmount'">ORDER BY t7.amount_surplus</when>
+                <when test="selector eq 'endDateString'">ORDER BY t7.planrepay_date</when>
+                <when test="selector eq 'settleDateString'">ORDER BY t7.act_repay_date</when>
+                <when test="selector eq 'lastCallDateString'">ORDER BY t7.current_collection_time</when>
+                <when test="selector eq 'orderString'">ORDER BY t7.current_repay_time</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+        <if test="selector == null and desc == null">
+            ORDER BY t7.planrepay_date desc
+        </if>
+    </select>
+
+    <select id="getLoanManagementCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM b_borrow_list t7
+        <if test="levelType  == 2">
+            INNER JOIN b_loan_company_borrow company on company.borr_id = t7.id and company.company_id=#{companyId}
+        </if>
+        LEFT JOIN b_person t1 on t7.per_id = t1.id
+        LEFT JOIN c_product t2 on t7.prod_id = t2.id
+        WHERE
+        t7.borr_status IN ('BS004','BS005','BS006','BS010','BS014')
+        <if test="contractKey != null">
+            and t7.id = #{contractKey}
+        </if>
+        <if test="contractIDEq != null">
+            and t7.borr_num = #{contractIDEq}
+        </if>
+        <if test="bedueDaysEq != null">
+            and t7.overdue_days = #{bedueDaysEq}
+        </if>
+        <if test="bedueDaysStart != null">
+            and t7.overdue_days &gt; #{bedueDaysStart}
+        </if>
+        <if test="bedueDaysStartswith != null">
+            and t7.overdue_days &gt;= #{bedueDaysStartswith}
+        </if>
+        <if test="bedueDaysEndswith != null">
+            and t7.overdue_days &lt;= #{bedueDaysEndswith}
+        </if>
+        <if test="customerNameEq != null">
+            and t1.name = #{customerNameEq}
+        </if>
+        <if test="customerIdValueEq != null">
+            and t1.card_num = #{customerIdValueEq}
+        </if>
+        <if test="customerMobileEq != null">
+            and t1.phone = #{customerMobileEq}
+        </if>
+        <if test="bankNameEq != null">
+            and t1.bank_name = #{bankNameEq}
+        </if>
+        <if test="bankNumEq != null">
+            and t1.bank_card = #{bankNumEq}
+        </if>
+        <if test="productNameEq != null">
+            and t2.product_name = #{productNameEq}
+        </if>
+        <if test="productIdEq != null">
+            and t2.id = #{productIdEq}
+        </if>
+        <if test="auditerEq != null">
+            and t7.collection_user = #{auditerEq}
+        </if>
+        <if test="endDateStringStart != null">
+            AND to_days(t7.planrepay_date) &gt; to_days(#{endDateStringStart})
+        </if>
+        <if test="endDateStringStartswith != null">
+            AND to_days(t7.planrepay_date) &gt;= to_days(#{endDateStringStartswith})
+        </if>
+        <if test="endDateStringEnd != null">
+            AND to_days(t7.planrepay_date) &lt; to_days(#{endDateStringEnd})
+        </if>
+        <if test="endDateStringEndswith != null">
+            AND to_days(t7.planrepay_date) &lt;= to_days(#{endDateStringEndswith})
+        </if>
+        <if test="settleDateStringStart != null">
+            AND to_days(t7.act_repay_date) &gt; to_days(#{settleDateStringStart})
+        </if>
+        <if test="settleDateStringStartswith != null">
+            AND to_days(t7.act_repay_date) &gt;= to_days(#{settleDateStringStartswith})
+        </if>
+        <if test="settleDateStringEnd != null">
+            AND to_days(t7.act_repay_date) &lt; to_days(#{settleDateStringEnd})
+        </if>
+        <if test="settleDateStringEndswith != null">
+            AND to_days(t7.act_repay_date) &lt;= to_days(#{settleDateStringEndswith})
+        </if>
+        <if test="lastCallDateStringStart != null">
+            AND to_days(t7.current_collection_time) &gt; to_days(#{lastCallDateStringStart})
+        </if>
+        <if test="lastCallDateStringStartswith != null">
+            AND to_days(t7.current_collection_time) &gt;= to_days(#{lastCallDateStringStartswith})
+        </if>
+        <if test="lastCallDateStringEnd != null">
+            AND to_days(t7.current_collection_time) &lt; to_days(#{lastCallDateStringEnd})
+        </if>
+        <if test="lastCallDateStringEndswith != null">
+            AND to_days(t7.current_collection_time) &lt;= to_days(#{lastCallDateStringEndswith})
+        </if>
+        <if test="orderStringStart != null">
+            AND to_days(t7.current_repay_time) &gt; to_days(#{orderStringStart})
+        </if>
+        <if test="orderStringStartswith != null">
+            AND to_days(t7.current_repay_time) &gt;= to_days(#{orderStringStartswith})
+        </if>
+        <if test="orderStringEnd != null">
+            AND to_days(t7.current_repay_time) &lt; to_days(#{orderStringEnd})
+        </if>
+        <if test="orderStringEndswith != null">
+            AND to_days(t7.current_repay_time) &lt;= to_days(#{orderStringEndswith})
+        </if>
+        <if test="stateStringEq != null">
+            and t7.borr_status = #{stateStringEq}
+        </if>
+        <if test="borrStatusEq != null">
+            and t7.borr_status = #{borrStatusEq}
+        </if>
+    </select>
+
+    <select id="selectCollectorsList" resultType="map" parameterType="map">
+        SELECT
+        t7.per_id customerId,
+        t7.id contractKey,
+        t7.borr_num contractID,
+        t7.borr_amount AS amount,
+        t7.description AS description,
+        t7.borr_status AS borrStatus,
+        t7.overdue_days AS bedueDays,
+        t1.name AS customerName,
+        t1.card_num AS customerIdValue,
+        t1.phone AS customerMobile,
+        t1.bank_name AS bankName,
+        t1.bank_card AS bankNum,
+        t2.id AS productId,
+        t2.product_name AS productName,
+        t2.term_num AS productTerm,
+        t7.penalty_sum AS penalty,
+        t7.interest_sum AS interestSum,
+        t7.forfeit_sum AS forfeitSum,
+        t7.amount_sum AS totalAmount,
+        t7.penalty_surplus AS surplusPenalty,
+        t7.amount_surplus AS surplusTotalAmount,
+        t7.pay_amount AS loanAmount,
+        t7.pay_amount payAmount,
+        t7.act_reduce_amount AS reduceAmount,
+        DATE_FORMAT(t7.planrepay_date, "%Y-%m-%d") AS endDateString,
+        DATE_FORMAT(
+        t7.act_repay_date,
+        "%Y-%m-%d %T"
+        ) AS settleDateString,
+        t7.is_manual AS isManual,
+        t7.collection_user AS auditer,
+        DATE_FORMAT(t7.current_collection_time,"%Y-%m-%d %T") as lastCallDateString,
+        DATE_FORMAT(t7.current_repay_time,"%Y-%m-%d %T") as orderString,
+        t7.creation_user as createUser,
+        t7.collection_user as userName
+        FROM b_collectors_list collectors
+        LEFT JOIN b_borrow_list t7 ON collectors.contract_id = t7.borr_num
+        LEFT JOIN b_person t1 on t7.per_id = t1.id
+        LEFT JOIN c_product t2 on t7.prod_id = t2.id
+        <where>
+            collectors.bedue_user_sysno=#{userId} AND
+            (t7.borr_status = 'BS005' OR t7.borr_status = 'BS004') AND
+            collectors.status in ('A','B') AND
+            collectors.is_delete = 2
+            <if test="bedueDaysEq != null">
+                and t7.overdue_days = #{bedueDaysEq}
+            </if>
+            <if test="bedueDaysStart != null">
+                and t7.overdue_days &gt; #{bedueDaysStart}
+            </if>
+            <if test="bedueDaysStartswith != null">
+                and t7.overdue_days &gt;= #{bedueDaysStartswith}
+            </if>
+            <if test="bedueDaysEndswith != null">
+                and t7.overdue_days &lt;= #{bedueDaysEndswith}
+            </if>
+            <if test="customerIdEq != null  and customerIdEq != ''">
+                AND t7.per_id in (${customerIdEq})
+            </if>
+            <if test="customerNameEq != null">
+                and t1.name = #{customerNameEq}
+            </if>
+            <if test="customerIdValueEq != null">
+                and t1.card_num = #{customerIdValueEq}
+            </if>
+            <if test="customerMobileEq != null">
+                and t1.phone = #{customerMobileEq}
+            </if>
+            <if test="repayDateStartswith != null">
+                AND to_days(t7.planrepay_date) &gt;= to_days(#{repayDateStartswith})
+            </if>
+            <if test="repayDateEnd != null">
+                AND to_days(t7.planrepay_date) &lt; to_days(#{repayDateEnd})
+            </if>
+            <if test="borrStatusEq != null">
+                and t7.borr_status = #{borrStatusEq}
+            </if>
+            <if test="productIdEq != null">
+                and t2.id = #{productIdEq}
+            </if>
+            <if test="productNameEq != null">
+                and t2.product_name = #{productNameEq}
+            </if>
+            <if test="contractIDEq != null">
+                and t7.borr_num = #{contractIDEq}
+            </if>
+            <if test="endDateStringStart != null">
+                AND to_days(t7.planrepay_date) &gt; to_days(#{endDateStringStart})
+            </if>
+            <if test="endDateStringStartswith != null">
+                AND to_days(t7.planrepay_date) &gt;= to_days(#{endDateStringStartswith})
+            </if>
+            <if test="endDateStringEnd != null">
+                AND to_days(t7.planrepay_date) &lt; to_days(#{endDateStringEnd})
+            </if>
+            <if test="endDateStringEndswith != null">
+                AND to_days(t7.planrepay_date) &lt;= to_days(#{endDateStringEndswith})
+            </if>
+            <if test="settleDateStringStart != null">
+                AND to_days(t7.act_repay_date) &gt; to_days(#{settleDateStringStart})
+            </if>
+            <if test="settleDateStringStartswith != null">
+                AND to_days(t7.act_repay_date) &gt;= to_days(#{settleDateStringStartswith})
+            </if>
+            <if test="settleDateStringEnd != null">
+                AND to_days(t7.act_repay_date) &lt; to_days(#{settleDateStringEnd})
+            </if>
+            <if test="settleDateStringEndswith != null">
+                AND to_days(t7.act_repay_date) &lt;= to_days(#{settleDateStringEndswith})
+            </if>
+            <if test="lastCallDateStringStart != null">
+                AND to_days(t7.current_collection_time) &gt; to_days(#{lastCallDateStringStart})
+            </if>
+            <if test="lastCallDateStringStartswith != null">
+                AND to_days(t7.current_collection_time) &gt;= to_days(#{lastCallDateStringStartswith})
+            </if>
+            <if test="lastCallDateStringEnd != null">
+                AND to_days(t7.current_collection_time) &lt; to_days(#{lastCallDateStringEnd})
+            </if>
+            <if test="lastCallDateStringEndswith != null">
+                AND to_days(t7.current_collection_time) &lt;= to_days(#{lastCallDateStringEndswith})
+            </if>
+            <if test="orderStringStart != null">
+                AND to_days(t7.current_repay_time) &gt; to_days(#{orderStringStart})
+            </if>
+            <if test="orderStringStartswith != null">
+                AND to_days(t7.current_repay_time) &gt;= to_days(#{orderStringStartswith})
+            </if>
+            <if test="orderStringEnd != null">
+                AND to_days(t7.current_repay_time) &lt; to_days(#{orderStringEnd})
+            </if>
+            <if test="orderStringEndswith != null">
+                AND to_days(t7.current_repay_time) &lt;= to_days(#{orderStringEndswith})
+            </if>
+        </where>
+        <if test="selector == 'repayDate' and desc != ''">
+            order by t7.planrepay_date ${desc},t7.id
+        </if>
+        <if test="selector == 'surplusTotalAmount' and desc != ''">
+            order by t7.amount_surplus ${desc},t7.id
+        </if>
+        <if test="selector == 'currentRepayTime' and desc != ''">
+            order by t7.current_repay_time ${desc},t7.id
+        </if>
+        <if test="selector == 'currentCollectionTime' and desc != ''">
+            order by t7.current_collection_time ${desc},t7.id
+        </if>
+        <if test="selector == 'bedueDays' and desc != ''">
+            order by t7.overdue_days ${desc},t7.id
+        </if>
+        <if test="selector == null and desc == null">
+            ORDER BY t7.planrepay_date
+        </if>
+    </select>
+
+    <select id="getBatchReduce" parameterType="map" resultType="com.jhh.dc.baika.entity.manager_vo.LoanManagementVo">
+        SELECT
+        t7.per_id customerId,
+        t7.prod_id prodId,
+        t7.id contractKey,
+        t7.borr_num contractID,
+        t7.borr_amount as amount,
+        t7.description as description,
+        t7.borr_status AS borrStatus,
+        t7.overdue_days AS bedueDays,
+        t1.name AS customerName,
+        t1.card_num AS customerIdValue,
+        t1.phone AS customerMobile,
+        t1.bank_name AS bankName,
+        t1.bank_card AS bankNum,
+        t1.balance as surplusAccountAmount,
+        t2.id AS productId,
+        t2.product_name AS productName,
+        t2.term AS productTerm,
+        t7.plan_rental AS rental,
+        t7.ransom_amount AS ransom,
+        t7.penalty as penalty,
+        b.reason as reason,
+        b.status status,
+        <if test="from == null || from == ''">
+            if(t7.no_deposit_refund=0, 0-t7.deposit_amount, 0) AS deposit,
+        </if>
+        <if test="from != null">
+            t7.deposit_amount AS deposit,
+        </if>
+        <![CDATA[
+         case when CONVERT(if(t7.overdue_days < 8,
+             if(TO_DAYS(NOW())-TO_DAYS(t7.planrepay_date) > 0, -- 第4期逾期
+                  t7.amount_surplus, -- 第4期逾期，则全部结清
+                  if(TO_DAYS(t7.planrepay_date)-TO_DAYS(NOW()) < 7, -- 已到第4期，但第4期尚未逾期
+                          t7.amount_surplus-(t7.plan_rental/t7.term_num)-t7.surplus_ransom_amount+(1-t7.no_deposit_refund)*t7.deposit_amount, -- 已到第4期，但第4期尚未逾期 减去剩余赎回手机费用加上押金
+                          t7.amount_surplus-(t7.plan_rental/t7.term_num)) ) -- 未到第4期 按照原有逻辑 只减去当期租金
+              , t7.amount_surplus),DECIMAL(10,2)) < 0 then 0
+         else CONVERT(if(t7.overdue_days < 8,
+             if(TO_DAYS(NOW())-TO_DAYS(t7.planrepay_date) > 0, -- 第4期逾期
+                  t7.amount_surplus, -- 第4期逾期，则全部结清
+                  if(TO_DAYS(t7.planrepay_date)-TO_DAYS(NOW()) < 7, -- 已到第4期，但第4期尚未逾期
+                          t7.amount_surplus-(t7.plan_rental/t7.term_num)-t7.surplus_ransom_amount+(1-t7.no_deposit_refund)*t7.deposit_amount, -- 已到第4期，但第4期尚未逾期 减去剩余赎回手机费用加上押金
+                          t7.amount_surplus-(t7.plan_rental/t7.term_num)) ) -- 未到第4期 按照原有逻辑 只减去当期租金
+            , t7.amount_surplus),DECIMAL(10,2)) end
+           ]]> AS mstRepayAmount,
+        t7.act_plan_amount AS totalAmount,
+        t7.surplus_rental_amount AS surplusRental,
+        t7.surplus_penalty AS surplusPenalty,
+        t7.surplus_ransom_amount AS surplusRansom,
+        t7.amount_surplus AS surplusTotalAmount,
+        t7.pay_amount as loanAmount,
+        t7.act_repay_amount as repayAmount,
+        t7.pay_amount payAmount,
+        t7.act_reduce_amount as reduceAmount,
+        DATE_FORMAT(t7.planrepay_date,"%Y-%m-%d") AS endDateString,
+        DATE_FORMAT(t7.act_repay_date,"%Y-%m-%d %T") AS settleDateString,
+        t7.is_manual as isManual,
+        t7.collection_user as auditer,
+        DATE_FORMAT(t7.current_collection_time,"%Y-%m-%d %T") as lastCallDateString,
+        DATE_FORMAT(t7.current_repay_time,"%Y-%m-%d %T") as orderString,
+        t7.creation_user as createUser,
+        t4.user_name as userName
+        FROM b_borrow_list t7
+        LEFT JOIN b_person t1 on t7.per_id = t1.id
+        LEFT JOIN c_product t2 on t7.prod_id = t2.id
+        LEFT JOIN c_system_user t4 on t7.collection_user=t4.user_sysno
+        LEFT JOIN b_borrow_deductions b on t7.id = b.borr_id
+        WHERE
+        t7.borr_status = 'BS005'
+        <if test="contractKey != null">
+            and t7.id = #{contractKey}
+        </if>
+        <if test="contractIDEq != null">
+            and t7.borr_num = #{contractIDEq}
+        </if>
+        <if test="bedueDaysEq != null">
+            and t7.overdue_days = #{bedueDaysEq}
+        </if>
+        <if test="bedueDaysStartswith != null">
+            and t7.overdue_days &gt;= #{bedueDaysStartswith}
+        </if>
+        <if test="bedueDaysEndswith != null">
+            and t7.overdue_days &lt;= #{bedueDaysEndswith}
+        </if>
+        <if test="customerNameEq != null">
+            and t1.name = #{customerNameEq}
+        </if>
+        <if test="customerIdValueEq != null">
+            and t1.card_num = #{customerIdValueEq}
+        </if>
+        <if test="customerMobileEq != null">
+            and t1.phone = #{customerMobileEq}
+        </if>
+        <if test="bankNameEq != null">
+            and t1.bank_name = #{bankNameEq}
+        </if>
+        <if test="bankNumEq != null">
+            and t1.bank_card = #{bankNumEq}
+        </if>
+        <if test="prodId != null">
+            and t7.prod_id = #{prodId}
+        </if>
+        <if test="prodIdEq != null">
+            and t7.prod_id = #{prodIdEq}
+        </if>
+        <if test="productNameEq != null">
+            and t2.product_name = #{productNameEq}
+        </if>
+        <if test="productIdEq != null">
+            and t2.id = #{productIdEq}
+        </if>
+        <if test="auditerEq != null">
+            and t7.collection_user = #{auditerEq}
+        </if>
+        <if test="endDateStringStart != null">
+            AND to_days(t7.planrepay_date) &gt; to_days(#{endDateStringStart})
+        </if>
+        <if test="endDateStringStartswith != null">
+            AND to_days(t7.planrepay_date) &gt;= to_days(#{endDateStringStartswith})
+        </if>
+        <if test="endDateStringEnd != null">
+            AND to_days(t7.planrepay_date) &lt; to_days(#{endDateStringEnd})
+        </if>
+        <if test="endDateStringEndswith != null">
+            AND to_days(t7.planrepay_date) &lt;= to_days(#{endDateStringEndswith})
+        </if>
+        <if test="settleDateStringStart != null">
+            AND to_days(t7.act_repay_date) &gt; to_days(#{settleDateStringStart})
+        </if>
+        <if test="settleDateStringStartswith != null">
+            AND to_days(t7.act_repay_date) &gt;= to_days(#{settleDateStringStartswith})
+        </if>
+        <if test="settleDateStringEnd != null">
+            AND to_days(t7.act_repay_date) &lt; to_days(#{settleDateStringEnd})
+        </if>
+        <if test="settleDateStringEndswith != null">
+            AND to_days(t7.act_repay_date) &lt;= to_days(#{settleDateStringEndswith})
+        </if>
+        <if test="lastCallDateStringStart != null">
+            AND to_days(t7.current_collection_time) &gt; to_days(#{lastCallDateStringStart})
+        </if>
+        <if test="lastCallDateStringStartswith != null">
+            AND to_days(t7.current_collection_time) &gt;= to_days(#{lastCallDateStringStartswith})
+        </if>
+        <if test="lastCallDateStringEnd != null">
+            AND to_days(t7.current_collection_time) &lt; to_days(#{lastCallDateStringEnd})
+        </if>
+        <if test="lastCallDateStringEndswith != null">
+            AND to_days(t7.current_collection_time) &lt;= to_days(#{lastCallDateStringEndswith})
+        </if>
+        <if test="orderStringStart != null">
+            AND to_days(t7.current_repay_time) &gt; to_days(#{orderStringStart})
+        </if>
+        <if test="orderStringStartswith != null">
+            AND to_days(t7.current_repay_time) &gt;= to_days(#{orderStringStartswith})
+        </if>
+        <if test="orderStringEnd != null">
+            AND to_days(t7.current_repay_time) &lt; to_days(#{orderStringEnd})
+        </if>
+        <if test="orderStringEndswith != null">
+            AND to_days(t7.current_repay_time) &lt;= to_days(#{orderStringEndswith})
+        </if>
+        <if test="stateStringEq != null">
+            and t7.borr_status = #{stateStringEq}
+        </if>
+        <if test="borrStatusEq != null">
+            and t7.borr_status = #{borrStatusEq}
+        </if>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'bedueDays'">ORDER BY t7.overdue_days</when>
+                <when test="selector eq 'surplusAccountAmount'">ORDER BY t1.balance</when>
+                <when test="selector eq 'surplusTotalAmount'">ORDER BY t7.amount_surplus</when>
+                <when test="selector eq 'endDateString'">ORDER BY t7.planrepay_date</when>
+                <when test="selector eq 'settleDateString'">ORDER BY t7.act_repay_date</when>
+                <when test="selector eq 'lastCallDateString'">ORDER BY t7.current_collection_time</when>
+                <when test="selector eq 'orderString'">ORDER BY t7.current_repay_time</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+        <if test="statusEq != null">
+            <choose>
+                <when test="statusEq == 4">
+                    and b.id is null
+                </when>
+                <otherwise>
+                    and b.status = #{statusEq}
+                </otherwise>
+            </choose>
+        </if>
+        <if test="reasonEq != null">
+            and b.reason like "%"#{reasonEq}"%"
+        </if>
+        <if test="selector == null and desc == null">
+            ORDER BY t7.id desc
+        </if>
+    </select>
+
+    <select id="getBatchReduceList" resultType="map" parameterType="map">
+        SELECT
+        t.contract_id AS borrId,
+        t.borr_num AS borrNum,
+        t1.name AS userName,
+        t1.card_num AS idCard,
+        t1.phone AS customerMobile,
+        t1.bank_name AS bankName,
+        t1.bank_card AS bankNum,
+        t.rl_state AS rlState,
+        t.act_amount AS amount,
+        DATE_FORMAT(t.creation_date, '%Y-%m-%d %T') AS insDate,
+        t.create_user AS createUser,
+        IF(t.reason IS NULL, t.rl_remark, t.reason) AS remark,
+        t.serial_no AS serialNo,
+        t.per_id AS perId,
+        t.deductions_type AS deductionsType,
+        t2.overdue_days AS bedueDays,
+        t3.product_name AS productName
+        FROM
+        b_loan_order t
+        LEFT JOIN b_person t1
+        ON t.per_id = t1.id
+        LEFT JOIN b_borrow_list t2
+        ON t.contract_id = t2.id
+        LEFT JOIN c_product t3
+        ON t2.prod_id = t3.id
+        WHERE t.type = '18'
+        <if test="borrNum != null">
+            and t.borr_num = #{borrNum}
+        </if>
+        <if test="userName != null">
+            and t1.name = #{userName}
+        </if>
+        <if test="idCard != null">
+            and t1.card_num = #{idCard}
+        </if>
+        <if test="customerMobile != null">
+            and t1.phone = #{customerMobile}
+        </if>
+        <if test="bankName != null">
+            and t1.bank_name #{bankName}
+        </if>
+        <if test="bankNum != null">
+            and t1.bank_card = #{bankNum}
+        </if>
+        <if test="deductionsType != null">
+            and t.deductions_type = #{deductionsType}
+        </if>
+        <if test="rlState != null">
+            and t.rl_state = #{rlState}
+        </if>
+        <if test="createUser != null">
+            and t.create_user = #{createUser}
+        </if>
+        <if test="collectionUser != null">
+            and t.collection_user = #{collectionUser}
+        </if>
+        <if test="serialNo != null">
+            and t.serial_no = #{serialNo}
+        </if>
+        <if test="productName != null">
+            and t3.id = #{productName}
+        </if>
+        <if test="bedueDays != null">
+            and t2.overdue_days = #{bedueDays}
+        </if>
+        <if test="insDate_start == null || insDateStartswith == ''">
+            <![CDATA[ and t.creation_date >= DATE_SUB(CURDATE(),INTERVAL 1 MONTH) ]]>
+        </if>
+        <if test="insDate_start != null">
+            <![CDATA[ and t.creation_date >= DATE_FORMAT(#{insDate_start},'%Y-%m-%d') ]]>
+        </if>
+        <if test="insDate_end != null">
+            <![CDATA[ and t.creation_date < DATE_FORMAT(#{insDate_end},'%Y-%m-%d') ]]>
+        </if>
+        <if test="selector == null and desc == null">
+            ORDER BY t.creation_date desc
+        </if>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'insDate'">ORDER BY t.creation_date</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+    </select>
+
+    <select id="getSurplusTotalAmountNum" parameterType="String" resultType="String">
+        SELECT
+        SUM(rp.surplus_rental_amount) + SUM(rp.surplus_penalty) AS surplusTotalAmount
+        FROM
+        b_repayment_plan rp left join b_borrow_list bo on rp.contract_id = bo.id
+        WHERE bo.borr_num = #{contractId};
+    </select>
+
+</mapper>

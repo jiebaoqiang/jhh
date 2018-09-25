@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.product.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.app.Product">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="product_name" property="productName" jdbcType="VARCHAR"/>
+        <result column="product_description" property="productDescription" jdbcType="VARCHAR"/>
+        <result column="product_icon" property="productIcon" jdbcType="VARCHAR"/>
+        <result column="product_type_code" property="productTypeCode" jdbcType="VARCHAR"/>
+        <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR"/>
+        <result column="flag" property="flag" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="interest_rate" property="interestRate" jdbcType="DECIMAL"/>
+        <result column="maximum_amount" property="maximumAmount" jdbcType="DECIMAL"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="repayment_method" property="repaymentMethod" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP"/>
+        <result column="creation_user" property="creationUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="sync" property="sync" jdbcType="CHAR"/>
+        <result column="contract_prdouct_id" property="contractPrdouctId" jdbcType="INTEGER"/>
+        <result column="service_fee" property="serviceFee" jdbcType="DECIMAL"/>
+        <result column="manage_fee" property="manageFee" jdbcType="DECIMAL"/>
+    </resultMap>
+
+
+    <sql id="product">
+    id,product_name,product_description,product_icon,product_type_code,product_type_name,flag,amount,
+    interest_rate,maximum_amount,remark,repayment_method,status,creation_date,creation_user,update_date,update_user,
+    sync,contract_prdouct_id,service_fee,manage_fee
+  </sql>
+    <select id="selectByDevice" resultMap="BaseResultMap" parameterType="string">
+        select <include refid="product" /> FROM c_product where device_flag = #{device_flag} AND term = '4' AND status = 'A' ORDER BY status ASC,creation_date DESC
+    </select>
+
+    <select id="getProductAll" resultMap="BaseResultMap" >
+        select <include refid="product" /> FROM c_product  where status = 'A' ORDER BY status ASC,creation_date DESC
+    </select>
+
+    <select id="getSignInfo" resultType="com.jhh.dc.baika.entity.app_vo.SignInfo" >
+        SELECT b.id AS borrId, b.borr_num AS borrNum, p.rent AS rent,p.amount AS amount,p.term AS termNum ,per.bank_card AS bankNum,
+        p.term_day * p.term AS totalDay , p.deposit AS deposit, p.service_amount AS serviceAmount
+        FROM b_borrow_list b,product p,person per WHERE b.prod_id = p.id AND per.id = b.per_id AND per_id = #{per_id} ORDER BY borrId DESC LIMIT 1;
+    </select>
+
+</mapper>

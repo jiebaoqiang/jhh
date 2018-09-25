@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.dao.CollectorsRecordMapper">
+
+    <select id="selectAddPeriodsNumToday" parameterType="map" resultType="int">
+        SELECT
+        count(*)
+        FROM b_collectors_list c
+        LEFT JOIN b_repayment_plan r ON  c.contract_sysno=r.contract_id
+        left join b_borrow_list b on c.contract_sysno=b.id
+        <![CDATA[ WHERE
+        r. STATUS IN (1,3) AND DATE_FORMAT(c.update_date, '%Y-%m-%d') = #{beginDate}
+        and  c.bedue_user_sysno = #{userSysno}
+        and b.overdue_days  <  8
+        AND r.overdue_days  >  2
+        AND r.overdue_days  <  8
+        AND DATE_FORMAT(r.update_date, '%Y-%m-%d') >= #{beginDate} ]]>
+    </select>
+
+    <select id="selectAddPeriodsNumYesterday" parameterType="map" resultType="int">
+        SELECT
+        count(*)
+        FROM b_collectors_list c
+        LEFT JOIN b_repayment_plan r ON  c.contract_sysno=r.contract_id
+        left join b_borrow_list b on c.contract_sysno=b.id
+        <![CDATA[ WHERE
+        r. STATUS IN (1,3) AND DATE_FORMAT(c.update_date, '%Y-%m-%d') = #{beginDate}
+        AND  c.bedue_user_sysno = #{userSysno}
+        AND b.overdue_days  <=  8
+        AND r.overdue_days  >  3
+        AND r.overdue_days  <  8
+        AND DATE_FORMAT(r.update_date, '%Y-%m-%d') >= #{beginDate} ]]>
+    </select>
+
+</mapper>
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0,maximum-scale=1.0">
+  <!-- 允许全屏模式浏览 -->
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/authorize.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <title>授权</title>
+</head>
+
+<body>
+  <div class="title">
+    <p>
+      <a href="javascript:history.go(-1);"  class="iconfont icon-back_light"></a>授权</p>
+  </div>
+  <div class="main">
+    <div class="content-card">
+      <h3>放款授权</h3>
+      <p>开通“放款授权”，用户才能进行放款！</p>
+      <button id="loanAuth" class="btn" style="margin:1rem auto;">去开通</button>
+    </div>
+    <div class="content-card">
+        <h3>还款授权</h3>
+        <p>开通“还款授权”后，用户可授权平台进行免密还款！</p>
+        <button id="repayAuth" class="btn" style="margin:1rem auto">去开通</button>
+      </div>
+      <button class="btn" style="margin:1.5rem auto;background:rgba(199,214,251,1)" id="nextBtn" disabled="disabled">下一步</button>
+  </div>
+  <div hidden="hidden">
+    <form id="form" action="" method="post">
+      <input id="merchantNo" type="text" name="merchantNo">
+      <input id="merOrderNo" type="text" name="merOrderNo">
+      <input id="jsonEnc" type="text" name="jsonEnc">
+      <input id="keyEnc" type="text" name="keyEnc">
+      <input id="sign" type="text" name="sign">
+    </form>
+  </div>
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+</body>
+<script th:inline="javascript">
+var perId = [[${perId}]];
+</script>
+<script th:src="@{/js/account/authorize.js}"></script>
+
+</html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.CommissionOrderMapper" >
+    <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.share.CommissionOrder" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="per_id" property="perId" jdbcType="INTEGER" />
+        <result column="device" property="device" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="INTEGER" />
+        <result column="inviter_level_1" property="inviterLevel1" jdbcType="INTEGER" />
+        <result column="inviter_phone_level_1" property="inviterPhoneLevel1" jdbcType="VARCHAR" />
+        <result column="inviter_level_2" property="inviterLevel2" jdbcType="INTEGER" />
+        <result column="inviter_phone_level_2" property="inviterPhoneLevel2" jdbcType="VARCHAR" />
+        <result column="channel" property="channel" jdbcType="INTEGER" />
+        <result column="channel_phone" property="channelPhone" jdbcType="VARCHAR" />
+        <result column="rule_id" property="ruleId" jdbcType="INTEGER" />
+        <result column="group" property="group" jdbcType="TINYINT" />
+        <result column="inviter_level" property="inviterLevel" jdbcType="TINYINT" />
+        <result column="tracking_status" property="trackingStatus" jdbcType="TINYINT" />
+        <result column="review_id" property="reviewId" jdbcType="INTEGER" />
+        <result column="withdraw_status" property="withdrawStatus" jdbcType="TINYINT" />
+        <result column="commission_amount" property="commissionAmount" jdbcType="DECIMAL" />
+        <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, per_id, device, phone, inviter_level_1, inviter_phone_level_1, inviter_level_2,
+    inviter_phone_level_2, channel, channel_phone, rule_id, group, inviter_level, tracking_status,
+    review_id, withdraw_status, commission_amount, creation_date, update_date
+  </sql>
+
+    <update id="updateWithDrawalStatus">
+        UPDATE commission_order o SET o.withdraw_status = #{status} WHERE o.id IN
+        <foreach item="item" collection="list" separator="," open="(" close=")" index="index">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="queryTotalAmount" parameterType="string" resultType="map">
+        <![CDATA[
+            SELECT SUM(amount) AS amount FROM (
+                SELECT IFNULL(SUM(IFNULL(o.commission_amount, 0)), 0) AS amount FROM commission_order o WHERE o.withdraw_status = '0' AND o.inviter_level_1 = #{perId} AND o.creation_date < DATE_FORMAT(NOW(), '%Y-%m-%d')
+                UNION ALL
+                SELECT IFNULL(SUM(IFNULL(o.commission_amount, 0)), 0) AS amount FROM commission_order o WHERE o.withdraw_status = '0' AND o.inviter_level_2 = #{perId} AND o.creation_date < DATE_FORMAT(NOW(), '%Y-%m-%d')
+            ) a
+        ]]>
+    </select>
+
+
+    <select id="queryLevel1CommissionOrderByPersonId" resultType="com.jhh.dc.baika.entity.manager_vo.CommissionDetailVo">
+
+        SELECT
+        t2.commission,
+        t2.perId,
+        t2.phone,
+        t2.type,
+        t2.tracking_status,
+        t2.creation_date,
+        co.meaning trackingStatus
+        FROM
+        (
+        SELECT
+        SUM( t1.commission_amount ) commission,
+        t1.per_id perId,
+        t1.phone phone,
+        t1.device type,
+        t1.creation_date,
+        MAX( t1.tracking_status ) tracking_status
+        FROM
+        (
+        SELECT
+        t.id,
+        t.per_id,
+        t.phone,
+        t.device,
+        t.tracking_status,
+        t.commission_amount,
+        t.creation_date
+        FROM
+        commission_order t
+        WHERE
+        t.inviter_level_1 = #{personId}
+        AND t.inviter_level = 1
+
+        ) t1
+        GROUP BY t1.per_id ) t2
+        LEFT JOIN c_code_value co ON t2.tracking_status = co.code_code
+        AND co.code_type = 'commission_rule_tracking_status'
+        <if test='phone != null and phone != ""' >
+          WHERE t2.phone like CONCAT('',#{phone},'%')
+        </if>
+        ORDER BY t2.creation_date DESC
+
+    </select>
+</mapper>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0,maximum-scale=1.0">
+  <!-- 允许全屏模式浏览 -->
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <link rel="stylesheet" th:href="@{/css/G-pay.css}">
+  <title>付款</title>
+</head>
+
+<body>
+  <div class="title">
+    <p>
+      <a href="javascript:history.go(-1);" class="iconfont icon-back_light"></a>付 款</p>
+  </div>
+  <div class="main">
+    <form th:action="@{/form/paymentInfo}" th:method="post" id="paymentInfo">
+      <input type="hidden" class="place" name="bankId" th:value="${info.bank[0].id}" />
+      <input type="hidden" name="borrId" th:value="${info.borrId}" />
+      <input type="hidden" name="perId" th:value="${info.perId}" />
+      <input type="hidden" name="actualAmount" th:value="${#numbers.formatDecimal(info.amountSurplus+info.fee,1,2)}" />
+      <ul class="clearfix">
+        <li>
+          <div class="inner clearfix">
+            <p class="fl inner-left">付款金额</p>
+            <p class="fr money color"><input type="text" name="amountSurplus" th:value="${#numbers.formatDecimal(info.amountSurplus,1,2)}" /></p>
+          </div>
+          <div class="inner clearfix">
+            <p class="fl inner-left">实际付款金额</p>
+            <p class="fr money color" id="actualAmount" th:text="${#numbers.formatDecimal(info.amountSurplus+info.fee,1,2)}">
+          </div>
+        </li>
+      </ul>
+        <p class="tip1">选择支付方式</p>
+        <input type="hidden" class="place" value="1" />
+        <div class="clearfix">
+          <ul th:each="bank:${info.bank}">
+            <li>
+              <div class="inner e6">
+                <p class="fl">
+                  <img class="perId" th:src="@{'/images/bankIcon/'+${bank.bankCode}+'.png'}"   th:text="${bank.bankName}" />
+                  <span th:text="'(尾号'+${#strings.substring(bank.bankNum,#strings.length(bank.bankNum)-4)}+')'"></span></p>
+                <p class="fr bankCard" th:attr="data-id=${bank.id}">
+                  <img  th:if="${bank.status == '1'}" th:src="@{/images/active.png}"  alt="" />
+                  <img  th:if="${bank.status != '1'}" th:src="@{/images/noActive.png}"  alt="" />
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+    </form>
+
+    <form th:action="@{'/form/addBankCard/'+${info.perId}}" method="post" id="addBank">
+      <input type="hidden" name="returnUrl" th:value="@{'/form/jumpRepay/'+${info.perId}+'/'+${info.borrId}}" />
+    </form>
+  </div>
+  <div class="addCard">
+    <a href="javascript:" onclick="addBankCard()">＋ 添加银行卡</a>
+  </div>
+  <div class="foot">
+    <div class="tip2" th:text="'说明：每笔手续费'+${info.fee}+'元，由第三方平台收取'"></div>
+    <button class="btn">确认付款</button>
+  </div>
+   <!-- 弹框 -->
+  <div th:replace="common/promptBox::promptBox"></div>
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script th:inline="javascript">
+    var fee = [[${info.fee}]];
+    var phone = [[${info.phone}]];
+    var amount = [[${info.amountSurplus}]];
+    var borrNum = [[${info.borrNum}]];
+  </script>
+  <script th:src="@{/js/trade/repay.js}"></script>
+</body>
+
+</html>

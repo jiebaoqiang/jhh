@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.baikelu.BaikeluRemindMapper">
+
+    <insert id="insertBaikeluRemindList" parameterType="java.util.List">
+        insert into b_baikelu_remind (id, job_ref,phone, remind_type,remind_desc,request_data,response_data,request_time,response_time,create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.jobRef},#{item.phone},#{item.remindType},#{item.remindDesc},#{item.requestData},#{item.responseData},#{item.requestTime},#{item.responseTime},#{item.createTime})
+        </foreach>
+    </insert>
+
+    <update id="updateBaikeluRemindList" parameterType="java.util.List">
+        update b_baikelu_remind
+        set callback_data=
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.callbackData}
+        </foreach>,
+        callback_time= <foreach collection="list" item="item" index="index"
+                      separator=" " open="case ID" close="end">
+        when #{item.id} then #{item.callbackTime}
+       </foreach>
+        where id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+
+    </update>
+</mapper>
+

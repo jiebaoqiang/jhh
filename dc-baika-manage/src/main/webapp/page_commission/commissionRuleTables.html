@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>规则列表</title>
+</head>
+<script>
+    commissionRuleTablesInit();
+</script>
+<body>
+<div class="page-bar" style="margin-bottom: 10px;">
+    <ul class="page-breadcrumb">
+        <li><i class="fa fa-home"></i> <a href="#/dashboard.html">首页</a>
+            <i class="fa fa-angle-right"></i></li>
+        <li><a href="#/companyTables.html">规则列表</a></li>
+    </ul>
+    <p style="float:right;line-height:36px;margin:0;padding-right:100px;" class="text-danger"></p>
+</div>
+<div class="row" style="min-height:200px;">
+    <div class="col-md-12 wblMd">
+        <div class="wblBackground"></div>
+        <div class="wblFillDiv"></div>
+        <div id="commissionRule"></div>
+    </div>
+</div>
+<!-- 以下是弹出模态框 -->
+<div class="modal fade" id="editCommissionRule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 10px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: 5px;padding-right: 15px;"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editCommissionRuleTitle"></h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <form class="form-horizontal" id="editcompany-form">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">规则名称<span style="color: red">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="hidden" name="operationUser" value="" class="form-control" id="operationUser">
+                            <input type="hidden" name="id" class="form-control" id="editId">
+                            <input type="text" name="name" class="form-control" id="editName" placeholder="规则名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">适用人群<span style="color: red">*</span></label>
+                        <div class="col-sm-8">
+                            <select name="applyPeople" id="editApplyPeople" class="form-control">
+                                <!--<option value="1">全部用户</option>-->
+                                <!--<option value="2">安卓</option>-->
+                                <!--<option value="3">苹果</option>-->
+                                <!--<option value="4">特殊用户</option>-->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">渠道号码<span style="color: red"></span></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="channelPhone" class="form-control" id="editChannelPhone" placeholder="渠道号码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">邀请人级数<span style="color: red">*</span></label>
+                        <div class="col-sm-8">
+                            <select name="inviterLevel" id="editInviterLevel" class="form-control">
+                                <option value="1">一级</option>
+                                <option value="2">二级</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">邀请人状态<span style="color: red">*</span></label>
+                        <div class="col-sm-8">
+                            <select name="trackingStatus" id="editTrackingStatus" class="form-control">
+                                <option value="1">已注册</option>
+                                <option value="2">已放款</option>
+                                <option value="3">已还第一期</option>
+                                <option value="4">已还第二期</option>
+                                <option value="5">已还第三期</option>
+                                <option value="6">已还清</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">对应佣金<span style="color: red">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="commission" class="form-control" id="editCommission" placeholder="对应佣金">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btnEditCommissionRule">提交操作</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

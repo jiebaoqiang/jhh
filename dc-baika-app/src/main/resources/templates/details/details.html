@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <link rel="stylesheet" th:href="@{/css/G-contract.css}">
+  <style>
+    body {
+      background-color: #f3f5f9;
+    }
+
+    .content {
+      margin-top: .5rem;
+    }
+
+    .wrapBox {
+      background-color: #fff;
+    }
+    
+    .btn {
+      width: 45%;
+    }
+
+    .cancel {
+      background: #A7BFFA;
+    }
+
+    li {
+      border-bottom: 1px solid #e6e6e6;
+    }
+
+    footer {
+      padding-top: 2rem;
+      padding-bottom: 2.8rem;
+    }
+    .successModal .modalBox {
+      background: #fff;
+      padding-top: 0;
+      overflow: hidden;
+    }
+    .successModal .modalBox .content {
+      color: #666;
+      padding-top: 1rem;
+      border-bottom: 1px solid #ededed;
+    }
+    .successModal {
+      background: rgba(0, 0, 0 , .5);
+    }
+    .successModal .modalBox a {
+      position: static;
+      float: left;
+      width: 50%;
+      transform: translateX(0);
+      -webkit-transform: translateX(0);
+      font-size: .9rem;
+      text-align: center;
+      background: #fff;
+      color: #5282EC;
+    }
+    .successModal .modalBox .top{
+      color: #fff;
+      height: 2.5rem;
+    }
+    .successModal .modalBox a:first-child {
+      color: #999;
+    }
+  </style>
+  <title>详情页</title>
+</head>
+
+<body>
+  <div class="title">
+    <p>
+      <a   class="iconfont icon-back_light previouStep"></a>详情页</p>
+  </div>
+  <div class="wrapBox">
+    <div class="content">
+      <ul>
+        <li class="clearfix">
+          <p class="fl">申请时间</p>
+          <span class="fr" th:text="${details.askborrDate == null ? '--' : #dates.format(details.askborrDate, 'yyyy-MM-dd')}"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">申请编号</p>
+          <span class="fr" th:text="${details.borrNum}"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">申请金额</p>
+          <span class="fr"  th:text="${#numbers.formatDecimal(details.borrAmount,1,2)}+'元'"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">期限</p>
+          <span class="fr">一个月</span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">发放日</p>
+          <span class="fr" th:text="${ details.payDate == null ? '--': #dates.format(details.payDate, 'yyyy-MM-dd')}"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">还款日</p>
+          <span class="fr" th:text="${details.planrepayDate == null ? '--' : #dates.format(details.planrepayDate, 'yyyy-MM-dd')}"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">合同状态</p>
+          <span class="fr"  th:text="${details.borrStatusName}" id="borrStatusName"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">借款协议</p>
+          <span class="fr">
+            <a href="javascript:;" class="color">查看</a>
+          </span>
+        </li>
+      </ul>
+    </div>
+    <footer class="clearfix">
+      <button type="button" id="btn" class="btn cancel fl">取消</button>
+      <button type="button" id="goBtn" class="btn goBtn fr">继续申请</button>
+    </footer>
+  </div>
+  <!-- 签约成功的弹框 -->
+  <div class="successModal hide">
+    <div class="modalBox">
+      <div class="top">提 示</div>
+      <div class="content">
+        <p>您确定要取消该订单吗？</p>
+      </div>
+      <div class="foot clearfix">
+        <a href="javascript:;" class="trueBtn">确 定</a>
+        <a href="Javascript:;" class="cancelBtn">我再想想</a>
+      </div>
+    </div>
+  </div>
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+  <script th:src="@{/js/app.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script th:inline="javascript">
+    var borrStatus = [[${details.borrStatus}]];
+    var perId = [[${details.perId}]];
+    var borrId = [[${details.borrId}]];
+    var phone = [[${#httpServletRequest.getAttribute('phone')}]];
+    var borrStatusName = [[${details.borrStatusName}]];
+    var prodId = [[${details.prodId}]];
+  </script>
+  <script th:src="@{/js/details/details.js}"></script>
+</body>
+
+</html>

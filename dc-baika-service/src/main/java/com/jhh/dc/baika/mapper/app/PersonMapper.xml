@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.app.PersonMapper" >
+  <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.app.Person" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="pay_password" property="payPassword" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="sync" property="sync" jdbcType="CHAR" />
+    <result column="is_manual" property="isManual" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+    <result column="contact_num" property="contactNum" jdbcType="INTEGER" />
+    <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="is_login" property="isLogin" jdbcType="INTEGER" />
+    <result column="token_id" property="tokenId" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="apply_node" property="applyNode" jdbcType="VARCHAR" />
+    <result column="acct_no" property="acctNo" jdbcType="VARCHAR" />
+    <result column="cust_no" property="custNo" jdbcType="VARCHAR" />
+    <result column="is_open_account" property="isOpenAccount" jdbcType="CHAR" />
+    <result column="is_repay_auth" property="isRepayAuth" jdbcType="CHAR" />
+    <result column="is_loan_auth" property="isLoanAuth" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, pay_password, create_date, update_date, sync, is_manual, description, 
+    card_num, name, bank_name, bank_card, contact_num, login_time, is_login, token_id, 
+    source, apply_node, acct_no, cust_no, is_open_account, is_repay_auth, is_loan_auth
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_person
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_person
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jhh.dc.baika.entity.app.Person" >
+    insert into b_person (id, phone, pay_password, 
+      create_date, update_date, sync, 
+      is_manual, description, card_num, 
+      name, bank_name, bank_card, 
+      contact_num, login_time, is_login, 
+      token_id, source, apply_node, 
+      acct_no, cust_no, is_open_account, 
+      is_repay_auth, is_loan_auth)
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{payPassword,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{sync,jdbcType=CHAR}, 
+      #{isManual,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{cardNum,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}, 
+      #{contactNum,jdbcType=INTEGER}, #{loginTime,jdbcType=TIMESTAMP}, #{isLogin,jdbcType=INTEGER}, 
+      #{tokenId,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{applyNode,jdbcType=VARCHAR}, 
+      #{acctNo,jdbcType=VARCHAR}, #{custNo,jdbcType=VARCHAR}, #{isOpenAccount,jdbcType=CHAR}, 
+      #{isRepayAuth,jdbcType=CHAR}, #{isLoanAuth,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jhh.dc.baika.entity.app.Person" >
+    insert into b_person
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="payPassword != null" >
+        pay_password,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="sync != null" >
+        sync,
+      </if>
+      <if test="isManual != null" >
+        is_manual,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="cardNum != null" >
+        card_num,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>
+      <if test="bankCard != null" >
+        bank_card,
+      </if>
+      <if test="contactNum != null" >
+        contact_num,
+      </if>
+      <if test="loginTime != null" >
+        login_time,
+      </if>
+      <if test="isLogin != null" >
+        is_login,
+      </if>
+      <if test="tokenId != null" >
+        token_id,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="applyNode != null" >
+        apply_node,
+      </if>
+      <if test="acctNo != null" >
+        acct_no,
+      </if>
+      <if test="custNo != null" >
+        cust_no,
+      </if>
+      <if test="isOpenAccount != null" >
+        is_open_account,
+      </if>
+      <if test="isRepayAuth != null" >
+        is_repay_auth,
+      </if>
+      <if test="isLoanAuth != null" >
+        is_loan_auth,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null" >
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sync != null" >
+        #{sync,jdbcType=CHAR},
+      </if>
+      <if test="isManual != null" >
+        #{isManual,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNum != null" >
+        #{cardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNum != null" >
+        #{contactNum,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLogin != null" >
+        #{isLogin,jdbcType=INTEGER},
+      </if>
+      <if test="tokenId != null" >
+        #{tokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="applyNode != null" >
+        #{applyNode,jdbcType=VARCHAR},
+      </if>
+      <if test="acctNo != null" >
+        #{acctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custNo != null" >
+        #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isOpenAccount != null" >
+        #{isOpenAccount,jdbcType=CHAR},
+      </if>
+      <if test="isRepayAuth != null" >
+        #{isRepayAuth,jdbcType=CHAR},
+      </if>
+      <if test="isLoanAuth != null" >
+        #{isLoanAuth,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jhh.dc.baika.entity.app.Person" >
+    update b_person
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null" >
+        pay_password = #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sync != null" >
+        sync = #{sync,jdbcType=CHAR},
+      </if>
+      <if test="isManual != null" >
+        is_manual = #{isManual,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNum != null" >
+        card_num = #{cardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNum != null" >
+        contact_num = #{contactNum,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null" >
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLogin != null" >
+        is_login = #{isLogin,jdbcType=INTEGER},
+      </if>
+      <if test="tokenId != null" >
+        token_id = #{tokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="applyNode != null" >
+        apply_node = #{applyNode,jdbcType=VARCHAR},
+      </if>
+      <if test="acctNo != null" >
+        acct_no = #{acctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custNo != null" >
+        cust_no = #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isOpenAccount != null" >
+        is_open_account = #{isOpenAccount,jdbcType=CHAR},
+      </if>
+      <if test="isRepayAuth != null" >
+        is_repay_auth = #{isRepayAuth,jdbcType=CHAR},
+      </if>
+      <if test="isLoanAuth != null" >
+        is_loan_auth = #{isLoanAuth,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jhh.dc.baika.entity.app.Person" >
+    update b_person
+    set phone = #{phone,jdbcType=VARCHAR},
+      pay_password = #{payPassword,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      sync = #{sync,jdbcType=CHAR},
+      is_manual = #{isManual,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      card_num = #{cardNum,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      bank_card = #{bankCard,jdbcType=VARCHAR},
+      contact_num = #{contactNum,jdbcType=INTEGER},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      is_login = #{isLogin,jdbcType=INTEGER},
+      token_id = #{tokenId,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      apply_node = #{applyNode,jdbcType=VARCHAR},
+      acct_no = #{acctNo,jdbcType=VARCHAR},
+      cust_no = #{custNo,jdbcType=VARCHAR},
+      is_open_account = #{isOpenAccount,jdbcType=CHAR},
+      is_repay_auth = #{isRepayAuth,jdbcType=CHAR},
+      is_loan_auth = #{isLoanAuth,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="userLogin" parameterType="com.jhh.dc.baika.entity.app.Person" resultMap="BaseResultMap">
+		SELECT * FROM b_person WHERE phone = #{phone} AND PASSWORD
+		= #{password} and is_login = 1
+	</select>
+    <!--  根据手机号查询信息，用于登录 -->
+    <select id="userLoginByPhone" parameterType="com.jhh.dc.baika.entity.app.Person" resultMap="BaseResultMap">
+		SELECT * FROM b_person WHERE phone = #{phone} and is_login = 1
+	</select>
+
+    <update id="updatePassword" parameterType="com.jhh.dc.baika.entity.app.Person">
+		UPDATE b_person SET
+		PASSWORD = #{password} WHERE phone = #{phone}
+	</update>
+
+    <update id="personUpdatePassword" parameterType="com.jhh.dc.baika.entity.app.Person">
+		UPDATE b_person
+		SET PASSWORD = #{password} WHERE id = #{id} AND PASSWORD =
+		#{oldPassword}
+	</update>
+    <select id="getPersonByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+      <include refid="Base_Column_List" />
+        FROM
+		b_person
+		WHERE phone = #{phone}
+	</select>
+
+    <!-- 获取用户当前tokenId -->
+    <select id="getTokenId" parameterType="java.lang.String" resultType="java.lang.String">
+		select token_id
+		from b_person
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+    <select id="getPersonInfoByBorr" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM
+		b_person AS v
+		WHERE
+		v.perId=(SELECT l.per_id FROM b_borrow_list as l WHERE l.id = #{brroid,jdbcType=INTEGER})
+	</select>
+
+    <!-- 检查手机号是否黑名单-->
+    <select id="checkBlack" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(1) FROM b_person where blacklist = 'Y' AND
+		phone = #{phone}
+	</select>
+
+    <select id="getPersonAvailableBorrowCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(t2.id) from (select id from b_person t where t.id=#{userId} and t.blacklist='N') t1
+		left join b_borrow_list t2 on t1.id = t2.per_id and t2.borr_status = 'BS006'
+	</select>
+
+    <select id="selectByCardNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT id FROM b_person where card_num = #{cardNum}
+ 	</select>
+
+    <!--<select id="getPersonInfo" parameterType="java.lang.String" resultType="com.jhh.dc.baika.entity.app_vo.PersonInfo">SELECT p.card_num AS cardNum,-->
+		<!--pr.monthlypay AS monthlypay, pr.profession AS profession,-->
+		<!--pr.relatives AS relatives,pr.relatives_name AS relativesName,pr.rela_phone AS relaPhone ,-->
+		<!--pr.society AS society,pr.society_name AS societyName,pr.soci_phone AS sociPhone ,-->
+		<!--p.name AS name,p.id AS perId,-->
+		<!--p.phone AS phone-->
+		<!--FROM b_person p,private pr-->
+		<!--WHERE p.id = pr.per_id AND p.id = #{perId}-->
+	<!--</select>-->
+
+    <select id="getFollowUsInfo" resultType="java.lang.String">
+		select description FROM c_code_value where code_type = 'menu_followUs' and enabled_flag = 'y'
+	</select>
+
+    <select id="getInviterInfo" resultType="com.jhh.dc.baika.entity.share.InviterInfo">
+		SELECT
+			t5.perId as perId,
+			t5.phone as phone,
+			t5.deviceType as deviceType,
+			t5.firstLevelInviter as firstLevelInviter,
+			t5.firstLevelInviterPhone as firstLevelInviterPhone,
+			t5.secondLevelInviter as secondLevelInviter,
+			t5.secondLevelInviterPhone as secondLevelInviterPhone,
+			t5.thirdLevelInviter as thirdLevelInviter,
+			t6.phone AS thirdLevelInviterPhone
+		FROM(	SELECT
+					t3.*, t4.phone AS secondLevelInviterPhone,
+					t4.inviter AS thirdLevelInviter
+				FROM(	SELECT
+							t1.*, t2.phone AS firstLevelInviterPhone,
+							t2.inviter AS secondLevelInviter
+						FROM(	SELECT
+									t.id AS perId,
+									t.phone,
+									i.device as deviceType,
+									t.inviter AS firstLevelInviter
+								FROM	b_person t
+								LEFT JOIN phone_info i on i.per_id = t.id AND i.borr_id = #{param2}
+								WHERE	t.id = #{param1}) t1
+						LEFT JOIN b_person t2 ON t2.id = t1.firstLevelInviter) t3
+				LEFT JOIN b_person t4 ON t4.id = t3.secondLevelInviter) t5
+		LEFT JOIN b_person t6 ON t6.id = t5.thirdLevelInviter
+	</select>
+
+
+    <select id="getPersonAndDevice" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+		p.*,pif.device
+		FROM b_person p LEFT JOIN phone_info pif ON p.id = pif.per_id WHERE p.id = #{perId} LIMIT 1
+	</select>
+
+    <update id="updateApplyNodeByPerId">
+        update b_person p set p.apply_node = #{node} where p.id = #{perId}
+    </update>
+
+  <select id="getPersonByCustNo" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from b_person
+    where cust_no = #{custNo}
+  </select>
+
+</mapper>

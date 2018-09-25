@@ -1,0 +1,99 @@
+
+
+<!-- BEGIN PAGE HEADER-->
+
+<div class="page-bar" style="margin-bottom: 10px;">
+	<ul class="page-breadcrumb">
+		<li><i class="fa fa-home"></i> <a href="#/dashboard.html">首页</a>
+			<i class="fa fa-angle-right"></i></li>
+		<li>审核管理
+			<i class="fa fa-angle-right"></i></li>
+		<li><a href="#/checkbymanualone.html">审核通过</a></li>
+	</ul>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row"  style="min-height:200px;">
+	<div class="col-md-12 wblCheck">
+		<div class="wblBackground"></div>
+		<!-- BEGIN EXAMPLE TABLE PORTLET-->
+		<div class="wblTool" style="width:900px">
+			<div id="tool_find"></div>
+			<div id="tool_pass" ></div>
+			<div id="tool_no" ></div>
+			<div id="tool_black_no"></div>
+			<div id="tool_cancel"></div>
+		</div>
+		<div class="wblFillDiv"></div>
+		<div id="userTable" style="border: 0px solid #ccc;"></div>
+	</div>
+</div>
+<!-- END MAIN CONTENT -->
+
+<div id="window_find" class="container"
+	 style="position: absolute; z-index: 99999;overflow:auto;display:none;">
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN EXAMPLE TABLE PORTLET-->
+			<div id="tool_add_value" style=" position: absolute; z-index: 1;"></div>
+			<div id="tool_edit_value" style=" position: absolute; z-index: 1;left:60px"></div>
+			<div id="tool_del_value" style=" position: absolute; z-index: 1;left:105px"></div>
+			<div id="userTable_value" style="border: 0px solid #ccc;"></div>
+		</div>
+	</div>
+</div>
+
+<div id="window" class="container" style=" position: absolute; z-index: 99999;overflow:auto;">
+	<div style=" display:none; position: absolute; z-index: 1;width: 100%;height: 100%;"></div>
+	<div class="row" style="margin-top:20px">
+		<div class="col-md-12">
+			<div class="dx-field">
+				<div class="dx-field-label" id="reasonText">请说明理由</div>
+				<div class="dx-field-value">
+					<div id="reason"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 30px">
+		<div class="col-md-12">
+			<div class="dx-field-label"></div>
+			<div id="submit_affirm"></div>
+		</div>
+	</div>
+</div>
+
+
+<div id="window_pass" class="container"
+	 style=" position: absolute; z-index: 99999;overflow:auto;">
+	<div
+			style=" display:none; position: absolute; z-index: 1;width: 100%;height: 100%;"></div>
+	<div class="row" style="margin-top:20px">
+		<div class="col-md-12">
+			确认要通过审核？
+		</div>
+	</div>
+	<div class="row" style="margin-top: 40px">
+		<div class="col-md-12">
+			<div class="dx-field-label"></div>
+			<div id="submit_pass"></div>
+		</div>
+	</div>
+</div>
+
+
+<!-- BEGIN MAIN JS -->
+<script>
+    checkbypass();
+</script>
+<!-- END MAIN JS -->
+
+
+
+
+
+
+
+
+

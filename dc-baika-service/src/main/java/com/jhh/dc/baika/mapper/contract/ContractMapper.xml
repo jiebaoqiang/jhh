@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.contract.ContractMapper">
+
+    <insert id="insertContract" parameterType="com.jhh.dc.baika.entity.contract.Contract">
+        INSERT INTO b_contract (id, borr_id, borr_num,status, result_json,create_date)
+        SELECT #{id},#{borrId},#{borrNum},#{status},#{resultJson},#{createDate}
+        FROM DUAL WHERE NOT EXISTS(SELECT id FROM b_contract WHERE borr_id = #{borrId});
+    </insert>
+
+    <select id="getContractUrl" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT GROUP_CONCAT(image_url) FROM b_contract where borr_id = #{borrId}
+    </select>
+    <select id="selectByBorrowNum" parameterType="string" resultType="string">
+        select t.image_url from b_contract t where t.borr_num = #{borrowNum}
+    </select>
+    <select id="selectContractByBorrId" parameterType="integer" resultType="map">
+        select
+         b.prod_type prodType,
+         c.image_url contractUrl
+         from b_contract c
+        left join b_borrow_list b on c.borr_id = b.id
+        where c.borr_id = #{borrId}
+    </select>
+</mapper>
+

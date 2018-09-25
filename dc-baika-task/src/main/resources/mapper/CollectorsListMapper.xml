@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.dao.CollectorsListMapper">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="CollectorsList">
+        <result column="id" property="id"/>
+        <result column="guid" property="guid"/>
+        <result column="contract_sysno" property="contractSysno"/>
+        <result column="contract_id" property="contractId"/>
+        <result column="contract_type" property="contractType"/>
+        <result column="bedue_user_sysno" property="bedueUserSysno"/>
+        <result column="bedue_name" property="bedueName"/>
+        <result column="acqu_mode" property="acquMode"/>
+        <result column="obtain_time" property="obtainTime"/>
+        <result column="operator" property="operator"/>
+        <result column="bedue_level" property="bedueLevel"/>
+        <result column="user_group_id" property="userGroupId"/>
+        <result column="status" property="status"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+
+    <insert id="batchInsertCollectorsList" parameterType="java.util.List">
+        INSERT INTO b_collectors_list (id, contract_sysno,
+        contract_id,bedue_user_sysno,bedue_name,create_date,status,acqu_mode,update_date)
+        VALUES
+        <foreach collection="list" item="i" index="index" separator=",">
+            (
+            #{i.id},
+            #{i.contractSysno},
+            #{i.contractId},
+            #{i.bedueUserSysno},
+            #{i.bedueName},
+            #{i.createDate},
+            #{i.status},
+            #{i.acquMode},
+            #{i.updateDate}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE contract_sysno = VALUES(contract_sysno)
+    </insert>
+    <update id="batchUpdateCollectorsList" parameterType="java.util.List">
+        UPDATE b_collectors_list
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="bedue_user_sysno = case" suffix=" end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.bedueUserSysno != null">
+                        WHEN (contract_sysno=#{i.contractSysno,jdbcType=INTEGER}) then
+                        #{i.bedueUserSysno,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="bedue_name = case" suffix=" end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.bedueName != null">
+                        WHEN (contract_sysno=#{i.contractSysno,jdbcType=INTEGER}) then #{i.bedueName,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="acqu_mode = case" suffix=" end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.acquMode != null">
+                        WHEN (contract_sysno=#{i.contractSysno,jdbcType=INTEGER}) then #{i.acquMode,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_date = case" suffix=" end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateDate != null">
+                        WHEN (contract_sysno=#{i.contractSysno,jdbcType=INTEGER}) then
+                        #{i.updateDate,jdbcType=TIMESTAMP}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        WHERE contract_sysno in
+        <foreach collection="list" item="i" index="index" open="(" separator="," close=")">
+            #{i.contractSysno,jdbcType=INTEGER}
+        </foreach>
+        and is_delete = 2
+    </update>
+</mapper>
+

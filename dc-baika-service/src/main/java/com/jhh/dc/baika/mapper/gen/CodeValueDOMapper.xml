@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.gen.CodeValueDOMapper" >
+  <resultMap id="BaseResultMap" type="com.jhh.dc.baika.mapper.gen.domain.CodeValueDO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="code_type" property="codeType" jdbcType="VARCHAR" />
+    <result column="code_code" property="codeCode" jdbcType="VARCHAR" />
+    <result column="meaning" property="meaning" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="enabled_flag" property="enabledFlag" jdbcType="VARCHAR" />
+    <result column="sync" property="sync" jdbcType="CHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, code_type, code_code, meaning, description, enabled_flag, sync, update_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jhh.dc.baika.mapper.gen.domain.CodeValueDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from  c_code_value
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from  c_code_value
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from  c_code_value
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jhh.dc.baika.mapper.gen.domain.CodeValueDOExample" >
+    delete from  c_code_value
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jhh.dc.baika.mapper.gen.domain.CodeValueDO" >
+    insert into c_code_value (id, code_type, code_code,
+      meaning, description, enabled_flag, 
+      sync, update_date)
+    values (#{id,jdbcType=INTEGER}, #{codeType,jdbcType=VARCHAR}, #{codeCode,jdbcType=VARCHAR}, 
+      #{meaning,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{enabledFlag,jdbcType=VARCHAR}, 
+      #{sync,jdbcType=CHAR}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jhh.dc.baika.mapper.gen.domain.CodeValueDO" >
+    insert into c_code_value
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="codeType != null" >
+        code_type,
+      </if>
+      <if test="codeCode != null" >
+        code_code,
+      </if>
+      <if test="meaning != null" >
+        meaning,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="enabledFlag != null" >
+        enabled_flag,
+      </if>
+      <if test="sync != null" >
+        sync,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="codeType != null" >
+        #{codeType,jdbcType=VARCHAR},
+      </if>
+      <if test="codeCode != null" >
+        #{codeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="meaning != null" >
+        #{meaning,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="enabledFlag != null" >
+        #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="sync != null" >
+        #{sync,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jhh.dc.baika.mapper.gen.domain.CodeValueDOExample" resultType="java.lang.Integer" >
+    select count(*) from  c_code_value
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update c_code_value
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.codeType != null" >
+        code_type = #{record.codeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.codeCode != null" >
+        code_code = #{record.codeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.meaning != null" >
+        meaning = #{record.meaning,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enabledFlag != null" >
+        enabled_flag = #{record.enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sync != null" >
+        sync = #{record.sync,jdbcType=CHAR},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update c_code_value
+    set id = #{record.id,jdbcType=INTEGER},
+      code_type = #{record.codeType,jdbcType=VARCHAR},
+      code_code = #{record.codeCode,jdbcType=VARCHAR},
+      meaning = #{record.meaning,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      enabled_flag = #{record.enabledFlag,jdbcType=VARCHAR},
+      sync = #{record.sync,jdbcType=CHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jhh.dc.baika.mapper.gen.domain.CodeValueDO" >
+    update c_code_value
+    <set >
+      <if test="codeType != null" >
+        code_type = #{codeType,jdbcType=VARCHAR},
+      </if>
+      <if test="codeCode != null" >
+        code_code = #{codeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="meaning != null" >
+        meaning = #{meaning,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="enabledFlag != null" >
+        enabled_flag = #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="sync != null" >
+        sync = #{sync,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jhh.dc.baika.mapper.gen.domain.CodeValueDO" >
+    update c_code_value
+    set code_type = #{codeType,jdbcType=VARCHAR},
+      code_code = #{codeCode,jdbcType=VARCHAR},
+      meaning = #{meaning,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      enabled_flag = #{enabledFlag,jdbcType=VARCHAR},
+      sync = #{sync,jdbcType=CHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

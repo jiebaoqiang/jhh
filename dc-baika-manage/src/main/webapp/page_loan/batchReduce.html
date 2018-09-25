@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    .table-condensed tfoot {
+        display: none;
+    }
+    .red{
+        color: red;
+    }
+    .blue{
+        color: blue;
+    }
+</style>
+</head>
+<body>
+<div class="page-bar" style="margin-bottom: 10px;">
+    <ul class="page-breadcrumb">
+        <li><i class="fa fa-home"></i> <a href="#/dashboard.html">首页</a>
+            <i class="fa fa-angle-right"></i></li>
+        <li><a href="#/batchReduce.html">批量扣款专用</a></li>
+    </ul>
+    <p style="float:right;line-height:36px;margin:0;padding-right:100px;" class="text-danger">注意：不对接第三方支付接口！！</p>
+</div>
+<div class="row" style="min-height:200px;background:url('/loan-manage/assets/admin/layout/img/loading_mylike.gif') no-repeat center center;">
+    <div class="col-md-12 wblMd">
+       <div class="wblBackground"></div>
+       <div class="wblFillDiv"></div>
+        <a id="download" target="_blank" class="hide"><span id="downloadBtn">下载文件</span></a>
+        <div id="batchReduceTable"></div>
+    </div>
+</div>
+<!-- 以下是弹出模态框 -->
+<div class="modal fade" tabindex="-1" role="dialog" id="checkExport">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                <h4 class="modal-title" id="showMessageTitle">检查导出条件</h4>
+            </div>
+            <div class="modal-body">
+                <h4 id="showMessage">正在检查导出条件</h4>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span class="sr-only">100% Complete</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="collectionReduceBatch1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量代扣(<span style="color: red">0为代扣所有欠款,若输入金额即输入多少扣款多少</span>)</h4>
+            </div>
+            <div class="modal-body">
+                <form id="reduce_batch1" class="form-horizontal">
+                    <input type="hidden" id="reduceData1" name="reduceData1">
+                    <div class="form-group">
+                        <label for="reduceNames1" class="col-sm-2 control-label">代扣人姓名</label>
+                        <div class="col-sm-10">
+                           <textarea id="reduceNames1" class="form-control col-sm-10" rows="4" placeholder="代扣人姓名"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reduceMoney1" class="col-sm-2 control-label">代扣金额</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" id="requestUrl1" name="requestUrl1" value="">
+                            <input type="text" name="reduceMoney1" class="form-control" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" id="reduceMoney1" value="0" placeholder="代扣金额">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnReduceBatch1" class="btn btn-primary">提交扣款</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    loanBatchReduce();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.app.CodeValueMapper" >
+  <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.manager.CodeValue" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="code_type" property="codeType" jdbcType="VARCHAR" />
+    <result column="code_code" property="codeCode" jdbcType="VARCHAR" />
+    <result column="meaning" property="meaning" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="description" property="descriptions" jdbcType="VARCHAR" />
+    <result column="enabled_flag" property="enabledFlag" jdbcType="VARCHAR" />
+    <result column="sync" property="sync" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code_type, code_code, meaning, description, enabled_flag, sync
+  </sql>
+
+  <select id="getProductUseAll" resultType="string">
+    SELECT meaning FROM  c_code_value WHERE
+    code_type = #{codeType,jdbcType=VARCHAR}
+    <if test="productKey!=null and productKey!=''">
+      AND code_code = #{productKey,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="getCodeValueAll" resultMap="BaseResultMap">
+    SELECT id, code_type, code_code, meaning, description,description AS descriptions,enabled_flag, sync FROM  c_code_value WHERE
+    code_type = #{codeType,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getEnabledCodeValues" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM  c_code_value
+    WHERE code_type = #{codeType,jdbcType=VARCHAR}
+    AND  enabled_flag = 'y'
+  </select>
+
+  <select id="getMeaningByTypeCode" resultType="String"  >
+    select meaning
+    from  c_code_value
+    where code_type = #{code_type}
+    and code_code = #{code_code}
+    limit 0,1
+  </select>
+
+  <select id="getMeaning" resultType="String"  >
+    select meaning
+    from  c_code_value
+    where code_type = #{code_type}
+    and code_code = #{code_code}
+  </select>
+
+  <select id="selectCodeByType" parameterType="String" resultType="String">
+    select code_code from  c_code_value where code_type = #{codeType}
+  </select>
+
+  <select id="selectByCodeType" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM  c_code_value
+    WHERE code_type = #{codeType,jdbcType=VARCHAR}
+    AND  enabled_flag = 'y'
+  </select>
+  <select id="selectQuickPayChannels" resultType="string">
+    select t.pay_center_channel from c_pay_channel_adapter t where t.quick_type = 1
+  </select>
+</mapper>

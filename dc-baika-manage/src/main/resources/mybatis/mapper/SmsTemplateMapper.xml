@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.SmsTemplateMapper">
+	<resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.manager.SmsTemplate">
+		<id column="TEMPLATE_SEQ" property="templateSeq" jdbcType="INTEGER" />
+		<result column="TEMPLATE_TYPE" property="templateType" jdbcType="VARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="CHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		TEMPLATE_TYPE, TEMPLATE_SEQ, CONTENT, STATUS, CREATE_DATE, CREATE_USER,UPDATE_DATE,UPDATE_USER
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from c_sms_template
+		where TEMPLATE_SEQ = #{templateSeq,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		c_sms_template
+		where TEMPLATE_SEQ = #{templateSeq,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.jhh.dc.baika.entity.manager.SmsTemplate">
+		insert into c_sms_template
+		(TEMPLATE_TYPE, TEMPLATE_SEQ, CONTENT, STATUS, CREATE_DATE, CREATE_USER,UPDATE_DATE,UPDATE_USER)
+		values (
+		#{templateType,jdbcType=VARCHAR},
+		#{templateSeq,jdbcType=INTEGER},
+		#{content,jdbcType=VARCHAR},
+		#{status,jdbcType=CHAR},
+		#{createDate,jdbcType=TIMESTAMP},
+		#{createUser,jdbcType=VARCHAR},
+		#{updateDate,jdbcType=TIMESTAMP},
+		#{updateUser,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.jhh.dc.baika.entity.manager.SmsTemplate">
+		update c_sms_template
+		<set>
+			<if test="templateType != null">
+				TEMPLATE_TYPE = #{templateType,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				CONTENT = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=CHAR},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				UPDATE_USER = #{updateUser,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where TEMPLATE_SEQ = #{templateSeq,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.jhh.dc.baika.entity.manager.SmsTemplate">
+		update
+		c_sms_template
+		set TEMPLATE_TYPE = #{templateType,jdbcType=VARCHAR},
+		CONTENT = #{content,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=CHAR},
+		UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+		UPDATE_USER = #{updateUser,jdbcType=TIMESTAMP}
+		where TEMPLATE_SEQ = #{templateSeq,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAllSmsTemplateList" resultMap="BaseResultMap">
+		SELECT
+		t.TEMPLATE_TYPE,
+		t.TEMPLATE_SEQ,
+		t.CONTENT,
+		t.STATUS,
+		t.CREATE_DATE,
+		t.CREATE_USER,
+		t.UPDATE_DATE,
+		t.UPDATE_USER
+		FROM
+		c_sms_template AS t
+		ORDER BY
+		t.TEMPLATE_SEQ DESC
+	</select>
+</mapper>

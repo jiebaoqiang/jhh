@@ -1,0 +1,64 @@
+h3{
+  text-align: center;
+  font-weight: normal;
+}
+li{
+  position: relative;
+  width: 100%;
+}
+.inner{
+  position: relative;
+  height: 2.75rem;
+  line-height: 2.75rem;
+  padding: 0 .5rem;
+  background-color: #fff;
+}
+.showMoney{
+  line-height: 2.5rem;
+  padding: 0 .5rem;
+}
+.sendBtn{
+  height: 1.5rem;
+  line-height: 1.5rem;
+  margin-top: .5rem;
+  padding: 0 .5rem;
+  color:#6870DF;
+}
+input{
+  border: 0;
+  height: 2.75rem;
+  padding-left: 1rem;
+  font-size: .75rem;
+  width: 55%;
+}
+.inner .inner-left{
+ width: 30%;
+ color: #333;
+}
+.inner .vaild {
+  width: 36%;
+}
+.user {
+  padding-left: 1rem;
+  color: #999;
+}
+.select::after {
+  content: '';
+  position: absolute;
+  top: 1.125rem;
+  right: 1rem;
+  background: url('../images/icon.png') no-repeat center;
+  background-size: cover;
+  -webkit-background-size: cover;
+  width: .5rem;
+  height: .5rem;
+}
+.inner .option {
+  position: absolute;
+  width: 9rem;
+  top:2.25rem;
+  left:0;
+  background-color: #fff;
+  text-align: center;
+  margin-left: 3.8rem;
+}

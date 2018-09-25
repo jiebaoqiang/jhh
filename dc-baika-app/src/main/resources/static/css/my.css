@@ -1,0 +1,101 @@
+.main-top {
+  width: 100%;
+  height: 4.5rem
+    /* 180/40 */
+  ;
+  background: linear-gradient(90deg, rgba(113, 154, 251, 1), rgba(81, 129, 236, 1));
+  padding: 0 1.25rem
+    /* 50/40 */
+    0 .925rem
+    /* 37/40 */
+  ;
+  box-sizing: border-box;
+}
+
+.main-top .top-left {
+  float: left;
+}
+
+.main-top .top-left .rest {
+  color: #CCDAFB;
+  font-size: .7rem
+    /* 28/40 */
+  ;
+  margin-bottom: .7rem
+    /* 28/40 */
+  ;
+}
+
+.main-top .top-left .money {
+  color: #ffffff;
+  font-size: 1.5rem
+    /* 60/40 */
+  ;
+}
+
+.main-top .top-right {
+  float: right;
+}
+
+.main-top .top-right button {
+  width: 4.4rem
+    /* 176/40 */
+  ;
+  height: 1.75rem
+    /* 70/40 */
+  ;
+  font-size: .75rem
+    /* 30/40 */
+  ;
+  line-height: 1.75rem
+    /* 70/40 */
+  ;
+  background-color: #ffffff;
+  color: #5181EC;
+  border:0;
+  border-radius: .875rem
+    /* 35/40 */
+  ;
+  margin-top: 1.25rem
+    /* 50/40 */
+  ;
+}
+
+.main-content {
+  width: 100%;
+  padding: .5rem
+    /* 20/40 */
+    .8rem
+    /* 32/40 */
+  ;
+  margin-top: .5rem /* 20/40 */;
+  height:24.5rem /* 980/40 */;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+.main-content li {
+  height: 2rem
+    /* 80/40 */
+  ;
+  line-height: 2rem;
+  border-bottom: 1px solid rgba(247,247,247,1);
+  box-sizing: border-box;
+}
+.main-content li img {
+  display: inline-block;
+  width: .825rem /* 33/40 */;
+  height: .825rem /* 33/40 */;
+}
+
+.main-content li a {
+  display: inline-block;
+  font-size: .8rem
+    /* 32/40 */
+  ;
+  color: #666666;
+  margin-left: .5rem /* 20/40 */;
+}
+.main-content li span {
+  float: right;
+}

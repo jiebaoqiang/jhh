@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd  
+                http://code.alibabatech.com/schema/dubbo      
+                  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- 和本地bean一样实现服务 <bean id="userService" class="com.loan_server.app_service.UserApiImpl" 
+		/> -->
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="loan_server" />
+	<!--<dubbo:registry  id="host" protocol="zookeeper"/>-->
+	<!--<dubbo:registry id="self" address="192.168.1.63:5181,192.168.1.63:5182,192.168.1.63:5183" check="false"/>-->
+
+	<!--<dubbo:registry id="host" address="192.168.1.117:2181" check="false" default="false"/>-->
+
+
+	<!--<dubbo:registry id="sett" address="10.20.154.177:9010" default="false"/>-->
+	<dubbo:registry  id="host" protocol="zookeeper"/>
+
+	<dubbo:protocol name="dubbo" threads="1000" accepts="50000" />
+	<dubbo:provider timeout="1200000" retries="0" />
+	<dubbo:annotation package="com.jhh.dc.baika.service" />
+
+	<bean id="collectorsListService" class="com.jhh.dc.baika.service.loan.CollectorsListServiceImpl"/>
+	<dubbo:service interface="com.jhh.dc.baika.api.loan.CollectorsListService" ref="collectorsListService" timeout="12000000"/>
+
+	<dubbo:service id="bankService" interface="com.jhh.dc.baika.api.loan.BankService" class="com.jhh.dc.baika.service.capital.thridpay.ysb.BankServiceImpl" timeout="12000000"  />
+
+	<!--
+        <dubbo:service id="withdrawalService" interface="com.jhh.dc.baika.api.channel.WithdrawalService" class="com.jhh.dc.baika.service.channel.WithdrawalServiceImpl" timeout="12000000"  />
+    -->
+
+	<dubbo:reference interface="com.jinhuhang.settlement.service.SettlementAPI" id="settlementAPI" timeout="120000" check="false"/>
+
+
+
+
+
+	<bean id="riskBlackService" class="com.jhh.dc.baika.service.black.RiskBlackServiceImpl"/>
+
+	<dubbo:service interface="com.jhh.dc.baika.api.black.RiskBlackService" ref="riskBlackService" timeout="12000000" />
+	<bean id="agentBatchState" class="com.jhh.dc.baika.service.channel.ChannelPayCenterServiceImpl"/>
+	<dubbo:service interface="com.jhh.dc.baika.api.channel.AgentBatchStateService" ref="agentBatchState"/>
+	<bean id="agentChannelService" class="com.jhh.dc.baika.service.channel.ChannelPayCenterServiceImpl"/>
+	<dubbo:service interface="com.jhh.dc.baika.api.channel.AgentChannelService" ref="agentChannelService"/>
+	<bean id="tradePayService" class="com.jhh.dc.baika.service.channel.TradePayCenterServiceImpl"/>
+	<dubbo:service interface="com.jhh.dc.baika.api.channel.TradePayService" ref="tradePayService"/>
+	<bean id="tradeBatchStateService" class="com.jhh.dc.baika.service.channel.TradePayCenterServiceImpl"/>
+	<dubbo:service interface="com.jhh.dc.baika.api.channel.TradeBatchStateService" ref="tradeBatchStateService"/>
+
+	<!--百可录通知类电话配置-->
+	<bean id="baikeluRemindService" class="com.jhh.dc.baika.service.baikelu.BaikeluRemindServiceImpl"/>
+	<dubbo:service interface="com.jhh.dc.baika.api.baikelu.BaikeluRemindService" ref="baikeluRemindService"/>
+
+	<bean id="invokerComponentService" class="com.jhh.dc.baika.service.common.InvokerComponentServiceImpl"/>
+
+	<dubbo:service interface="com.jhh.dc.baika.api.common.InvokerComponentService" ref="invokerComponentService" timeout="12000000"/>
+
+	<!--从A公司获取private信息-->
+	<bean id="companyAService" class="com.jhh.dc.baika.service.loan.CompanyAServiceImpl"/>
+	<dubbo:service interface="com.jhh.dc.baika.api.loan.CompanyAService" ref="companyAService" timeout="12000000"/>
+
+	<bean id="qianQiDepositWebService" class="com.jhh.dc.baika.service.bankdeposit.QianQiDepositWebImpl"/>
+
+	<dubbo:service interface="com.jhh.dc.baika.api.bankdeposit.QianQiDepositWebService" ref="qianQiDepositWebService" timeout="12000000"/>
+
+
+	<dubbo:service interface="com.jhh.dc.baika.api.app.LoanService" class="com.jhh.dc.baika.service.app.LoanServiceImpl" id="loanService" />
+
+	<dubbo:service interface="com.jhh.dc.baika.api.app.UserService" class="com.jhh.dc.baika.service.app.UserServiceImpl" id="userService" />
+</beans>

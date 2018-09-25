@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd        
+    http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="loan_manage"/>
+    <dubbo:registry protocol="zookeeper"/>
+
+    <dubbo:reference id="rmiSettlementService" interface="com.jinhuhang.settlement.service.SettlementAPI" check="false" timeout="600000"/>
+    <!--<dubbo:reference interfaPaymentServicevice" check="false" timeout="600000" id="paymentService"/>-->
+    <dubbo:reference interface="com.jhh.dc.baika.api.sms.SmsService" check="false" timeout="600000" id="smsService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.message.MessageService" check="false" timeout="600000" id="messageService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.product.ProductService" check="false" timeout="600000" id="productService" />
+    <dubbo:reference interface="com.jhh.dc.baika.api.loan.RepaymentPlanService" check="false" timeout="600000" id="repaymentPlanService" />
+    <dubbo:reference interface="com.jhh.dc.baika.api.loan.CollectorsListService" check="false" timeout="600000" id="collectorsListService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.contract.ElectronicContractService" check="false" timeout="600000" id="electronicContractService" />
+    <dubbo:reference interface="com.jhh.dc.baika.api.channel.AgentChannelService" check="false" timeout="600000" id="agentChannelService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.app.LoanService" check="false" timeout="600000" id="loanServiceImpl"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.channel.WithdrawalService" check="false" timeout="600000" id="withdrawalService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.app.UserService" check="false" timeout="600000" id="userService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.loan.BankService" check="false" timeout="600000" id="bankService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.app.RiskService" check="false" timeout="600000" id="riskService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.channel.AgentBatchStateService" check="false" timeout="600000" id="agentBatchState"/>
+
+    <!--百可录提醒电话服务-->
+    <dubbo:reference interface="com.jhh.dc.baika.api.baikelu.BaikeluRemindService" check="false" timeout="600000" id="baikeluRemindService"/>
+
+    <!--从A公司获取private信息-->
+    <dubbo:reference interface="com.jhh.dc.baika.api.loan.CompanyAService" check="false" timeout="600000" id="companyAService"/>
+    <dubbo:reference interface="com.jhh.dc.baika.api.depository.DepositoryPayService" check="false" timeout="600000" id="depositoryPayService"/>
+
+</beans>

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.ReviewMapper">
+
+    <select id="getauditsforUser" parameterType="map" resultType="com.jhh.dc.baika.entity.manager.AuditsUser">
+        SELECT
+        bl.id,
+        p.id perId,
+        bl.borr_num borrNum,
+        pt.id productId,
+        pt.product_name productName,
+        p.name,
+        p.card_num cardNum,
+        p.phone,
+        bl.borr_amount borrAmount,
+        p.bank_name bankName,
+        p.bank_card bankCard,
+        bl.borr_status borrStatus,
+        bl.borr_up_status borrUpStatus,
+        bl.contact_num contactNum,
+        IFNULL(bl.baikelu_status,0) baikeluStatus,
+        re.reason,
+        re.update_date auditDate,
+        bl.is_manual isManual,
+        p.description,
+        res.employee_name employeeName,
+        bl.makeborr_date makeborrDate
+
+        FROM b_borrow_list bl
+        LEFT JOIN c_product pt ON bl.prod_id = pt.id
+        LEFT JOIN b_person p ON bl.per_id = p.id
+        LEFT JOIN b_review re ON bl.id = re.borr_id AND review_type = 1
+        LEFT JOIN c_reviewers res ON res.employ_num = re.employ_num
+        <where>
+            <if test="borrNum != null">
+                and bl.borr_num = #{borrNum}
+            </if>
+            <if test="name != null">
+                and p.name = #{name}
+            </if>
+            <if test="productName != null">
+                and pt.id = #{productName}
+            </if>
+            <if test="cardNum != null">
+                and p.card_num = #{cardNum}
+            </if>
+            <if test="phone != null">
+                and p.phone = #{phone}
+            </if>
+            <if test="borrAmount != null">
+                bl.borr_amount = #{borrAmount}
+            </if>
+            <if test="bankName != null">
+                and p.bank_name = #{bankName}
+            </if>
+            <if test="bankCard != null">
+                and p.bank_card = #{bankCard}
+            </if>
+            <if test="employNum != null">
+                and re.employ_num = #{employNum}
+            </if>
+            <if test="makeborrDate_start != null">
+                <![CDATA[ and bl.makeborr_date >= DATE_FORMAT(#{makeborrDate_start},'%Y-%m-%d') ]]>
+            </if>
+            <if test="makeborrDate_end != null">
+                <![CDATA[	and bl.makeborr_date < DATE_FORMAT(#{makeborrDate_end},'%Y-%m-%d') ]]>
+            </if>
+            <if test="borrUpStatusValue != null">
+                and bl.borr_up_status = #{borrUpStatusValue}
+            </if>
+            <if test="borrStatusValue != null">
+                and bl.borr_status = #{borrStatusValue}
+            </if>
+            <if test="employeeName != null">
+                and res.employee_name = #{employee_name}
+            </if>
+            <if test="baikeluStatus != null and baikeluStatus != 0">
+                and bl.baikelu_status = #{baikeluStatus}
+            </if>
+            <if test="baikeluStatus == 0 ">
+                and bl.baikelu_status is null
+            </if>
+            <if test="borrStatusValue == null">
+                <choose>
+                    <when test="employNum != null"> and bl.borr_status in('BS018', 'BS012')</when>
+                    <when test="employNum == null"> and bl.borr_status in('BS002','BS003','BS004','BS007','BS009','BS011','BS012','BS015','BS018')</when>
+                </choose>
+            </if>
+            <if test="isManualValue == 1">
+                <![CDATA[ and bl.is_manual <> 4 ]]>
+            </if>
+            <if test="isManualValue == 2">
+                and bl.is_manual = 4
+            </if>
+        </where>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'borrStatusValue'">order by bl.borr_status</when>
+                <when test="selector eq 'borrUpStatusValue'">order by bl.borr_up_status</when>
+                <when test="selector eq 'baikeluStatus'">order by bl.baikelu_status</when>
+                <when test="selector eq 'isManual'">order by bl.is_manual</when>
+                <when test="selector eq 'makeborrDate'">order by bl.makeborr_date</when>
+                <when test="selector eq 'contactNum'">order by bl.contact_num</when>
+                <when test="selector eq 'auditDate'">order by re.update_date</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+
+    </select>
+
+    <select id="getManuallyReview" parameterType="map" resultType="com.jhh.dc.baika.entity.manager.ManuallyReview">
+        SELECT
+        bl.id,
+        p.id perId,
+        bl.borr_num borrNum,
+        p.name,
+        p.card_num cardNum,
+        p.phone,
+        pt.id productId,
+        pt.product_name productName,
+        bl.contact_num contactNum,
+        bl.borr_amount borrAmount,
+        p.bank_name bankName,
+        p.bank_card bankCard,
+        bl.borr_status borrStatus,
+        bl.borr_up_status borrUpStatus,
+        bl.baikelu_status baikeluStatus,
+        p.description,
+        res.employee_name employee_name,
+        bl.makeborr_date makeborrDate,
+        p.create_date createDate,
+        re.reason,
+        re.update_date auditTime
+
+        FROM b_borrow_list bl
+        LEFT JOIN c_product pt ON bl.prod_id = pt.id
+        LEFT JOIN b_person p ON bl.per_id = p.id
+        LEFT JOIN b_review re ON bl.id = re.borr_id AND review_type = 1
+        LEFT JOIN c_reviewers res ON res.employ_num = re.employ_num
+        <where>
+            <if test="borrNum != null">
+                and bl.borr_num = #{borrNum}
+            </if>
+            <if test="name != null">
+                and p.name = #{name}
+            </if>
+            <if test="cardNum != null">
+                and p.card_num = #{cardNum}
+            </if>
+            <if test="productName != null">
+                and pt.id = #{productName}
+            </if>
+            <if test="borrAmount != null">
+                and bl.borr_amount = #{borrAmount}
+            </if>
+            <if test="contactNum != null">
+                and bl.contact_num = #{contactNum}
+            </if>
+            <if test="phone != null">
+                and p.phone = #{phone}
+            </if>
+            <if test="bankName != null">
+                and p.bank_name = #{bankName}
+            </if>
+            <if test="bankCard != null">
+                and p.bank_card = #{bankCard}
+            </if>
+            <if test="employNum != null">
+                and re.employ_num = #{employNum}
+            </if>
+            <if test="makeborrDate_start != null">
+                <![CDATA[ and bl.makeborr_date >= DATE_FORMAT(#{makeborrDate_start},'%Y-%m-%d') ]]>
+            </if>
+            <if test="makeborrDate_end != null">
+                <![CDATA[	and bl.makeborr_date < DATE_FORMAT(#{makeborrDate_end},'%Y-%m-%d') ]]>
+            </if>
+            <if test="createDate_start != null">
+                <![CDATA[ and p.create_date >= DATE_FORMAT(#{createDate_start},'%Y-%m-%d') ]]>
+            </if>
+            <if test="createDate_end != null">
+                <![CDATA[	and p.create_date < DATE_FORMAT(#{createDate_end},'%Y-%m-%d') ]]>
+            </if>
+            <if test="auditTime_start != null">
+                <![CDATA[ and re.update_date >= DATE_FORMAT(#{auditTime_start},'%Y-%m-%d') ]]>
+            </if>
+            <if test="auditTime_end != null">
+                <![CDATA[	and re.update_date < DATE_FORMAT(#{auditTime_end},'%Y-%m-%d') ]]>
+            </if>
+
+            <if test="borrUpStatusValue != null">
+                and bl.borr_up_status = #{borrUpStatusValue}
+            </if>
+            <if test="borrStatusValue != null">
+                and bl.borr_status = #{borrStatusValue}
+            </if>
+            <if test="borrStatusValue == null">
+                and bl.borr_status not in('BS001')
+            </if>
+            <if test="employeeName != null">
+                and res.employee_name = #{employee_name}
+            </if>
+            <if test="isManual == 1">
+                <![CDATA[ and bl.is_manual <> 4 ]]>
+            </if>
+            <if test="isManual == 2">
+                and bl.is_manual not in (4)
+            </if>
+        </where>
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'createDate'">order by p.create_date</when>
+                <when test="selector eq 'contactNum'">order by bl.contact_num</when>
+                <when test="selector eq 'borrStatusValue'">order by bl.borr_status</when>
+                <when test="selector eq 'borrUpStatusValue'">order by bl.borr_up_status</when>
+                <when test="selector eq 'baikeluStatus'">order by bl.baikelu_status</when>
+                <when test="selector eq 'isManual'">order by bl.is_manual</when>
+                <when test="selector eq 'makeborrDate'">order by bl.makeborr_date</when>
+                <when test="selector eq 'auditTime'">order by re.update_date</when>
+            </choose>
+            <choose>
+                <when test="desc eq 'desc'">desc</when>
+                <when test="desc eq 'asc'">asc</when>
+            </choose>
+        </if>
+    </select>
+
+
+    <select id="manualAuditReport" resultType="map" parameterType="map">
+        SELECT cancelNum, rejectNum, passNum, (cancelNum + rejectNum + passNum) sumNum,
+        IFNULL(FORMAT((passNum / (passNum + rejectNum)) * 100,2),0) passRate, employName FROM (
+        SELECT COUNT(bl.borr_status = 'BS007' OR NULL) AS cancelNum,
+        COUNT(bl.borr_status = 'BS008' OR NULL) AS rejectNum,
+        (COUNT(bl.borr_status = 'BS002' OR NULL) + COUNT(bl.borr_status = 'BS003' OR NULL) +
+        COUNT(bl.borr_status = 'BS004' OR NULL) + COUNT(bl.borr_status = 'BS005' OR NULL) +
+        COUNT(bl.borr_status = 'BS006' OR NULL) + COUNT(bl.borr_status = 'BS010' OR NULL)
+        + COUNT(bl.borr_status = 'BS014' OR NULL) +
+        COUNT(bl.borr_status = 'BS011' OR NULL) + COUNT(bl.borr_status = 'BS012' OR NULL)
+        ) AS passNum,
+        rw.employee_name employName
+        FROM b_borrow_list bl,review yr,Reviewers rw
+        WHERE yr.borr_id = bl.id AND yr.review_type = 1 AND rw.employ_num = yr.employ_num
+        <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+            AND yr.update_date BETWEEN #{beginDate} and #{endDate}
+        </if>
+        <if test="employName != null and employName != '' " >
+            AND yr.employ_num = #{employName,jdbcType=VARCHAR}
+        </if>
+
+        GROUP BY yr.employ_num) t1
+        <if test="selector != null">
+            <choose>
+                <when test="selector eq 'cancelNum'">order by cancelNum</when>
+                <when test="selector eq 'rejectNum'">order by rejectNum</when>
+                <when test="selector eq 'passNum'">order by passNum</when>
+                <when test="selector eq 'sumNum'">order by sumNum</when>
+                <when test="selector eq 'passRate'">order by passRate</when>
+            </choose>
+        </if>
+        <choose>
+            <when test="desc eq 'desc'">desc</when>
+            <when test="desc eq 'asc'">asc</when>
+        </choose>
+    </select>
+
+
+    <update id="updateByBorrId" parameterType="map">
+        UPDATE b_review
+        <set>
+            <if test="status != null and status != '' ">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null and reason != '' ">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="employNum != null and employNum != '' ">
+                employ_num = #{employNum,jdbcType=VARCHAR}
+            </if>
+        </set>
+        WHERE borr_id=#{borrId,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>

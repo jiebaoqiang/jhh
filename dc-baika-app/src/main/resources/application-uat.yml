@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: dc-loan-app
+  redis:
+    cluster:
+      nodes: 10.0.4.129:7001,10.0.4.129:7002,10.0.4.129:7003,10.0.4.129:7004,10.0.4.129:7005,10.0.4.129:7006
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+    timeout: 0
+    password: jhh#tel
+    commandTimeout: 5000
+    maxAttempts: 30
+     #------ #redis end ---------
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+    #------ #thymeleaf end ---------
+  #dubbo
+  dubbo:
+    application:
+      name: dc-app-consumer
+    #registries[0]:
+      #adress: zookeeper://127.0.0.1:2181
+    #registries[1]:
+      #adress: zookeeper://192.168.1.117:2181
+    registry:
+      address: 10.0.4.129:2181
+      protocol: zookeeper
+    protocol:
+      name: dubbo
+    scan: com.jhh.dc.baika.app.web
+    retries: 0
+    qos:
+      port: 22223
+    consumer:
+      timeout: 120000
+      check: false
+      retries: 0
+       #------ #dubbo end ---------
+  resources:
+    cache-period: 0
+server:
+  port: 8080
+  context-path: /dc-loan-app
+
+swagger:
+  enable: false
+#md5 key
+merchantKey: 123456
+#格式为分钟
+token:
+  expire:
+    time: 30
+logging:
+  config: classpath:logging-config.xml

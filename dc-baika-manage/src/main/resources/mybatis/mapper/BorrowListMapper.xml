@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.BorrowListMapper">
+	<resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.app.BorrowList">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="per_id" property="perId" jdbcType="INTEGER" />
+		<result column="prod_id" property="prodId" jdbcType="INTEGER" />
+		<result column="borr_type" property="borrType" jdbcType="VARCHAR" />
+		<result column="askborr_date" property="askborrDate" jdbcType="TIMESTAMP" />
+		<result column="borr_num" property="borrNum" jdbcType="VARCHAR" />
+		<result column="makeborr_date" property="makeborrDate" jdbcType="TIMESTAMP" />
+		<result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+		<result column="planrepay_date" property="planrepayDate" jdbcType="TIMESTAMP" />
+		<result column="act_repay_date" property="actRepayDate" jdbcType="TIMESTAMP" />
+		<result column="borr_status" property="borrStatus" jdbcType="VARCHAR" />
+		<result column="plan_repay" property="planRepay" jdbcType="DECIMAL" />
+		<result column="act_repay_amount" property="actRepayAmount" jdbcType="DECIMAL" />
+		<result column="act_reduce_amount" property="actReduceAmount" jdbcType="DECIMAL" />
+		<result column="ispay" property="ispay" jdbcType="INTEGER" />
+
+		<result column="term_num" property="termNum" jdbcType="INTEGER" />
+		<!--<result column="term_id" property="termId" jdbcType="INTEGER" />-->
+		<result column="borr_amount" property="borrAmount" jdbcType="DECIMAL" />
+		<result column="per_coupon_id" property="perCouponId" jdbcType="INTEGER" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="update_user" property="updateUser" jdbcType="INTEGER" />
+		<result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+		<result column="creation_user" property="creationUser" jdbcType="INTEGER" />
+		<!--<result column="sync" property="sync" jdbcType="CHAR" />-->
+		<result column="flag" property="flag" jdbcType="CHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap_loaninfo" type="com.jhh.dc.baika.entity.manager_vo.LoanInfoVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="borr_num" property="borrNum" jdbcType="VARCHAR" />
+		<result column="product_name" property="productName" jdbcType="VARCHAR" />
+		<result column="borr_amount" property="borrAmount" jdbcType="VARCHAR" />
+		<result column="loan_day" property="loanDay" jdbcType="CHAR" />
+		<result column="planrepay_date" property="planrepayDate" jdbcType="TIMESTAMP" />
+		<result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+		<result column="act_repay_date" property="actRepayDate" jdbcType="TIMESTAMP" />
+		<result column="makeborr_date" property="makeborrDate" jdbcType="TIMESTAMP" />
+		<result column="amount" property="amount" jdbcType="VARCHAR" />
+		<result column="plan_repay" property="planRepay" jdbcType="VARCHAR" />
+		<result column="act_repay_amount" property="actRepayAmount" jdbcType="VARCHAR" />
+		<result column="borrStatus" property="borrStatus" jdbcType="TIMESTAMP" />
+		<result column="is_manual" property="isManual" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="jdNumber" property="jdNumber" jdbcType="VARCHAR" />
+		<!--<result column="serial_number" property="serial_number" jdbcType="VARCHAR" />-->
+		<!--<result column="serial_number_url" property="serial_number_url" jdbcType="VARCHAR" />-->
+	</resultMap>
+
+	<select id="getBorrByPerId" resultMap="BaseResultMap_loaninfo" parameterType="java.lang.Integer">
+
+		SELECT
+		bl.id,
+		bl.borr_num,
+		bl.borr_amount,
+		bl.term_num loan_day,
+		p.product_name,
+		bp.card_num,
+		bl.planrepay_date,
+		bl.makeborr_date,
+		bl.act_repay_date,
+		bl.pay_date,
+		bl.plan_repay,
+		bl.amount_repay as act_repay_amount,
+        bl.borr_status as borrStatus,
+        bl.prod_type as prodType,
+		bl.is_manual,
+		'' as description,
+		jd.card_number as jdNumber
+		FROM b_borrow_list AS bl
+		INNER JOIN c_product AS p ON bl.prod_id = p.id
+		INNER JOIN b_person AS bp on bl.per_id=bp.id
+		 LEFT JOIN b_jd_card_info jd on bl.id=jd.borr_id
+		WHERE bl.per_id = #{_parameter}
+		ORDER BY bl.id DESC
+	</select>
+
+	<select id="selectIdsByStatus" resultType="java.lang.Integer" parameterType="java.util.List">
+		SELECT id FROM b_borrow_list
+		WHERE borr_status in
+		<foreach collection="arg1" separator="," open="(" close=")" item="status">
+			#{status}
+		</foreach>
+		AND id IN
+		<foreach collection="arg0" separator="," open="(" close=")" item="id">
+				#{id}
+		</foreach>
+	</select>
+
+	<select id="selectBorrNumByStatus" resultType="java.lang.String" parameterType="java.util.List">
+		SELECT borr_num FROM b_borrow_list
+		WHERE borr_status in
+		<foreach collection="arg1" separator="," open="(" close=")" item="status">
+			#{status}
+		</foreach>
+		AND id IN
+		<foreach collection="arg0" separator="," open="(" close=")" item="id">
+			#{id}
+		</foreach>
+	</select>
+
+	<update id="updateStatusById">
+		update b_borrow_list
+		set borr_status = #{status}
+		where id = #{borrId}
+	</update>
+
+	<select id="queryBorrListByPerIdAndStauts" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT id id,
+			per_id perId,
+			prod_id prodId,
+			borr_type borrType,
+			askborr_date askborrDate,
+			borr_num borrNum,
+			makeborr_date makeborrDate,
+			pay_date payDate,
+			planrepay_date planrepayDate,
+			act_repay_date actRepayDate,
+			borr_status borrStatus,
+			overdue_days overdueDays,
+			penalty penalty,
+			act_plan_amount actPlanAmount,
+			act_repay_amount actRepayAmount,
+			act_reduce_amount actReduceAmount,
+			amount_surplus surplusAmount,
+			ispay ispay,
+			term_num termNum,
+			borr_amount borrAmount,
+			no_deposit_refund noDepositRefund,
+			deposit_amount depositAmount,
+			pay_amount payAmount,
+			ransom_amount ransomAmount,
+			surplus_ransom_amount surplusRansomAmount,
+			surplus_rental_amount surplusRentalAmount,
+			penalty_rate penaltyRate,
+			per_coupon_id perCouponId,
+			current_repay_time currentRepayTime,
+			collection_user collectionUser,
+			current_collection_time currentCollectionTime,
+			update_date updateDate,
+			update_user updateUser,
+			creation_date creationDate,
+			creation_user creationUser,
+			version version,
+			baikelu_status baikeluStatus,
+			borr_up_status borrUpStatus,
+			description description,
+			contact_num contactNum,
+			is_manual isManual,
+			flag flag
+ 			FROM b_borrow_list WHERE  borr_status IN ('BS006','BS010','BS013','BS004','BS005') AND per_id = #{perId}
+	</select>
+
+	<select id="selectUnBaikelu" resultMap="BaseResultMap">
+		SELECT bl.* FROM b_borrow_list bl LEFT JOIN b_order_robot yor ON bl.id = yor.borr_id
+			WHERE bl.`borr_status` = 'BS003' AND yor.id IS  NULL
+	</select>
+	<select id="getMstRepayAmount" resultType="java.lang.String" parameterType="java.lang.Integer">
+		SELECT
+		 <![CDATA[
+		CASE WHEN CONVERT(IF(t7.overdue_days < 8,
+		IF(TO_DAYS(NOW())-TO_DAYS(t7.planrepay_date) > 0, -- 第4期逾期
+		t7.amount_surplus, -- 第4期逾期，则全部结清
+		IF(TO_DAYS(t7.planrepay_date)-TO_DAYS(NOW()) < 7, -- 已到第4期，但第4期尚未逾期
+		t7.amount_surplus-(t7.plan_rental/t7.term_num)-t7.surplus_ransom_amount+(1-t7.no_deposit_refund)*t7.deposit_amount, -- 已到第4期，但第4期尚未逾期 减去剩余赎回手机费用加上押金
+		t7.amount_surplus-(t7.plan_rental/t7.term_num)) ) -- 未到第4期 按照原有逻辑 只减去当期租金
+		, t7.amount_surplus),DECIMAL(10,2)) < 0 THEN 0
+		ELSE CONVERT(IF(t7.overdue_days < 8,
+		IF(TO_DAYS(NOW())-TO_DAYS(t7.planrepay_date) > 0, -- 第4期逾期
+		t7.amount_surplus, -- 第4期逾期，则全部结清
+		IF(TO_DAYS(t7.planrepay_date)-TO_DAYS(NOW()) < 7, -- 已到第4期，但第4期尚未逾期
+		t7.amount_surplus-(t7.plan_rental/t7.term_num)-t7.surplus_ransom_amount+(1-t7.no_deposit_refund)*t7.deposit_amount, -- 已到第4期，但第4期尚未逾期 减去剩余赎回手机费用加上押金
+		t7.amount_surplus-(t7.plan_rental/t7.term_num)) ) -- 未到第4期 按照原有逻辑 只减去当期租金
+		, t7.amount_surplus),DECIMAL(10,2)) END
+		]]>
+		AS mstRepayAmount
+		FROM b_borrow_list t7
+		WHERE t7.id = #{borrId}
+	</select>
+
+</mapper>

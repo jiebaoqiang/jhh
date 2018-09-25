@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <link rel="stylesheet" th:href="@{/css/G-contract.css}">
+  <title>签约</title>
+</head>
+<style>
+  .successModal .modalBox .top {
+      position: absolute;
+      top: -3rem;
+      background: transparent;
+    }
+  </style>
+
+<body>
+  <div class="title">
+    <p>
+      <i class="iconfont icon-gantanhao"> 费率详情</i>
+      <a class="iconfont icon-back_light goBackApp"></a>签约
+    </p>
+  </div>
+  <header>
+    <h2 class="color">请您仔细阅读以下信息及电子合同</h2>
+  </header>
+  <div class="main">
+    <form action="">
+    <div class="content">
+      <input type="hidden"  name="perId" th:value="${signInfo.perId}"/>
+      <input type="hidden" name="borrId" th:value="${signInfo.borrId}" />
+      <input type="hidden" name="loanUse" id="loanUse" />
+      <ul>
+        <li class="clearfix">
+          <p class="fl">姓名</p>
+          <span class="fr" th:text="${signInfo.name}"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">借款本金</p>
+          <span class="fr" th:text="${signInfo.borrAmount}+'元'"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">借款期限</p>
+          <span class="fr" th:text="${signInfo.termNum}+'月'"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">到期应还</p>
+          <span class="fr" th:text="${signInfo.planRepay}+'元'"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">银行卡号</p>
+          <span class="fr" th:text="${signInfo.bankNum}"></span>
+        </li>
+        <li class="clearfix">
+          <p class="fl">借款用途</p>
+          <div class="fr method">
+            请选择
+          </div>
+        </li>
+      </ul>
+    </div>
+    </form>
+    <div class="checked">
+      <div><i class="clickBtn iconfont icon-gou"></i>我已阅读 <span class="ff9e13">《<a href="javascript:;" class="ff9e13 dot">销售合同</a>》、《<a
+            href="#" class="ff9e13 dot">咨询与管理服务协议</a>》、《<a href="#" class="ff9e13 dot">数字证书服务协议（e签宝）</a>》</span></div>
+      <p class="hide danger">请先阅读协议同意后勾选</p>
+    </div>
+    <footer>
+      <button type="button" class="btn">确 认</button>
+    </footer>
+  </div>
+  <!-- 下拉框 -->
+  <div class="modal hide">
+    <div class="list hide">
+      <ul>
+        <li>请选择您的借款用途</li>
+        <li>个人日常消费</li>
+        <li>装修</li>
+        <li>旅游</li>
+        <li>教育</li>
+        <li>医疗</li>
+        <li>其他</li>
+        <li class="cancel">取消</li>
+      </ul>
+    </div>
+  </div>
+  <!-- 签约成功的弹框 -->
+  <div class="successModal hide">
+    <div class="modalBox">
+      <div class="top"><img th:src="@{/images/baikaImage/tc_top.png}" alt=""></div>
+      <div class="content">
+        <p>恭喜您签约完成！根据信用评
+          分不同将快速进行放款，请注
+          意接听抽样审核电话。
+        </p>
+      </div>
+      <div class="foot">
+        <a href="javascript:;" class="complete">知 道 了</a>
+      </div>
+    </div>
+  </div>
+  <!-- 费率详情 -->
+  <div class="desModal hide">
+    <div class="modalBox">
+      <i class="iconfont icon-close"></i>
+      <div class="top">费率详情</div>
+      <div class="content">
+        <div class="money">
+          <p class="color" th:text="${signInfo.planRepay}+'元'"></p>
+          <span>应还总额</span>
+        </div>
+        <ul>
+          <li class="clearfix">
+            <p class="fl">首月一次性收取服务费</p>
+            <span class="fr" th:text="${signInfo.interestRate}+'元'"></span>
+          </li>
+          <li class="clearfix">
+            <p class="fl">每月取账户管理费</p>
+            <span class="fr" th:text="${signInfo.serviceFee}+'元'"></span>
+          </li>
+          <li class="clearfix">
+            <p class="fl">每月应还本息</p>
+            <span class="fr" th:text="${signInfo.manageFee}+'元'"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- 弹框 -->
+  <div th:replace="common/promptBox::promptBox"></div>
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+  <script th:src="@{/js/trade/contract.js}"></script>
+</body>
+
+</html>

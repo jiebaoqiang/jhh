@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/enjoyShop/common.css}">
+  <title>销售合同</title>
+  <script>
+    var oHtml = document.documentElement;
+    getSize();
+
+    function getSize() {
+      // 获取屏幕的宽度
+      var ascreen = oHtml.clientWidth;
+      if (ascreen >= 750) {
+        oHtml.style.fontSize = '20px';
+      } else {
+        oHtml.style.fontSize = ascreen / 20 + "px";
+      }
+    }
+  </script>
+</head>
+<style>
+  .container {
+    padding: 1rem;
+    background-color: #fff;
+    font-size: .65rem;
+  }
+  .text-fr {
+   margin-left: 9.3rem;
+   margin-bottom: 1rem;
+  }
+  tr{
+    font-size: .65rem;
+    text-align: center;
+  }
+
+  .fw {
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: .65rem;
+    margin-top: 1rem;
+    font-weight: 700;
+  }
+  .mt5 {
+    margin-top: 2rem;
+  }
+  .line {
+    display: inline-block;
+    width: 4rem;
+    height: 1rem;
+    border-bottom: 1px solid #000;
+  }
+</style>
+
+<body>
+  <div class="title">
+    <p>
+      <a href="javascript:history.go(-1);"></a>销售合同
+    </p>
+  </div>
+  <div class="container">
+    <p class="text-fr"th:text="'合同编号：'+${contract.borrNum}"> </p>
+    <table>
+      <tr>
+        <td>供方：</td>
+        <td>（以下简称甲方）</td>
+      </tr>
+      <tr>
+        <td>名称：</td>
+        <td>义务一享网络科技有限公司</td>
+      </tr>
+      <tr>
+          <td>购方：</td>
+          <td>（以下简称乙方）</td>
+      </tr>
+      <tr>
+        <td>名称：</td>
+        <td th:text="${contract.name}"/>
+      </tr>
+      <tr>
+        <td>地址：</td>
+        <td th:text="${contract.address}"/>
+      </tr>
+      <tr>
+        <td>电话：</td>
+        <td th:text="${contract.phone}"/>
+      </tr>
+      <tr>
+        <td>邮箱：</td>
+        <td th:text="${contract.email}"/>
+      </tr>
+    </table>
+    <p>经甲乙双方友好协商，特订立本合同，以资信守。</p>
+
+    <div>
+      <h2>一、商品内容：</h2>
+      <table border="1" align="center">
+        <tr>
+          <td width="20%">商品名称</td>
+          <td width="20%">商品面值（元）</td>
+          <td width="20%">数量</td>
+          <td width="20%">单价（元）</td>
+          <td width="20%">合计（元）</td>
+        </tr>
+        <tr>
+          <td>京东电子卡</td>
+          <td>1000</td>
+          <td>1</td>
+          <td>1000</td>
+          <td>1000</td>
+        </tr>
+		 <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>总计</td>
+          <td>1000</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h2>二、商品交付：</h2>
+      <p>1、甲方和乙方签署本合同后，甲方将把商品京东电子卡卡号和卡密发送到乙方在甲方“悠兔白卡”产品注册的账户<span class="line" th:text="${contract.phone}"></span>中，乙方可登陆到“悠兔白卡”产品在账户中查看。</p>
+      <p>2、鉴于京东电子卡是虚拟电子商品，卡号和卡密发送到乙方在“悠兔白卡”产品注册的账户<span class="line" th:text="${contract.phone}"></span>中即视为甲方完成商品的交付；同时，乙方不得要求退、换卡和退款。</p>
+      <p>3、乙方请妥善保管卡号及密码；甲方不对京东电子卡的丢失和被窃负责。</p>
+    </div>
+    <div>
+      <h2>三、商品价款支付期限及方式：</h2>
+      <p>乙方在甲方交付商品之日（含）起10个日历日内向甲方一次性支付合同总价款1000元（大写 壹千 元）。</p>
+    </div>
+    <div>
+      <h2>四、违约责任：</h2>
+      <p>1、甲乙双方应严格信守合同，不得违约，如有违约，违约方应向守约方赔付因违约方违约所造成的经济损失；</p>
+      <p>2、乙方逾期付款的，应向甲方一次性偿付合同总价款 10 %违约金，同时每日按合同总价款的 1 %计算，向甲方支付迟延履行违约金。</p>
+    </div>
+    <div>
+      <h2>五、争议解决方式：</h2>
+      <p>凡因本合同的效力、履行、解释等发生的一切争议，双方均应首先友好协商解决，协商不成时，双方均可向甲方所在地人民法院起诉。</p>
+    </div>
+    <div>
+      <h2>六、合同的变更或解除：</h2>
+      <p>1、甲乙双方均应严格信守本合同，不得随意变更或解除合同（双方协商一致并签署书面文件的除外）。</p>
+      <p>2、合同未尽事宜，须经双方另行协商并签署书面文件，与本合同具有同等法律效力。</p>
+    </div>
+    <div>
+      <h2>七、生效及其他</h2>
+      <p>1、本合同以数据电文形式制成，并保存于专用服务器上备查。</p>
+      <p>2、乙方通过登录“悠兔白卡”产品注册账户并在平台页面点击相应的确认按钮或以其他方式选择接受本合同，即表示同意使用数据电文形式签署本合同，并同意接受本合同所载全部内容、条款和条件。</p>
+    </div>
+    <div>
+      <table class="mt5">
+        <tr>
+          <td>甲方：</td>
+          <td>义务一享网络科技有限公司 </td>
+          <td>乙方：</td>
+          <td th:text="${contract.name}"/>
+        </tr>
+        <tr>
+          <td>签订时间：</td>
+          <td th:text="${contract.createDate}"/>
+          <td>签订时间：</td>
+          <td th:text="${contract.createDate}"/>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>

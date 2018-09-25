@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.PersonMapper">
+	<resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.app.Person">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="guid" property="guid" jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="check_date" property="checkDate" jdbcType="DATE" />
+		<result column="blacklist" property="blacklist" jdbcType="VARCHAR" />
+		<result column="phone_business" property="phoneBusiness" jdbcType="VARCHAR" />
+		<result column="phone_service" property="phoneService" jdbcType="VARCHAR" />
+		<result column="bpm_id" property="bpmId" jdbcType="INTEGER" />
+		<result column="grade" property="grade" jdbcType="INTEGER" />
+		<result column="is_login" property="isLogin" jdbcType="INTEGER" />
+		<result column="token_id" property="tokenId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="sync" property="sync" jdbcType="CHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="BaseResultMap_Private" type="com.jhh.dc.baika.entity.manager_vo.PrivateVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="per_id" property="perId" jdbcType="INTEGER" />
+		<result column="qq_num" property="qqNum" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="usuallyaddress" property="usuallyaddress" jdbcType="VARCHAR" />
+		<result column="education" property="education" jdbcType="VARCHAR" />
+		<result column="marry" property="marry" jdbcType="VARCHAR" />
+		<result column="getchild" property="getchild" jdbcType="VARCHAR" />
+		<result column="profession" property="profession" jdbcType="VARCHAR" />
+		<result column="monthlypay" property="monthlypay" jdbcType="VARCHAR" />
+		<result column="business" property="business" jdbcType="VARCHAR" />
+		<result column="busi_province" property="busiProvince" jdbcType="VARCHAR" />
+		<result column="busi_city" property="busiCity" jdbcType="VARCHAR" />
+		<result column="busi_address" property="busiAddress" jdbcType="VARCHAR" />
+		<result column="busi_phone" property="busiPhone" jdbcType="VARCHAR" />
+		<result column="relatives" property="relatives" jdbcType="VARCHAR" />
+		<result column="relatives_name" property="relativesName" jdbcType="VARCHAR" />
+		<result column="rela_phone" property="relaPhone" jdbcType="VARCHAR" />
+		<result column="society" property="society" jdbcType="VARCHAR" />
+		<result column="soci_phone" property="sociPhone" jdbcType="VARCHAR" />
+		<result column="society_name" property="societyName" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="relativesValue" property="relativesValue" jdbcType="VARCHAR" />
+		<result column="societyValue" property="societyValue" jdbcType="VARCHAR" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="source_value" property="sourceBalue" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+		<result column="blacklist" property="blacklist" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="is_car" property="isCar" jdbcType="VARCHAR" />
+		<result column="house_condition" property="houseCondition" jdbcType="VARCHAR" />
+	</resultMap>
+
+	
+	
+	<!--<select id="queryUserInfo" resultMap="BaseResultMap_Private" parameterType="java.lang.Integer">-->
+		<!--SELECT-->
+		<!--p.phone,-->
+		<!--p.source,-->
+		<!--p.create_date,-->
+		<!--p.card_num,-->
+		<!--p.`name`,-->
+		<!--p.birthday,-->
+		<!--p.address,-->
+		<!--r.id,-->
+		<!--r.per_id,-->
+		<!--r.qq_num,-->
+		<!--r.email,-->
+		<!--r.usuallyaddress,-->
+		<!--r.education,-->
+		<!--r.marry,-->
+		<!--r.getchild,-->
+		<!--r.profession,-->
+		<!--r.monthlypay,-->
+		<!--r.business,-->
+		<!--r.busi_province,-->
+		<!--r.busi_city,-->
+		<!--r.busi_address,-->
+		<!--r.busi_phone,-->
+		<!--r.relatives,-->
+		<!--r.relatives_name,-->
+		<!--r.rela_phone,-->
+		<!--r.society,-->
+		<!--r.soci_phone,-->
+		<!--r.society_name,-->
+		<!--r.is_car,-->
+		<!--r.house_condition,-->
+		<!--r.update_date,-->
+		<!--r.sync,-->
+		<!--q.meaning AS sourceValue,-->
+		<!--v.meaning AS relativesValue,-->
+		<!--w.meaning AS societyValue,-->
+ 		<!--p.card_photoz as imageZ,-->
+ 		<!--p.card_photof as imageF-->
+		<!--FROM b_person AS p-->
+ 		<!--LEFT JOIN   b_private  AS r ON p.id = r.per_id-->
+ 		<!--LEFT JOIN c_code_value AS q ON p.source = q.code_code AND q.code_type = 'register_source'-->
+ 		<!--LEFT JOIN c_code_value AS v ON r.relatives = v.code_code AND v.code_type = 'relatives'-->
+ 		<!--LEFT JOIN c_code_value AS w ON r.society = w.code_code AND w.code_type = 'society'-->
+		<!--where p.id = #{perId}-->
+	<!--</select>-->
+
+	<select id="queryUserInfo" resultMap="BaseResultMap_Private" parameterType="java.lang.Integer">
+		SELECT
+		p.phone,
+		p.card_num
+		FROM b_person AS p
+		where p.id = #{perId}
+	</select>
+
+	<select id="getCardPicById" resultType="com.jhh.dc.baika.entity.manager_vo.CardPicInfoVo" parameterType="java.lang.Integer">
+		SELECT
+		p.id AS perId,
+		p.card_photoz AS imageUrlZ,
+		p.card_photof AS imageUrlF
+		FROM b_person AS p
+		WHERE p.id = #{perId}
+	</select>
+
+	<select id="getBlackList" resultType="com.jhh.dc.baika.entity.manager_vo.BalckListVo" parameterType="java.lang.Integer">
+		SELECT
+		r.type,
+		r.reason,
+		(SELECT meaning FROM c_code_value WHERE code_type = 'risk_source' AND code_code = r.sys) source,
+		IF(<![CDATA[ r.handler_name <> '' ]]>,r.handler_name,(SELECT user_name FROM c_system_user WHERE user_sysno = r.handler_no)) operator,
+		r.create_time createTime
+		FROM b_person p, risk.risk_blacklist_info_log r
+		WHERE p.card_num = r.idcard AND p.id = #{perId}
+		order by r.create_time desc
+	</select>
+
+	<select id="selectPersonId" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT person.id FROM b_person person
+		WHERE 1=1
+		<if test="phone != null">
+			AND person.phone = #{phone}
+		</if>
+		<if test="idCard != null">
+			AND person.card_num = #{idCard}
+		</if>
+		<if test="name != null">
+			AND person.name = #{name}
+		</if>
+	</select>
+
+
+	<select id="getNodeByPerId" parameterType="java.lang.String" resultType="map">
+		SELECT
+		  n.id AS id,
+		  b.node_name AS nodeName,
+		  n.node_status AS nodeStatus,
+		  ca.meaning AS nodeStatusName,
+		  n.description AS description,
+		  n.node_date AS nodeDate,
+		  n.update_date AS updateDate
+		FROM
+		  dc_common.b_bpm_node n
+		LEFT JOIN dc_common.c_bpm b
+		  ON n.node_id = b.id
+		LEFT JOIN c_code_value ca
+		  ON n.node_status = ca.code_code AND ca.code_type = 'node_status'
+		WHERE n.per_id = #{perId}
+		ORDER BY n.node_id
+	</select>
+
+	<select id="getNodeDetailByPerId" parameterType="map" resultType="map">
+		SELECT mc.org_code orgCode,
+		lvd.limitconfig_code limitconfigCode,
+		add_value addValue,
+		SUBSTRING_INDEX(remark,'【',1) remark,
+		lvd.create_time createTime,
+		expire_time expireTime,
+		(SELECT SUM(add_value)  FROM risk.risk_limit_value_detail
+		WHERE idcard = #{idCard} AND product_id = 66
+		<if test="expires == 1">
+			<![CDATA[ AND expire_time < SYSDATE() ]]>
+		</if>
+		<if test="expires == 2">
+			<![CDATA[ AND expire_time > SYSDATE() ]]>
+		</if>
+		AND is_enable = 1 )score
+		 FROM risk.risk_limit_value_detail lvd LEFT JOIN risk.risk_limit_config mc ON mc.risk_code = lvd.limitconfig_code
+		WHERE idcard = #{idCard} AND product_id = 66
+		<if test="expires == 1">
+			 <![CDATA[ AND expire_time < SYSDATE() ]]>
+		</if>
+		<if test="expires == 2">
+			<![CDATA[ AND expire_time > SYSDATE() ]]>
+		</if>
+	</select>
+
+	<select id="getBankByPerId" parameterType="java.lang.Integer" resultType="map">
+		SELECT
+		  t1.bank_name AS bankName ,
+		  t1.bank_num AS bankNum ,
+		  t1.phone AS bankPhone,
+		  DATE_FORMAT(t1.creation_date, '%Y/%m/%d') AS createDate,
+		  CASE status
+		  	WHEN '1' THEN '主卡'
+		  	WHEN '2' THEN '副卡'
+		  	WHEN '0' THEN '无效卡'
+		  END AS status
+		FROM
+		  b_bank t1
+		  inner JOIN b_person t2 on t1.per_id=t2.id
+		WHERE t2.id = #{perId}
+	</select>
+
+	<select id="getUsers" parameterType="map" resultType="map">
+		SELECT
+		yp.id,
+		yp.name ,
+		yp.phone ,
+		yp.card_num ,
+		yp.create_date ,
+		(SELECT borrow.borr_status FROM b_borrow_list borrow WHERE borrow.id=(SELECT MAX(id) id FROM b_borrow_list borrowlist WHERE borrowlist.per_id = yp.id)) AS borrow_status,
+		(SELECT borrow.prod_type FROM b_borrow_list borrow WHERE borrow.id=(SELECT MAX(id) id FROM b_borrow_list borrowlist WHERE borrowlist.per_id = yp.id)) AS prod_type,
+		"" AS node_status,
+		"" AS description,
+		"" AS node_code,
+		yp.source AS source_name
+		FROM b_person yp
+		<where>
+			<if test="phone != null">
+				and yp.phone = #{phone}
+			</if>
+			<if test="name != null">
+				and yp.name = #{name}
+			</if>
+			<if test="card_num != null">
+				and yp.card_num = #{card_num}
+			</if>
+			<if test="himid != null">
+				and yp.id in
+				<foreach collection="himid.split(',')" item="pId" index="index"
+						 open="(" close=")" separator=",">
+					'${pId}'
+				</foreach>
+			</if>
+			<if test="create_date_start != null">
+				<![CDATA[ and yp.create_date >= DATE_FORMAT(#{create_date_start},'%Y-%m-%d') ]]>
+			</if>
+			<if test="create_date_end != null">
+				<![CDATA[ and yp.create_date < DATE_FORMAT(#{create_date_end},'%Y-%m-%d') ]]>
+			</if>
+			<if test="borrowStatusValue != null">
+				AND (SELECT borrow.borr_status FROM b_borrow_list borrow WHERE borrow.id=(SELECT MAX(id) id FROM b_borrow_list borrowlist WHERE borrowlist.per_id = yp.id)) = #{borrowStatusValue}
+			</if>
+			<if test="source_name != null">
+				and yp.source = #{source_name}
+			</if>
+		</where>
+		<if test="selector == null and desc == null">
+			ORDER BY yp.create_date desc
+		</if>
+		<if test="selector != null">
+			<choose>
+				<when test="selector eq 'create_date'">order by yp.create_date</when>
+			</choose>
+		</if>
+		<choose>
+			<when test="desc == true">desc</when>
+			<when test="desc == false">asc</when>
+		</choose>
+	</select>
+
+	<select id="getChannelUsers" parameterType="map" resultType="map">
+		select insert(phone, 4, 4, '****') as phone, '已注册' source,
+		DATE_FORMAT(create_date,'%Y-%m-%d') as createDate from b_person
+		<where>
+			<if test="createDate_start != null">
+				<![CDATA[ and create_date >= DATE_FORMAT(#{createDate_start},'%Y-%m-%d') ]]>
+			</if>
+			<if test="createDate_end != null">
+				<![CDATA[ and create_date < DATE_FORMAT(#{createDate_end},'%Y-%m-%d') ]]>
+			</if>
+			and source = #{source}
+		</where>
+		<if test="selector == null and desc == null">
+			ORDER BY create_date desc
+		</if>
+		<if test="selector != null">
+			<choose>
+				<when test="selector eq 'createDate'">order by create_date</when>
+			</choose>
+		</if>
+		<choose>
+			<when test="desc == true">desc</when>
+			<when test="desc == false">asc</when>
+		</choose>
+	</select>
+
+	<select id="getRegisterSource" parameterType="map" resultType="map">
+		SELECT code_code CODE , meaning VALUE  FROM c_code_value WHERE code_type = #{code}
+	</select>
+	<select id="getCardNumAndPhoneByBorrId" parameterType="integer" resultType="map">
+		select p.card_num cardNum, p.phone
+		from
+		b_person p inner join b_borrow_list b on p.id = b.per_id
+		where b.id = #{borrId}
+	</select>
+
+	<select id="getPersonByPhone" parameterType="java.lang.String"
+			resultMap="BaseResultMap">
+		SELECT id, username, password, phone, check_date, phone_business, phone_service, grade,
+		is_login, token_id, source, inviter, create_date, update_date, sync, is_manual, description,
+		card_num, name, sex, nation, birthday, address, office, start_date, end_date, card_photoz,
+		card_photof, card_photod, card_photov, bank_name, bank_card, contact_url, contact_num,
+		contact_date, balance FROM
+		b_person
+		WHERE phone = #{phone}
+	</select>
+</mapper>

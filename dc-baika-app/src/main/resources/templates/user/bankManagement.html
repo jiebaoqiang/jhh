@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/images/icon/iconfont.css}">
+  <link rel="stylesheet" th:href="@{/css/bankmanagement.css}">
+  <script th:src="@{/js/jquery-1.11.2.min.js}"></script>
+  <script th:src="@{/js/base.js}"></script>
+  <script th:src="@{/js/ajaxhook.min.js}"></script>
+  <title>银行卡</title>
+</head>
+<body>
+<div class="title">
+  <p>
+    <i onclick="btnSumbit()">添加银行卡</i>
+    <a th:onclick="'javascript:window.location.href=\''+@{'/form/getAccountCenter/'+${phone}}+'\' '"  class="iconfont icon-back_light"></a>银行卡</p>
+</div>
+<form th:action="@{'/form/addBankCard/'+${perId}}" method="post">
+  <input type="hidden" name="returnUrl" th:value="@{'/form/bankManagement/'+${perId}+'/'+${phone}}" />
+</form>
+<div>
+  <ul>
+    <li th:each="bank:${bankList}">
+      <div class="bankInfo clearfix">
+        <img th:src="@{'/images/bankIconManage/'+${bank.bankCode}+'.png'}" alt="" class="fl">
+        <div class="fl">
+          <p th:text="${bank.bankName}"></p>
+          <span>储蓄卡</span>
+        </div>
+      </div>
+      <p class="cardNum" th:text="${bank.bankNum}"></p>
+    </li>
+  </ul>
+</div>
+</body>
+
+<script>
+  var num = $('.cardNum');
+  num.map(function(i,v) {
+    $(v).text('**** **** **** ' + $(v).text().slice(-4));
+  });
+  function btnSumbit() {
+    $('form').submit();
+  }
+</script>
+</html>

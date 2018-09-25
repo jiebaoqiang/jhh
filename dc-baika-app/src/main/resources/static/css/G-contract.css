@@ -1,0 +1,136 @@
+
+.checked i {
+  position: absolute;
+  top:0;
+  left:0;
+  width: .75rem;
+  height: .75rem;
+  line-height: .75rem;
+  text-align: center;
+  border: 1px solid #c9c9c9;
+  box-sizing: border-box;
+  margin-top: .3rem;
+  color: transparent;
+  font-size: .6rem;
+}
+.checked i.active {
+  color: #5181EC;
+}
+header,footer,.content,.checked {
+  margin: 0 1rem;
+}
+.checked {
+  position: relative;
+  margin-top: 2.2rem;
+}
+.checked div {
+  padding-left: 1.5rem;
+}
+.checked p{
+  font-size: .55rem;
+}
+header {
+  margin-top: 1rem;
+}
+header h2 {
+  font-size: 1rem;   
+  line-height: 2.75rem;
+}
+.main {
+  background-color: #fff;
+  margin: 0 1rem;
+  padding-bottom: 2rem;
+}
+.content li{
+  position: relative;
+  height: 2.75rem;
+  line-height: 2.75rem;
+  border-bottom: 1px solid #f2f2f2;
+}
+.content li p {
+  color: #333;
+}
+.content li span {
+  color: #999;
+}
+.btn {
+  margin-top: 1rem;
+  width: 15.8rem;
+}
+.successModal {
+  background: url('../images/guang.png') rgba(0, 0, 0 , .5) no-repeat center;
+  box-shadow:1px 0px 12px rgba(0,0,0,0.03);
+  border-radius: .5rem;
+  background-size: cover;
+  -webkit-background-size: cover;
+}
+.successModal  .modalBox  {
+  background:linear-gradient(184deg,rgba(113,154,251,1),rgba(81,129,236,1));
+  border-radius: 5px; 
+  padding-top: 4rem /* 180/40 */;
+}
+.successModal  .modalBox .content {
+  margin: 0;
+  font-size: .8rem;
+  border: none;
+  padding: 1rem .5rem 1rem;
+  color: #fff;
+ 
+}
+.successModal .modalBox a {
+  position: absolute;
+  bottom: -4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  width: 70%;
+  color: #FDBD44;
+  font-size: .8rem;
+}
+.successModal .top img{
+  display: block;
+  width: 104.5%;
+}
+.successModal .modalBox .top {
+  height: auto;
+}
+
+/* 费率详情弹窗 */
+.desModal .content{
+  margin: 0;
+}
+.desModal .modalBox{
+  width: 14.025rem /* 561/40 */;
+  margin-left: -7.0125rem;
+}
+.desModal .money{
+  text-align: center;
+  padding: 1rem 0;
+  border-bottom: 1px dashed #1E82D2;
+}
+.desModal .money p{
+  font-size: 1.25rem /* 50/40 */;
+
+}
+.desModal .money span {
+  font-size: .65rem /* 26/40 */;
+  color: #ababab;
+}
+
+.desModal .content ul li {
+  padding: 0 .675rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  border-bottom: 1px solid #eee;
+}
+.desModal .content li .fr{
+  color: #2379F0;
+}
+.desModal .modalBox i {
+  position: absolute;
+  right: -1.2rem;
+  top: -1.5rem;
+  font-size: 1.2rem /* 48/40 */;
+  color: #fff;
+  font-weight: 700;
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.JdCardInfoMapper">
+    <insert id="saveCardExcel" parameterType="com.jhh.dc.baika.manage.service.excel.ImportJDCardExcelEntity">
+        INSERT IGNORE INTO b_jd_card_info
+        (card_number, id, start_date, end_date,  password, create_date, update_date)
+        VALUES
+        <foreach collection="list" item="cardExcels"  separator=",">
+            (
+                #{cardExcels.cardNumber},
+                #{cardExcels.id},
+                #{cardExcels.startDate},
+                #{cardExcels.endDate},
+                #{cardExcels.password},
+                #{cardExcels.createDate},
+                #{cardExcels.updateDate}
+            )
+        </foreach>
+    </insert>
+</mapper>
+

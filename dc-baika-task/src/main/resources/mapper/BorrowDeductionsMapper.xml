@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.dao.BorrowDeductionsMapper">
+	<select id="selectByBorrId" parameterType="integer" resultType="BorrowDeductions">
+		select
+		t.id,
+		t.borr_id borrId,
+		t.per_id perId,
+		t.status,
+		t.reason,
+		t.update_date updateDate,
+		t.create_date createDate
+		from b_borrow_deductions t
+		where t.borr_id = #{borrId}
+	</select>
+</mapper>

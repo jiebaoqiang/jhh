@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.mapper.sms.SmsTemplateMapper">
+    <resultMap id="BaseResultMap" type="com.jhh.dc.baika.entity.manager.SmsTemplate">
+        <result column="TEMPLATE_TYPE" property="templateType" jdbcType="VARCHAR"/>
+        <result column="TEMPLATE_SEQ" property="templateSeq" jdbcType="INTEGER"/>
+        <result column="CONTENT" property="content" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR"/>
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        TEMPLATE_TYPE,TEMPLATE_SEQ,CONTENT,STATUS,CREATE_DATE,CREATE_USER,UPDATE_DATE,UPDATE_USER
+	</sql>
+
+    <select id="getSmsTemplate" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM c_sms_template WHERE TEMPLATE_SEQ = #{templateSeq} AND STATUS = '1'
+    </select>
+</mapper>

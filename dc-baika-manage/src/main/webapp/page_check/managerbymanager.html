@@ -1,0 +1,68 @@
+
+
+<!-- BEGIN PAGE HEADER-->
+
+<div class="page-bar" style="margin-bottom: 10px;">
+	<ul class="page-breadcrumb">
+		<li><i class="fa fa-home"></i> <a href="#/dashboard.html">首页</a>
+			<i class="fa fa-angle-right"></i></li>
+		<li>审核管理
+			<i class="fa fa-angle-right"></i></li>
+		<li><a href="#/managerbymanager.html">审核员管理</a></li>
+	</ul>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row"  style="min-height:200px;background:url('/loan-manage/assets/admin/layout/img/loading_mylike.gif') no-repeat center center;">
+	<div class="col-md-12 wblCheck">
+		<!-- BEGIN EXAMPLE TABLE PORTLET-->
+		<div class="wblBackground"></div>
+		<div class="wblTool" style="width:600px;">
+			<div id="tool_ok"></div>
+			<div id="tool_no"></div>
+			<div id="tool_add"></div>
+			<div id="tool_del"></div>
+		</div>
+		<div class="wblFillDiv"></div>
+		<div id="userTable" style="border: 0px solid #ccc;"></div>
+	</div>
+</div>
+<!-- END MAIN CONTENT -->
+
+<!-- 以下是弹出框 -->
+<div id="manager_add" class="container"
+	 style=" position: absolute; z-index: 99999;overflow:auto;display: none;">
+	<div style=" display:none; position: absolute; z-index: 1;width: 100%;height: 100%;"></div>
+	<div class="row" style="margin-top:20px">
+		<div class="form-group">
+			<label class="col-sm-5 control-label">新增审核员</label>
+			<div class="col-sm-6">
+				<select name="employNum" id="employNum" class="form-control">
+				</select>
+				<input type="hidden" name="employeeName" id="employeeName"/>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 30px">
+		<div class="col-md-12">
+			<div class="dx-field-label"></div>
+			<div id="submitadd_zc"></div>
+		</div>
+	</div>
+</div>
+<!-- 弹出框结束 -->
+
+<!-- BEGIN MAIN JS -->
+<script>
+managerbymanager();
+</script>
+<!-- END MAIN JS -->
+
+
+
+
+
+
+
+
+

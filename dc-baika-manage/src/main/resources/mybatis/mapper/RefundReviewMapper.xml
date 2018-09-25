@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.RefundReviewMapper" >
+  <select id="queryRefundReviewList" parameterType="java.util.Map" resultType="com.jhh.dc.baika.entity.refund.RefundReviewVo">
+    select * from
+       (
+         select
+            '' as id,
+            p.id as perId,
+            p.name as userName,
+            p.card_num as cardNum,
+            p.phone as phone,
+            p.balance as balance,
+            p.bank_name as bankName,
+            p.bank_card as bankNum,
+            '待确认' as statusName,
+            -1 as status,
+           null as createDate
+         from b_person p
+         where p.balance>0
+      UNION ALL
+       select
+             rr.id as id,
+             p.id as perId,
+             p.name as userName,
+             p.card_num as cardNum,
+             p.phone as phone,
+             rr.amount as balance,
+             rr.bank_name as bankName,
+             rr.bank_num as bankNum,
+            CASE
+                WHEN rr.status='1' THEN '已确认'
+                WHEN rr.status='2' THEN '退款中'
+                WHEN rr.status='3' THEN '退款失败'
+                ELSE ''
+            END as statusName,
+            rr.status as status,
+            rr.create_date as createDate
+        from  b_refund_review rr left join b_person p on rr.per_id=p.id
+        where rr.status in (1,2,3)
+       )
+    b_refund_review
+      where 1=1
+    <if test="userNameEq !=null">
+        and userName=#{userNameEq}
+    </if>
+    <if test="cardNumEq !=null">
+      and cardNum=#{cardNumEq}
+    </if>
+    <if test="phoneEq !=null">
+      and phone=#{phoneEq}
+    </if>
+    <if test="balanceEq !=null">
+      and balance=#{balanceEq}
+    </if>
+      <if test="balanceStart != null">
+          <![CDATA[ and balance > #{balanceStart} ]]>
+      </if>
+      <if test="balanceStartswith != null">
+          <![CDATA[ and balance >=#{balanceStartswith}  ]]>
+      </if>
+      <if test="balanceEnd != null">
+          <![CDATA[ and balance < #{balanceEnd}]]>
+      </if>
+      <if test="balanceEndswith != null">
+          <![CDATA[ and balance <= #{balanceEndswith} ]]>
+      </if>
+    <if test="bankNameEq !=null">
+      and bankName=#{bankNameEq}
+    </if>
+    <if test="statusEq !=null">
+      and status=#{statusEq}
+    </if>
+    <if test="statusNotEq!=null">
+        and status !=#{statusNotEq}
+    </if>
+    <if test="bankNumEq !=null">
+      and bankNum=#{bankNumEq}
+    </if>
+      <if test="createDateStart != null">
+          <![CDATA[ and createDate > DATE_FORMAT(#{createDateStart},'%Y-%m-%d') ]]>
+      </if>
+      <if test="createDateStartswith != null">
+          <![CDATA[ and createDate >= DATE_FORMAT(#{createDateStartswith},'%Y-%m-%d') ]]>
+      </if>
+      <if test="createDateEnd != null">
+          <![CDATA[ and createDate < DATE_FORMAT(#{createDateEnd},'%Y-%m-%d') ]]>
+      </if>
+      <if test="createDateEndswith != null">
+          <![CDATA[ and createDate <= DATE_FORMAT(#{createDateEndswith},'%Y-%m-%d') ]]>
+      </if>
+    <if test="selector == null and desc == null">
+      ORDER BY createDate DESC
+    </if>
+    <if test="selector != null">
+      <choose>
+        <when test="selector eq 'userName'">order by userName</when>
+        <when test="selector eq 'cardNum'">order by cardNum</when>
+        <when test="selector eq 'phone'">order by phone</when>
+        <when test="selector eq 'balance'">order by balance</when>
+        <when test="selector eq 'bankName'">order by bankName</when>
+        <when test="selector eq 'statusName'">order by statusName</when>
+        <when test="selector eq 'status'">order by status</when>
+        <when test="selector eq 'createDate'">order by createDate</when>
+          <when test="selector eq 'bankNum'">order by bankNum</when>
+      </choose>
+      <choose>
+        <when test="desc eq 'desc'">desc</when>
+        <when test="desc eq 'asc'">asc</when>
+      </choose>
+    </if>
+  </select>
+
+    <select id="queryRefundReviewListCount" parameterType="java.util.Map" resultType="int">
+        select count(0) from
+        (
+        select
+        p.id as id,
+        '' as perId,
+        p.name as userName,
+        p.card_num as cardNum,
+        p.phone as phone,
+        p.balance as balance,
+        p.bank_name as bankName,
+        p.bank_card as bankNum,
+        '待确认' as statusName,
+        -1 as status,
+        null as createDate
+        from b_person p
+        where p.balance>0
+        UNION ALL
+        select
+        rr.id as id,
+        p.id as perId,
+        p.name as userName,
+        p.card_num as cardNum,
+        p.phone as phone,
+        rr.amount as balance,
+        rr.bank_name as bankName,
+        rr.bank_num as bankNum,
+        CASE
+        WHEN rr.status='1' THEN '已确认'
+        WHEN rr.status='2' THEN '退款中'
+        WHEN rr.status='3' THEN '退款失败'
+        ELSE ''
+        END as statusName,
+        rr.status as status,
+        rr.create_date as createDate
+        from  b_refund_review rr left join b_person p on rr.per_id=p.id
+        where rr.status in (1,2,3)
+        )
+        refund
+        where 1=1
+        <if test="userNameEq !=null">
+            and userName=#{userNameEq}
+        </if>
+        <if test="cardNumEq !=null">
+            and cardNum=#{cardNumEq}
+        </if>
+        <if test="phoneEq !=null">
+            and phone=#{phoneEq}
+        </if>
+        <if test="balanceEq !=null">
+            and balance=#{balanceEq}
+        </if>
+        <if test="bankNameEq !=null">
+            and bankName=#{bankNameEq}
+        </if>
+        <if test="statusEq !=null">
+            and status=#{statusEq}
+        </if>
+        <if test="statusNotEq!=null">
+            and status !=#{statusNotEq}
+        </if>
+        <if test="bankNumEq !=null">
+            and bankNum=#{bankNumEq}
+        </if>
+        <if test="createDateStart != null">
+            <![CDATA[ and createDate > DATE_FORMAT(#{createDateStart},'%Y-%m-%d') ]]>
+        </if>
+        <if test="createDateStartswith != null">
+            <![CDATA[ and createDate >= DATE_FORMAT(#{createDateStartswith},'%Y-%m-%d') ]]>
+        </if>
+        <if test="createDateEnd != null">
+            <![CDATA[ and createDate < DATE_FORMAT(#{createDateEnd},'%Y-%m-%d') ]]>
+        </if>
+        <if test="createDateEndswith != null">
+            <![CDATA[ and createDate <= DATE_FORMAT(#{createDateEndswith},'%Y-%m-%d') ]]>
+        </if>
+    </select>
+
+    <select id="selectByOrderIdAndPerId" resultType="com.jhh.dc.baika.entity.refund.RefundReview">
+        select
+          id,
+          per_id AS perId,
+          order_id AS orderId,
+          bank_num AS bankNum,
+          bank_name AS bankName,
+          amount,
+          status,
+          remark,
+          review_user AS reviewUser,
+          create_date AS createDate,
+          update_date AS updateDate
+          from b_refund_review
+          where
+            order_id = #{orderId} and per_id = #{perId}
+
+    </select>
+
+</mapper>

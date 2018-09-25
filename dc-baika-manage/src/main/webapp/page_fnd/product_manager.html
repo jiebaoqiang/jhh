@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>产品配置</title>
+</head>
+<script>
+    productTablesInit();
+</script>
+<body>
+<div class="page-bar" style="margin-bottom: 10px;">
+    <ul class="page-breadcrumb">
+        <li><i class="fa fa-home"></i> <a href="#/dashboard.html">首页</a>
+            <i class="fa fa-angle-right"></i></li>
+        <li><a href="#/product_manager.html">产品配置</a></li>
+    </ul>
+    <p style="float:right;line-height:36px;margin:0;padding-right:100px;" class="text-danger"></p>
+</div>
+<div class="row" style="min-height:200px;">
+    <div class="col-md-12 wblMd">
+        <div class="wblBackground"></div>
+        <div class="wblFillDiv"></div>
+        <div id="systemUserTables"></div>
+    </div>
+</div>
+<!-- 以下是弹出模态框 -->
+<div class="modal fade" id="editSystemUserInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow: auto">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 10px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: 5px;padding-right: 15px;"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editSystemUserInfoTitle"></h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <form class="form-horizontal" id="edituser-form" enctype="multipart/form-data">
+                    <input type="hidden" id="creation_user" name="creation_user">
+                    <input type="hidden" id="update_user" name="update_user">
+                    <div class="form-group">
+                        <label for="product_name" class="col-sm-2 control-label"><span style="color: red">*</span>产品名称</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="product_name" class="form-control" id="product_name"  >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="product_description" class="col-sm-2 control-label"><span style="color: red">*</span>产品描述</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="product_description" class="form-control" id="product_description" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="product_icon" class="col-sm-2 control-label"><span style="color: red">*</span>产品图标地址</label>
+                        <div class="col-sm-4" style="overflow: auto">
+                            <input type="file" name="product_icon" class="form-control" id="product_icon" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="finance_title" class="col-sm-2 control-label"><span style="color: red">*</span>融资标题</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="finance_title" class="form-control" id="finance_title" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="term" class="col-sm-2 control-label"><span style="color: red">*</span>期数</label>
+                        <div class="col-sm-4" >
+                            <span id="term" style="position: relative;top:6px">
+                                <input type="checkbox" name="term"  value="1" style="display: inline">1期 &nbsp;&nbsp;
+                                <input type="checkbox" name="term"  value="3" style="display: inline">3期 &nbsp;&nbsp;
+                                <input type="checkbox" name="term"  value="6" style="display: inline">6期 &nbsp;&nbsp;
+                             </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="information_manage_fee" class="col-sm-2 control-label"><span style="color: red">*</span>信息管理费</label>
+                        <div class="col-sm-4" >
+                            <input type="text" name="information_manage_fee"  id="information_manage_fee" style="display: inline">&nbsp;%
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="account_manage_fee" class="col-sm-2 control-label"><span style="color: red">*</span>账户管理费 </label>
+                        <div class="col-sm-4">
+                            <input type="text" name="account_manage_fee"  id="account_manage_fee" style="display: inline">&nbsp;%
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="platform_manage_fee" class="col-sm-2 control-label"><span style="color: red">*</span>平台服务费</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="platform_manage_fee"  id="platform_manage_fee" style="display: inline">&nbsp;%
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <table id="interest_table" class="col-sm-2 control-label" style="width: auto">
+                            <tr><td style="width:150px "><span style="color: red">*</span>利息（年化）</td><td style="width:150px ">期数</td><td style="width:150px ">利率（年化）</td></tr>
+                        </table>
+                    </div>
+                    <div class="form-group" style="display: none">
+                        <table id="interest_table1" class="col-sm-2 control-label" style="width: auto" >
+                        </table>
+                    </div>
+                    <div class="form-group" style="display: none">
+                        <table id="interest_table3" class="col-sm-2 control-label" style="width: auto" >
+                        </table>
+                    </div>
+                    <div class="form-group" style="display: none">
+                        <table id="interest_table6" class="col-sm-2 control-label" style="width: auto" >
+                        </table>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="times" class="col-sm-2 control-label"><span style="color: red">*</span>倍数 </label>
+                        <div class="col-sm-4" >
+                            <input type="text" name="times"  id="times" style="display: inline">&nbsp;倍
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <label for="minimum_amount" class="col-sm-2 control-label"><span style="color: red">*</span>最低额度 </label>
+                        <div class="col-sm-4" >
+                            <input type="text" name="minimum_amount"  id="minimum_amount" style="display: inline">&nbsp;元
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maximum_amount" class="col-sm-2 control-label"><span style="color: red">*</span>最高额度 </label>
+                        <div class="col-sm-4">
+                            <input type="text" name="maximum_amount"  id="maximum_amount" style="display: inline">&nbsp;元
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="product_type_id" class="col-sm-2 control-label"><span style="color: red">*</span>申请类型</label>
+                        <div class="col-sm-4">
+                            <select name="product_type_id" id="product_type_id" class="form-control">
+                                <option value="A">信贷</option>
+                                <option value="B">车贷</option>
+                                <option value="C">房贷</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="repayment_method" class="col-sm-2 control-label"><span style="color: red">*</span>还款方式</label>
+                        <div class="col-sm-4">
+                            <select name="repayment_method" id="repayment_method" class="form-control">
+                                <option value="A">等额本息</option>
+                                <option value="B">先息后本</option>
+                                <option value="C">到期本息</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status" class="col-sm-2 control-label"><span style="color: red">*</span>是否启用</label>
+                        <div class="col-sm-4">
+                            <span id="status" style="position: relative;top:6px">
+                                <input type="radio" name="status"  style="display: inline" value="A" checked>启用 &nbsp;&nbsp;
+                                <input type="radio" name="status"  value="D">禁用
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btnEditUserInfo">提交操作</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

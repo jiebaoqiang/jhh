@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhh.dc.baika.manage.mapper.RefundRecordMapper" >
+    <select id="getRefundRecord" resultType="com.jhh.dc.baika.manage.entity.RefundRecordVo" >
+        SELECT
+        t.serial_no AS serialNo,
+		t.rl_state,
+        t5.meaning AS channel,
+		t.act_amount AS amount,
+        DATE_FORMAT(t2.create_date,'%Y-%m-%d %T') AS creationDate,
+        DATE_FORMAT(t.update_date,'%Y-%m-%d %T') AS updateDate,
+        t1.name AS userName,
+        t1.card_num AS idCard,
+        t1.phone AS phone,
+        t4.bank_name AS bankName,
+        t4.bank_num AS bankNum,
+		t2.remark AS remark
+        FROM
+        b_loan_order t
+        LEFT JOIN b_person t1 ON t.per_id = t1.id
+        LEFT JOIN b_bank t4 on t.bank_id = t4.id
+        LEFT JOIN b_refund_review t2 on t.serial_no = t2.order_id
+        LEFT JOIN c_code_value t5 on t5.code_code = t.channel
+		WHERE t.type in ('100','101','102') AND t.rl_state = 's'
+        and t5.code_type = 'pay_center_channel'
+        ORDER BY t.update_date desc
+    </select>
+</mapper>
